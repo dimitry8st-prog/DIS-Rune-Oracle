@@ -1,11 +1,15 @@
 """Exact fixed-weight aggregation over manually reviewed imported claims."""
 
-from .contracts import CORES, validate_event, validate_cards
+from .contracts import CORES, ContractError, validate_event, validate_cards
 
 
 def compare(event, cards):
     axes = validate_event(event)
     validate_cards(cards, axes)
+    for card in cards:
+        inputs = card["inputs"]
+        if isinstance(inputs, dict) and "event_id" in inputs and inputs["event_id"] != event["event_id"]:
+            raise ContractError("adapter card is bound to another event")
     present = {c["core_id"]: c for c in cards}
     results = {}
     for axis_id, axis in axes.items():

@@ -19,6 +19,10 @@ class Journal:
     def __init__(self, path):
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
+        if not path.exists():
+            with path.open("xb"):
+                pass
+            path.chmod(0o600)
         self.connection = sqlite3.connect(path, timeout=10)
         self.connection.row_factory = sqlite3.Row
         self.connection.executescript("""

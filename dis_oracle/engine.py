@@ -3,6 +3,7 @@
 from .contracts import ContractError, digest, now_iso, shape, text, timestamp, validate_event
 from .journal import JournalError
 from .router import compare
+from . import __version__
 
 
 def freeze(journal, run_id, event, cards, *, frozen_at=None):
@@ -10,7 +11,7 @@ def freeze(journal, run_id, event, cards, *, frozen_at=None):
     frozen_at = frozen_at or now_iso()
     axes = validate_event(event)
     comparison = compare(event, cards)
-    fixed_input = {"event": event, "cards": cards, "engine_version": "0.1.0"}
+    fixed_input = {"event": event, "cards": cards, "engine_version": __version__}
     key = f"run:{run_id}:frozen"
     journal.verify()
     existing = journal.get(key)
@@ -24,11 +25,16 @@ def freeze(journal, run_id, event, cards, *, frozen_at=None):
     if event["mode"] == "forecast" and any(timestamp(a["deadline"]) <= at for a in axes.values()):
         raise ContractError("forecast cannot be frozen after its deadline")
     for card in cards:
+        raw = card["raw_result"]
+        if isinstance(raw, dict):
+            for name in ("generated_at", "reading_fixed_at"):
+                if raw.get(name) and timestamp(raw[name]) > at:
+                    raise ContractError("adapter result timestamp is after freeze")
         for claim in card["claims"]:
             if claim.get("reviewed_at") and timestamp(claim["reviewed_at"]) > at:
                 raise ContractError("review timestamp is after freeze")
     result = {
-        "run_id": run_id, "state": "FROZEN", "engine_version": "0.1.0",
+        "run_id": run_id, "state": "FROZEN", "engine_version": __version__,
         "state_trace": ["RECEIVED", "VALIDATED", "COLLECTED", "COMPARED", "CHECKED", "FROZEN"],
         "frozen_at": frozen_at, "input_hash": digest(fixed_input),
         "event": event, "raw_cards": cards, "comparison": comparison,
