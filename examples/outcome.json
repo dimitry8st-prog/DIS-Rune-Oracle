@@ -1,0 +1,7 @@
+{
+  "event_id": "synthetic-only",
+  "axis_id": "primary",
+  "scenario_id": "A",
+  "source": "synthetic historical illustration, not an actual event",
+  "observed_at": "2026-01-02T00:00:00Z"
+}
