@@ -1,0 +1,207 @@
+{
+  "source": {
+    "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+    "sha256": "dd6257aaab57c78049ae294aab02a90a79d11c9e959198114db557e0ceea2a72",
+    "title": "Introduction to the Study of the Changes (Yixue qimeng), Zhu Xi, translated by Joseph A. Adler",
+    "edition": "Corrected edition, 2017",
+    "edition_proof_pdf_page": 1,
+    "verified_section": "III. Examining the Prognostications of the Changes"
+  },
+  "rules": {
+    "0": {
+      "status": "VERIFIED_SOURCE",
+      "source_status": "VERIFIED_SOURCE",
+      "citation": {
+        "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+        "section": "III. Examining the Prognostications of the Changes",
+        "printed_page": 63,
+        "pdf_page": 63,
+        "quote": "the original hexagram's T'uan statement"
+      },
+      "reason": null
+    },
+    "1": {
+      "status": "VERIFIED_SOURCE",
+      "source_status": "VERIFIED_SOURCE",
+      "citation": {
+        "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+        "section": "III. Examining the Prognostications of the Changes",
+        "printed_page": 63,
+        "pdf_page": 63,
+        "quote": "we take the statement of the original hexagram's changing line as the prognostication."
+      },
+      "reason": null
+    },
+    "2": {
+      "status": "VERIFIED_SOURCE",
+      "source_status": "VERIFIED_SOURCE",
+      "citation": {
+        "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+        "section": "III. Examining the Prognostications of the Changes",
+        "printed_page": 64,
+        "pdf_page": 64,
+        "quote": "we take the upper line [of the two] as ruler."
+      },
+      "reason": null
+    },
+    "3": {
+      "status": "BLOCKED_SOURCE",
+      "source_status": "VERIFIED_SOURCE",
+      "citation": {
+        "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+        "section": "III. Examining the Prognostications of the Changes",
+        "printed_page": 64,
+        "pdf_page": 64,
+        "quote": "the prognostication is the T'uan statement of the original hexagram and the resulting hexagram"
+      },
+      "reason": "Both hexagram statements confirmed. The first-ten/latter-ten ruler distinction is explicit on p.64; Figure 19 priority mapping has not been independently transcribed. No guessed priority.",
+      "priority_quote": "In the first ten hexagrams [of this sort] we make chen the ruler; in the latter ten hexagrams we make hui the ruler."
+    },
+    "4": {
+      "status": "VERIFIED_SOURCE",
+      "source_status": "VERIFIED_SOURCE",
+      "citation": {
+        "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+        "section": "III. Examining the Prognostications of the Changes",
+        "printed_page": 65,
+        "pdf_page": 65,
+        "quote": "we use the two unchanging lines in the resulting hexagram as the prognostication. But we take the lower line as ruler."
+      },
+      "reason": null
+    },
+    "5": {
+      "status": "VERIFIED_SOURCE",
+      "source_status": "VERIFIED_SOURCE",
+      "citation": {
+        "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+        "section": "III. Examining the Prognostications of the Changes",
+        "printed_page": 65,
+        "pdf_page": 65,
+        "quote": "we use the unchanging line of the resulting hexagram as the prognostication."
+      },
+      "reason": null
+    },
+    "6_ordinary": {
+      "status": "VERIFIED_SOURCE",
+      "source_status": "VERIFIED_SOURCE",
+      "citation": {
+        "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+        "section": "III. Examining the Prognostications of the Changes",
+        "printed_page": 65,
+        "pdf_page": 65,
+        "quote": "For other hexagrams, the prognostication is the T'uan statement of the resulting hexagram."
+      },
+      "reason": null
+    },
+    "6_special": {
+      "status": "BLOCKED_SOURCE",
+      "source_status": "VERIFIED_SOURCE",
+      "citation": {
+        "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+        "section": "III. Examining the Prognostications of the Changes",
+        "printed_page": 65,
+        "pdf_page": 65,
+        "quote": "in the cases of Ch'ien and K'un, the prognostications of both are used."
+      },
+      "reason": "Pages 62 and 65-66 discuss using 9/6 and both prognostications. Qwen sole yong-nine/yong-six selector is not established as a complete rule; no abbreviated rule applied."
+    }
+  },
+  "edition_audit": {
+    "status": "EDITION_CONFLICT",
+    "index_url": "https://sacred-texts.com/ich/index.htm",
+    "index_quote": "James Legge, tr. Sacred Books of the East, vol. 16 [1899]",
+    "title_url": "https://sacred-texts.com/book/the-i-ching/title-page",
+    "title_quote": "Oxford, the Clarendon Press [1882]",
+    "title_sha256": "b0a3270ce2ad0a05a6479092aaba5307c715c05a6401ad6fab488377b573636d",
+    "conclusion": "The online corpus cannot be certified as the 1899 second edition from conflicting metadata.",
+    "verified_1882_pdf": {
+      "url": "https://www.biroco.com/yijing/Legge1882.pdf",
+      "sha256": "6b03be7f6264dc607f95f77b867183041fad8eae7b22a0142f84bd89834c6775",
+      "title_pdf_page": 10,
+      "publisher": "Oxford, Clarendon Press",
+      "year": 1882
+    }
+  },
+  "url_audit": [
+    {
+      "input_url": "https://sacred-texts.com/ich/ic01.htm",
+      "king_wen_number": 1,
+      "canonical_url": "https://sacred-texts.com/book/the-i-ching/i-the-khien-hexagram",
+      "page_title": "I. The Khien Hexagram – The I Ching",
+      "status": "VERIFIED_PAGE_IDENTITY",
+      "sha256": "05e1313cd67b77f5973982bc13edfb79cb096fef0daf6ecc15a8dc659a40ca7d",
+      "edition_status": "EDITION_CONFLICT"
+    },
+    {
+      "input_url": "https://sacred-texts.com/ich/ic02.htm",
+      "king_wen_number": 2,
+      "canonical_url": "https://sacred-texts.com/book/the-i-ching/ii-the-khwan-hexagram",
+      "page_title": "II. The Khwăn Hexagram – The I Ching",
+      "status": "VERIFIED_PAGE_IDENTITY",
+      "sha256": "6251c8ceacbd8333967a47fc6d830ebb076bdc7a85d9a012f6181365a2169900",
+      "edition_status": "EDITION_CONFLICT"
+    },
+    {
+      "input_url": "https://sacred-texts.com/ich/ic05.htm",
+      "king_wen_number": 5,
+      "canonical_url": "https://sacred-texts.com/book/the-i-ching/v-the-hsu-hexagram",
+      "page_title": "V. The Hsü Hexagram – The I Ching",
+      "status": "VERIFIED_PAGE_IDENTITY",
+      "sha256": "6ca58a70c149e6f2e0d75761b0490b1f8b80c2a8175ffba939b93c6efe9c84e1",
+      "edition_status": "EDITION_CONFLICT"
+    },
+    {
+      "input_url": "https://sacred-texts.com/ich/ic09.htm",
+      "king_wen_number": 9,
+      "canonical_url": "https://sacred-texts.com/book/the-i-ching/ix-the-hsiao-khu-hexagram",
+      "page_title": "IX. The Hsiâo Khû Hexagram – The I Ching",
+      "status": "VERIFIED_PAGE_IDENTITY",
+      "sha256": "6982689c0fa743558e76aeafede4493e38d309d867e99cf3dff71add2812ea64",
+      "edition_status": "EDITION_CONFLICT"
+    },
+    {
+      "input_url": "https://sacred-texts.com/ich/ic37.htm",
+      "king_wen_number": 37,
+      "canonical_url": "https://sacred-texts.com/book/the-i-ching/xxxvii-the-kia-zan-hexagram",
+      "page_title": "XXXVII. The Kiâ Zăn Hexagram – The I Ching",
+      "status": "VERIFIED_PAGE_IDENTITY",
+      "sha256": "e03fc7d7880efdc7ad06e37ee4476167b87d26fba9a1283468434ec20c75eacc",
+      "edition_status": "EDITION_CONFLICT"
+    },
+    {
+      "input_url": "https://sacred-texts.com/ich/ic39.htm",
+      "king_wen_number": 39,
+      "canonical_url": "https://sacred-texts.com/book/the-i-ching/xxxix-the-kien-hexagram",
+      "page_title": "XXXIX. The Kien Hexagram – The I Ching",
+      "status": "VERIFIED_PAGE_IDENTITY",
+      "sha256": "6079915ce005681105abc94fd3b05baef85ff7c9b628815c33b7ecb9057ebe76",
+      "edition_status": "EDITION_CONFLICT"
+    },
+    {
+      "input_url": "https://sacred-texts.com/ich/ic43.htm",
+      "king_wen_number": 43,
+      "canonical_url": "https://sacred-texts.com/book/the-i-ching/xliii-the-kwai-hexagram",
+      "page_title": "XLIII. The Kwâi Hexagram – The I Ching",
+      "status": "VERIFIED_PAGE_IDENTITY",
+      "sha256": "b08ca24ccabc96faf5b977e74213e5270609185eb308f18974a2707eeac9b84a",
+      "edition_status": "EDITION_CONFLICT"
+    },
+    {
+      "input_url": "https://sacred-texts.com/ich/ic47.htm",
+      "king_wen_number": 47,
+      "canonical_url": "https://sacred-texts.com/book/the-i-ching/xlvii-the-khwan-hexagram",
+      "page_title": "XLVII. The Khwăn Hexagram – The I Ching",
+      "status": "VERIFIED_PAGE_IDENTITY",
+      "sha256": "0e00b2ca8fb9c7d581116ceab412d98c140ad4bde628dc12b7f77f60486c50df",
+      "edition_status": "EDITION_CONFLICT"
+    },
+    {
+      "input_url": "https://sacred-texts.com/ich/ic1.htm",
+      "status": "HTTP_404"
+    },
+    {
+      "input_url": "https://sacred-texts.com/ich/ic9.htm",
+      "status": "HTTP_404"
+    }
+  ]
+}

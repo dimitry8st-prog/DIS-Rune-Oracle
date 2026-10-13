@@ -1,0 +1,2959 @@
+{
+  "source_sha256": {
+    "research/qwen/yijing_examples_v2_UNVERIFIED.json": "d53966201cfc442e6cd3568ddbc5918a76c86f76ed5b2fea8d8b7294f3f965dc",
+    "research/qwen/YIJING_SPECIFICATION_v2_UNVERIFIED.md": "8cbf6d702be342331aa05fd713b1b673636d8b8b3e578c4cd5e3bba3157aa988"
+  },
+  "cases": [
+    {
+      "id": "qwen-01",
+      "comparisons": [
+        {
+          "field": "lines_bottom_up",
+          "qwen": [
+            7,
+            7,
+            7,
+            8,
+            7,
+            7
+          ],
+          "audit": [
+            7,
+            7,
+            7,
+            8,
+            7,
+            7
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "moving_lines",
+          "qwen": [],
+          "audit": [],
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.king_wen_number",
+          "qwen": 9,
+          "audit": 9,
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.name",
+          "qwen": "小畜",
+          "audit": "小畜",
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.pinyin",
+          "qwen": "xiǎo xù",
+          "audit": "xiǎo xù",
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.english",
+          "qwen": "Small Taming",
+          "audit": "Small Taming",
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.lines_binary",
+          "qwen": [
+            1,
+            1,
+            1,
+            0,
+            1,
+            1
+          ],
+          "audit": [
+            1,
+            1,
+            1,
+            0,
+            1,
+            1
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram",
+          "qwen": null,
+          "audit": null,
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.moving_count",
+          "qwen": 0,
+          "audit": 0,
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.method",
+          "qwen": "zhu_xi",
+          "audit": "zhu_xi",
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].type",
+          "qwen": "judgment",
+          "audit": "judgment",
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].hexagram",
+          "qwen": 9,
+          "audit": 9,
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].source",
+          "qwen": "Legge 1899, The Yî King, Hexagram 9, Judgment",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].url",
+          "qwen": "https://sacred-texts.com/ich/ic09.htm",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        }
+      ],
+      "checked_mismatch_count": 0
+    },
+    {
+      "id": "qwen-02",
+      "comparisons": [
+        {
+          "field": "lines_bottom_up",
+          "qwen": [
+            6,
+            8,
+            7,
+            8,
+            7,
+            8
+          ],
+          "audit": [
+            6,
+            8,
+            7,
+            8,
+            7,
+            8
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "moving_lines",
+          "qwen": [
+            1
+          ],
+          "audit": [
+            1
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.king_wen_number",
+          "qwen": 39,
+          "audit": 39,
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.name",
+          "qwen": "蹇",
+          "audit": "蹇",
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.pinyin",
+          "qwen": "jiǎn",
+          "audit": "jiǎn",
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.english",
+          "qwen": "Obstruction",
+          "audit": "Obstruction",
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.lines_binary",
+          "qwen": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            0
+          ],
+          "audit": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            0
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.king_wen_number",
+          "qwen": 53,
+          "audit": 63,
+          "status": "MISMATCH"
+        },
+        {
+          "field": "relating_hexagram.name",
+          "qwen": "渐",
+          "audit": "既济",
+          "status": "MISMATCH"
+        },
+        {
+          "field": "relating_hexagram.pinyin",
+          "qwen": "jiàn",
+          "audit": "jì jì",
+          "status": "MISMATCH"
+        },
+        {
+          "field": "relating_hexagram.english",
+          "qwen": "Gradual Progress",
+          "audit": "After Completion",
+          "status": "TRANSLATION_VARIANT"
+        },
+        {
+          "field": "relating_hexagram.lines_binary",
+          "qwen": [
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          "audit": [
+            1,
+            0,
+            1,
+            0,
+            1,
+            0
+          ],
+          "status": "MISMATCH"
+        },
+        {
+          "field": "reading_rule.moving_count",
+          "qwen": 1,
+          "audit": 1,
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.method",
+          "qwen": "zhu_xi",
+          "audit": "zhu_xi",
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].type",
+          "qwen": "line",
+          "audit": "line",
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].hexagram",
+          "qwen": 39,
+          "audit": 39,
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].line_number",
+          "qwen": 1,
+          "audit": 1,
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].source",
+          "qwen": "Legge 1899, The Yî King, Hexagram 39, Line 1",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].url",
+          "qwen": "https://sacred-texts.com/ich/ic39.htm",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.priority",
+          "qwen": "single_line",
+          "audit": "single_line",
+          "status": "MATCH"
+        }
+      ],
+      "checked_mismatch_count": 4
+    },
+    {
+      "id": "qwen-03",
+      "comparisons": [
+        {
+          "field": "lines_bottom_up",
+          "qwen": [
+            6,
+            7,
+            8,
+            9,
+            7,
+            8
+          ],
+          "audit": [
+            6,
+            7,
+            8,
+            9,
+            7,
+            8
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "moving_lines",
+          "qwen": [
+            1,
+            4
+          ],
+          "audit": [
+            1,
+            4
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.king_wen_number",
+          "qwen": 47,
+          "audit": 47,
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.name",
+          "qwen": "困",
+          "audit": "困",
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.pinyin",
+          "qwen": "kùn",
+          "audit": "kùn",
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.english",
+          "qwen": "Oppression (Exhaustion)",
+          "audit": "Oppression",
+          "status": "TRANSLATION_VARIANT"
+        },
+        {
+          "field": "primary_hexagram.lines_binary",
+          "qwen": [
+            0,
+            1,
+            0,
+            1,
+            1,
+            0
+          ],
+          "audit": [
+            0,
+            1,
+            0,
+            1,
+            1,
+            0
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.king_wen_number",
+          "qwen": 60,
+          "audit": 60,
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.name",
+          "qwen": "节",
+          "audit": "节",
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.pinyin",
+          "qwen": "jié",
+          "audit": "jié",
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.english",
+          "qwen": "Limitation",
+          "audit": "Limitation",
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.lines_binary",
+          "qwen": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0
+          ],
+          "audit": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.moving_count",
+          "qwen": 2,
+          "audit": 2,
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.method",
+          "qwen": "zhu_xi",
+          "audit": "zhu_xi",
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].type",
+          "qwen": "line",
+          "audit": "line",
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].hexagram",
+          "qwen": 47,
+          "audit": 47,
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].line_number",
+          "qwen": 1,
+          "audit": 1,
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].source",
+          "qwen": "Legge 1899, The Yî King, Hexagram 47, Line 1",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].url",
+          "qwen": "https://sacred-texts.com/ich/ic47.htm",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].type",
+          "qwen": "line",
+          "audit": "line",
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].hexagram",
+          "qwen": 47,
+          "audit": 47,
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].line_number",
+          "qwen": 4,
+          "audit": 4,
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].source",
+          "qwen": "Legge 1899, The Yî King, Hexagram 47, Line 4",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].url",
+          "qwen": "https://sacred-texts.com/ich/ic47.htm",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].priority",
+          "qwen": "predominant",
+          "audit": "predominant",
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.priority",
+          "qwen": "upper_line",
+          "audit": "upper_line",
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.note",
+          "qwen": "Two moving lines: read both, upper line (4) is predominant.",
+          "audit": null,
+          "status": "UNVERIFIED_COMMENTARY"
+        }
+      ],
+      "checked_mismatch_count": 0
+    },
+    {
+      "id": "qwen-04",
+      "comparisons": [
+        {
+          "field": "lines_bottom_up",
+          "qwen": [
+            7,
+            9,
+            6,
+            9,
+            7,
+            7
+          ],
+          "audit": [
+            7,
+            9,
+            6,
+            9,
+            7,
+            7
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "moving_lines",
+          "qwen": [
+            2,
+            3,
+            4
+          ],
+          "audit": [
+            2,
+            3,
+            4
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.king_wen_number",
+          "qwen": 43,
+          "audit": 10,
+          "status": "MISMATCH"
+        },
+        {
+          "field": "primary_hexagram.name",
+          "qwen": "夬",
+          "audit": "履",
+          "status": "MISMATCH"
+        },
+        {
+          "field": "primary_hexagram.pinyin",
+          "qwen": "guài",
+          "audit": "lǚ",
+          "status": "MISMATCH"
+        },
+        {
+          "field": "primary_hexagram.english",
+          "qwen": "Breakthrough",
+          "audit": "Treading",
+          "status": "TRANSLATION_VARIANT"
+        },
+        {
+          "field": "primary_hexagram.lines_binary",
+          "qwen": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1
+          ],
+          "audit": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.king_wen_number",
+          "qwen": 37,
+          "audit": 37,
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.name",
+          "qwen": "家人",
+          "audit": "家人",
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.pinyin",
+          "qwen": "jiā rén",
+          "audit": "jiā rén",
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.english",
+          "qwen": "The Family",
+          "audit": "The Family",
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.lines_binary",
+          "qwen": [
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          "audit": [
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.moving_count",
+          "qwen": 3,
+          "audit": 3,
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.method",
+          "qwen": "zhu_xi",
+          "audit": null,
+          "status": "BLOCKED_SOURCE"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].type",
+          "qwen": "judgment",
+          "audit": null,
+          "status": "BLOCKED_SOURCE"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].hexagram",
+          "qwen": 43,
+          "audit": null,
+          "status": "BLOCKED_SOURCE"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].source",
+          "qwen": "Legge 1899, The Yî King, Hexagram 43, Judgment",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].url",
+          "qwen": "https://sacred-texts.com/ich/ic43.htm",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].note",
+          "qwen": "Primary hexagram judgment (as question)",
+          "audit": null,
+          "status": "UNVERIFIED_COMMENTARY"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].type",
+          "qwen": "judgment",
+          "audit": null,
+          "status": "BLOCKED_SOURCE"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].hexagram",
+          "qwen": 37,
+          "audit": null,
+          "status": "BLOCKED_SOURCE"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].source",
+          "qwen": "Legge 1899, The Yî King, Hexagram 37, Judgment",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].url",
+          "qwen": "https://sacred-texts.com/ich/ic37.htm",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].note",
+          "qwen": "Relating hexagram judgment (as prognostication)",
+          "audit": null,
+          "status": "UNVERIFIED_COMMENTARY"
+        },
+        {
+          "field": "reading_rule.priority",
+          "qwen": "both_judgments",
+          "audit": null,
+          "status": "BLOCKED_SOURCE"
+        },
+        {
+          "field": "reading_rule.note",
+          "qwen": "Three moving lines: read judgments of both hexagrams. REQUIRES VERIFICATION against Adler Chapter IV.",
+          "audit": null,
+          "status": "UNVERIFIED_COMMENTARY"
+        }
+      ],
+      "checked_mismatch_count": 3
+    },
+    {
+      "id": "qwen-05",
+      "comparisons": [
+        {
+          "field": "lines_bottom_up",
+          "qwen": [
+            9,
+            6,
+            9,
+            6,
+            9,
+            7
+          ],
+          "audit": [
+            9,
+            6,
+            9,
+            6,
+            9,
+            7
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "moving_lines",
+          "qwen": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "audit": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "status": "MISMATCH"
+        },
+        {
+          "field": "primary_hexagram.king_wen_number",
+          "qwen": 59,
+          "audit": 37,
+          "status": "MISMATCH"
+        },
+        {
+          "field": "primary_hexagram.name",
+          "qwen": "涣",
+          "audit": "家人",
+          "status": "MISMATCH"
+        },
+        {
+          "field": "primary_hexagram.pinyin",
+          "qwen": "huàn",
+          "audit": "jiā rén",
+          "status": "MISMATCH"
+        },
+        {
+          "field": "primary_hexagram.english",
+          "qwen": "Dispersion",
+          "audit": "The Family",
+          "status": "TRANSLATION_VARIANT"
+        },
+        {
+          "field": "primary_hexagram.lines_binary",
+          "qwen": [
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          "audit": [
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.king_wen_number",
+          "qwen": 5,
+          "audit": 64,
+          "status": "MISMATCH"
+        },
+        {
+          "field": "relating_hexagram.name",
+          "qwen": "需",
+          "audit": "未济",
+          "status": "MISMATCH"
+        },
+        {
+          "field": "relating_hexagram.pinyin",
+          "qwen": "xū",
+          "audit": "wèi jì",
+          "status": "MISMATCH"
+        },
+        {
+          "field": "relating_hexagram.english",
+          "qwen": "Waiting",
+          "audit": "Before Completion",
+          "status": "TRANSLATION_VARIANT"
+        },
+        {
+          "field": "relating_hexagram.lines_binary",
+          "qwen": [
+            0,
+            1,
+            0,
+            1,
+            1,
+            1
+          ],
+          "audit": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "status": "MISMATCH"
+        },
+        {
+          "field": "reading_rule.moving_count",
+          "qwen": 4,
+          "audit": 5,
+          "status": "MISMATCH"
+        },
+        {
+          "field": "reading_rule.method",
+          "qwen": "zhu_xi",
+          "audit": "zhu_xi",
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].type",
+          "qwen": "line",
+          "audit": "line",
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].hexagram",
+          "qwen": 5,
+          "audit": 64,
+          "status": "MISMATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].line_number",
+          "qwen": 5,
+          "audit": 6,
+          "status": "MISMATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].source",
+          "qwen": "Legge 1899, The Yî King, Hexagram 5, Line 5",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].url",
+          "qwen": "https://sacred-texts.com/ich/ic05.htm",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].type",
+          "qwen": "line",
+          "audit": null,
+          "status": "MISMATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].hexagram",
+          "qwen": 5,
+          "audit": null,
+          "status": "MISMATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].line_number",
+          "qwen": 6,
+          "audit": null,
+          "status": "MISMATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].source",
+          "qwen": "Legge 1899, The Yî King, Hexagram 5, Line 6",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].url",
+          "qwen": "https://sacred-texts.com/ich/ic05.htm",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[1].priority",
+          "qwen": "predominant",
+          "audit": null,
+          "status": "MISMATCH"
+        },
+        {
+          "field": "reading_rule.priority",
+          "qwen": "lower_stable_line_in_relating",
+          "audit": "stable_line_in_relating",
+          "status": "MISMATCH"
+        },
+        {
+          "field": "reading_rule.note",
+          "qwen": "Four moving lines: read the lower of two unchanging lines in the relating hexagram (line 5).",
+          "audit": null,
+          "status": "UNVERIFIED_COMMENTARY"
+        }
+      ],
+      "checked_mismatch_count": 16
+    },
+    {
+      "id": "qwen-06",
+      "comparisons": [
+        {
+          "field": "lines_bottom_up",
+          "qwen": [
+            9,
+            9,
+            6,
+            9,
+            9,
+            7
+          ],
+          "audit": [
+            9,
+            9,
+            6,
+            9,
+            9,
+            7
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "moving_lines",
+          "qwen": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "audit": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.king_wen_number",
+          "qwen": 43,
+          "audit": 10,
+          "status": "MISMATCH"
+        },
+        {
+          "field": "primary_hexagram.name",
+          "qwen": "夬",
+          "audit": "履",
+          "status": "MISMATCH"
+        },
+        {
+          "field": "primary_hexagram.pinyin",
+          "qwen": "guài",
+          "audit": "lǚ",
+          "status": "MISMATCH"
+        },
+        {
+          "field": "primary_hexagram.english",
+          "qwen": "Breakthrough",
+          "audit": "Treading",
+          "status": "TRANSLATION_VARIANT"
+        },
+        {
+          "field": "primary_hexagram.lines_binary",
+          "qwen": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1
+          ],
+          "audit": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.king_wen_number",
+          "qwen": 2,
+          "audit": 52,
+          "status": "MISMATCH"
+        },
+        {
+          "field": "relating_hexagram.name",
+          "qwen": "坤",
+          "audit": "艮",
+          "status": "MISMATCH"
+        },
+        {
+          "field": "relating_hexagram.pinyin",
+          "qwen": "kūn",
+          "audit": "gèn",
+          "status": "MISMATCH"
+        },
+        {
+          "field": "relating_hexagram.english",
+          "qwen": "The Receptive",
+          "audit": "The Keeping Still Mountain",
+          "status": "TRANSLATION_VARIANT"
+        },
+        {
+          "field": "relating_hexagram.lines_binary",
+          "qwen": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "audit": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            1
+          ],
+          "status": "MISMATCH"
+        },
+        {
+          "field": "reading_rule.moving_count",
+          "qwen": 5,
+          "audit": 5,
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.method",
+          "qwen": "zhu_xi",
+          "audit": "zhu_xi",
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].type",
+          "qwen": "line",
+          "audit": "line",
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].hexagram",
+          "qwen": 43,
+          "audit": 52,
+          "status": "MISMATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].line_number",
+          "qwen": 6,
+          "audit": 6,
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].source",
+          "qwen": "Legge 1899, The Yî King, Hexagram 43, Line 6",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].url",
+          "qwen": "https://sacred-texts.com/ich/ic43.htm",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.priority",
+          "qwen": "stable_line_in_primary",
+          "audit": "stable_line_in_relating",
+          "status": "MISMATCH"
+        },
+        {
+          "field": "reading_rule.note",
+          "qwen": "Five moving lines: read the unchanging line in the PRIMARY hexagram (line 6), NOT the relating hexagram.",
+          "audit": null,
+          "status": "UNVERIFIED_COMMENTARY"
+        }
+      ],
+      "checked_mismatch_count": 9
+    },
+    {
+      "id": "qwen-07",
+      "comparisons": [
+        {
+          "field": "lines_bottom_up",
+          "qwen": [
+            9,
+            9,
+            9,
+            9,
+            9,
+            9
+          ],
+          "audit": [
+            9,
+            9,
+            9,
+            9,
+            9,
+            9
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "moving_lines",
+          "qwen": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "audit": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.king_wen_number",
+          "qwen": 1,
+          "audit": 1,
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.name",
+          "qwen": "乾",
+          "audit": "乾",
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.pinyin",
+          "qwen": "qián",
+          "audit": "qián",
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.english",
+          "qwen": "The Creative",
+          "audit": "The Creative Heaven",
+          "status": "TRANSLATION_VARIANT"
+        },
+        {
+          "field": "primary_hexagram.lines_binary",
+          "qwen": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "audit": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.king_wen_number",
+          "qwen": 2,
+          "audit": 2,
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.name",
+          "qwen": "坤",
+          "audit": "坤",
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.pinyin",
+          "qwen": "kūn",
+          "audit": "kūn",
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.english",
+          "qwen": "The Receptive",
+          "audit": "The Receptive Earth",
+          "status": "TRANSLATION_VARIANT"
+        },
+        {
+          "field": "relating_hexagram.lines_binary",
+          "qwen": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "audit": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.moving_count",
+          "qwen": 6,
+          "audit": 6,
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.method",
+          "qwen": "zhu_xi",
+          "audit": null,
+          "status": "BLOCKED_SOURCE"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].type",
+          "qwen": "yong_nine",
+          "audit": null,
+          "status": "BLOCKED_SOURCE"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].hexagram",
+          "qwen": 1,
+          "audit": null,
+          "status": "BLOCKED_SOURCE"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].source",
+          "qwen": "Legge 1899, The Yî King, Hexagram 1, All Nines (用九)",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].url",
+          "qwen": "https://sacred-texts.com/ich/ic01.htm",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.priority",
+          "qwen": "special_yong_nine",
+          "audit": null,
+          "status": "BLOCKED_SOURCE"
+        },
+        {
+          "field": "reading_rule.note",
+          "qwen": "All six lines changing in Hexagram 1: use special 'yong nine' text.",
+          "audit": null,
+          "status": "UNVERIFIED_COMMENTARY"
+        }
+      ],
+      "checked_mismatch_count": 0
+    },
+    {
+      "id": "qwen-08",
+      "comparisons": [
+        {
+          "field": "lines_bottom_up",
+          "qwen": [
+            6,
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "audit": [
+            6,
+            6,
+            6,
+            6,
+            6,
+            6
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "moving_lines",
+          "qwen": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "audit": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.king_wen_number",
+          "qwen": 2,
+          "audit": 2,
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.name",
+          "qwen": "坤",
+          "audit": "坤",
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.pinyin",
+          "qwen": "kūn",
+          "audit": "kūn",
+          "status": "MATCH"
+        },
+        {
+          "field": "primary_hexagram.english",
+          "qwen": "The Receptive",
+          "audit": "The Receptive Earth",
+          "status": "TRANSLATION_VARIANT"
+        },
+        {
+          "field": "primary_hexagram.lines_binary",
+          "qwen": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "audit": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.king_wen_number",
+          "qwen": 1,
+          "audit": 1,
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.name",
+          "qwen": "乾",
+          "audit": "乾",
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.pinyin",
+          "qwen": "qián",
+          "audit": "qián",
+          "status": "MATCH"
+        },
+        {
+          "field": "relating_hexagram.english",
+          "qwen": "The Creative",
+          "audit": "The Creative Heaven",
+          "status": "TRANSLATION_VARIANT"
+        },
+        {
+          "field": "relating_hexagram.lines_binary",
+          "qwen": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "audit": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.moving_count",
+          "qwen": 6,
+          "audit": 6,
+          "status": "MATCH"
+        },
+        {
+          "field": "reading_rule.method",
+          "qwen": "zhu_xi",
+          "audit": null,
+          "status": "BLOCKED_SOURCE"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].type",
+          "qwen": "yong_six",
+          "audit": null,
+          "status": "BLOCKED_SOURCE"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].hexagram",
+          "qwen": 2,
+          "audit": null,
+          "status": "BLOCKED_SOURCE"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].source",
+          "qwen": "Legge 1899, The Yî King, Hexagram 2, All Sixes (用六)",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.ruling_texts[0].url",
+          "qwen": "https://sacred-texts.com/ich/ic02.htm",
+          "audit": null,
+          "status": "EDITION_CONFLICT"
+        },
+        {
+          "field": "reading_rule.priority",
+          "qwen": "special_yong_six",
+          "audit": null,
+          "status": "BLOCKED_SOURCE"
+        },
+        {
+          "field": "reading_rule.note",
+          "qwen": "All six lines changing in Hexagram 2: use special 'yong six' text.",
+          "audit": null,
+          "status": "UNVERIFIED_COMMENTARY"
+        }
+      ],
+      "checked_mismatch_count": 0
+    }
+  ],
+  "qwen_table_audit": {
+    "rows": 64,
+    "unique_structures": 64,
+    "numbering_source": "OEIS A102241, pinned external sequence, bottom bit = 2^0",
+    "chinese_name_source": "ichingpy pinned secondary dataset, keyed by bottom-up lines",
+    "english_name_source": "Unicode NamesList, pinned official data",
+    "pinyin_and_trigram_source": "Wikipedia revision 1344901076, all 64 rows independently checked against OEIS",
+    "historical_primary_manuscript_checked": false,
+    "checks": [
+      {
+        "king_wen_number": 1,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 1,
+          "name": "乾",
+          "pinyin": "qián",
+          "english": "The Creative Heaven",
+          "lines_binary": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "lower_trigram": "☰",
+          "upper_trigram": "☰",
+          "unicode": "䷀"
+        }
+      },
+      {
+        "king_wen_number": 2,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 2,
+          "name": "坤",
+          "pinyin": "kūn",
+          "english": "The Receptive Earth",
+          "lines_binary": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "lower_trigram": "☷",
+          "upper_trigram": "☷",
+          "unicode": "䷁"
+        }
+      },
+      {
+        "king_wen_number": 3,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 3,
+          "name": "屯",
+          "pinyin": "zhūn",
+          "english": "Difficulty At The Beginning",
+          "lines_binary": [
+            1,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          "lower_trigram": "☳",
+          "upper_trigram": "☵",
+          "unicode": "䷂"
+        }
+      },
+      {
+        "king_wen_number": 4,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 4,
+          "name": "蒙",
+          "pinyin": "méng",
+          "english": "Youthful Folly",
+          "lines_binary": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "lower_trigram": "☵",
+          "upper_trigram": "☶",
+          "unicode": "䷃"
+        }
+      },
+      {
+        "king_wen_number": 5,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 5,
+          "name": "需",
+          "pinyin": "xū",
+          "english": "Waiting",
+          "lines_binary": [
+            1,
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          "lower_trigram": "☰",
+          "upper_trigram": "☵",
+          "unicode": "䷄"
+        }
+      },
+      {
+        "king_wen_number": 6,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 6,
+          "name": "讼",
+          "pinyin": "sòng",
+          "english": "Conflict",
+          "lines_binary": [
+            0,
+            1,
+            0,
+            1,
+            1,
+            1
+          ],
+          "lower_trigram": "☵",
+          "upper_trigram": "☰",
+          "unicode": "䷅"
+        }
+      },
+      {
+        "king_wen_number": 7,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 7,
+          "name": "师",
+          "pinyin": "shī",
+          "english": "The Army",
+          "lines_binary": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "lower_trigram": "☵",
+          "upper_trigram": "☷",
+          "unicode": "䷆"
+        }
+      },
+      {
+        "king_wen_number": 8,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 8,
+          "name": "比",
+          "pinyin": "bǐ",
+          "english": "Holding Together",
+          "lines_binary": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          "lower_trigram": "☷",
+          "upper_trigram": "☵",
+          "unicode": "䷇"
+        }
+      },
+      {
+        "king_wen_number": 9,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 9,
+          "name": "小畜",
+          "pinyin": "xiǎo xù",
+          "english": "Small Taming",
+          "lines_binary": [
+            1,
+            1,
+            1,
+            0,
+            1,
+            1
+          ],
+          "lower_trigram": "☰",
+          "upper_trigram": "☴",
+          "unicode": "䷈"
+        }
+      },
+      {
+        "king_wen_number": 10,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 10,
+          "name": "履",
+          "pinyin": "lǚ",
+          "english": "Treading",
+          "lines_binary": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1
+          ],
+          "lower_trigram": "☱",
+          "upper_trigram": "☰",
+          "unicode": "䷉"
+        }
+      },
+      {
+        "king_wen_number": 11,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 11,
+          "name": "泰",
+          "pinyin": "tài",
+          "english": "Peace",
+          "lines_binary": [
+            1,
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          "lower_trigram": "☰",
+          "upper_trigram": "☷",
+          "unicode": "䷊"
+        }
+      },
+      {
+        "king_wen_number": 12,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 12,
+          "name": "否",
+          "pinyin": "pǐ",
+          "english": "Standstill",
+          "lines_binary": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1
+          ],
+          "lower_trigram": "☷",
+          "upper_trigram": "☰",
+          "unicode": "䷋"
+        }
+      },
+      {
+        "king_wen_number": 13,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 13,
+          "name": "同人",
+          "pinyin": "tóng rén",
+          "english": "Fellowship",
+          "lines_binary": [
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "lower_trigram": "☲",
+          "upper_trigram": "☰",
+          "unicode": "䷌"
+        }
+      },
+      {
+        "king_wen_number": 14,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 14,
+          "name": "大有",
+          "pinyin": "dà yǒu",
+          "english": "Great Possession",
+          "lines_binary": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1
+          ],
+          "lower_trigram": "☰",
+          "upper_trigram": "☲",
+          "unicode": "䷍"
+        }
+      },
+      {
+        "king_wen_number": 15,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 15,
+          "name": "谦",
+          "pinyin": "qiān",
+          "english": "Modesty",
+          "lines_binary": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "lower_trigram": "☶",
+          "upper_trigram": "☷",
+          "unicode": "䷎"
+        }
+      },
+      {
+        "king_wen_number": 16,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 16,
+          "name": "豫",
+          "pinyin": "yù",
+          "english": "Enthusiasm",
+          "lines_binary": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "lower_trigram": "☷",
+          "upper_trigram": "☳",
+          "unicode": "䷏"
+        }
+      },
+      {
+        "king_wen_number": 17,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 17,
+          "name": "随",
+          "pinyin": "suí",
+          "english": "Following",
+          "lines_binary": [
+            1,
+            0,
+            0,
+            1,
+            1,
+            0
+          ],
+          "lower_trigram": "☳",
+          "upper_trigram": "☱",
+          "unicode": "䷐"
+        }
+      },
+      {
+        "king_wen_number": 18,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 18,
+          "name": "蛊",
+          "pinyin": "gǔ",
+          "english": "Work On The Decayed",
+          "lines_binary": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            1
+          ],
+          "lower_trigram": "☴",
+          "upper_trigram": "☶",
+          "unicode": "䷑"
+        }
+      },
+      {
+        "king_wen_number": 19,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 19,
+          "name": "临",
+          "pinyin": "lín",
+          "english": "Approach",
+          "lines_binary": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "lower_trigram": "☱",
+          "upper_trigram": "☷",
+          "unicode": "䷒"
+        }
+      },
+      {
+        "king_wen_number": 20,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 20,
+          "name": "观",
+          "pinyin": "guān",
+          "english": "Contemplation",
+          "lines_binary": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            1
+          ],
+          "lower_trigram": "☷",
+          "upper_trigram": "☴",
+          "unicode": "䷓"
+        }
+      },
+      {
+        "king_wen_number": 21,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 21,
+          "name": "噬嗑",
+          "pinyin": "shì kè",
+          "english": "Biting Through",
+          "lines_binary": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "lower_trigram": "☳",
+          "upper_trigram": "☲",
+          "unicode": "䷔"
+        }
+      },
+      {
+        "king_wen_number": 22,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 22,
+          "name": "贲",
+          "pinyin": "bì",
+          "english": "Grace",
+          "lines_binary": [
+            1,
+            0,
+            1,
+            0,
+            0,
+            1
+          ],
+          "lower_trigram": "☲",
+          "upper_trigram": "☶",
+          "unicode": "䷕"
+        }
+      },
+      {
+        "king_wen_number": 23,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 23,
+          "name": "剥",
+          "pinyin": "bō",
+          "english": "Splitting Apart",
+          "lines_binary": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "lower_trigram": "☷",
+          "upper_trigram": "☶",
+          "unicode": "䷖"
+        }
+      },
+      {
+        "king_wen_number": 24,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 24,
+          "name": "复",
+          "pinyin": "fù",
+          "english": "Return",
+          "lines_binary": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "lower_trigram": "☳",
+          "upper_trigram": "☷",
+          "unicode": "䷗"
+        }
+      },
+      {
+        "king_wen_number": 25,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 25,
+          "name": "无妄",
+          "pinyin": "wú wàng",
+          "english": "Innocence",
+          "lines_binary": [
+            1,
+            0,
+            0,
+            1,
+            1,
+            1
+          ],
+          "lower_trigram": "☳",
+          "upper_trigram": "☰",
+          "unicode": "䷘"
+        }
+      },
+      {
+        "king_wen_number": 26,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 26,
+          "name": "大畜",
+          "pinyin": "dà xù",
+          "english": "Great Taming",
+          "lines_binary": [
+            1,
+            1,
+            1,
+            0,
+            0,
+            1
+          ],
+          "lower_trigram": "☰",
+          "upper_trigram": "☶",
+          "unicode": "䷙"
+        }
+      },
+      {
+        "king_wen_number": 27,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 27,
+          "name": "颐",
+          "pinyin": "yí",
+          "english": "Mouth Corners",
+          "lines_binary": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "lower_trigram": "☳",
+          "upper_trigram": "☶",
+          "unicode": "䷚"
+        }
+      },
+      {
+        "king_wen_number": 28,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 28,
+          "name": "大过",
+          "pinyin": "dà guò",
+          "english": "Great Preponderance",
+          "lines_binary": [
+            0,
+            1,
+            1,
+            1,
+            1,
+            0
+          ],
+          "lower_trigram": "☴",
+          "upper_trigram": "☱",
+          "unicode": "䷛"
+        }
+      },
+      {
+        "king_wen_number": 29,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 29,
+          "name": "坎",
+          "pinyin": "kǎn",
+          "english": "The Abysmal Water",
+          "lines_binary": [
+            0,
+            1,
+            0,
+            0,
+            1,
+            0
+          ],
+          "lower_trigram": "☵",
+          "upper_trigram": "☵",
+          "unicode": "䷜"
+        }
+      },
+      {
+        "king_wen_number": 30,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 30,
+          "name": "离",
+          "pinyin": "lí",
+          "english": "The Clinging Fire",
+          "lines_binary": [
+            1,
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          "lower_trigram": "☲",
+          "upper_trigram": "☲",
+          "unicode": "䷝"
+        }
+      },
+      {
+        "king_wen_number": 31,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 31,
+          "name": "咸",
+          "pinyin": "xián",
+          "english": "Influence",
+          "lines_binary": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "lower_trigram": "☶",
+          "upper_trigram": "☱",
+          "unicode": "䷞"
+        }
+      },
+      {
+        "king_wen_number": 32,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 32,
+          "name": "恒",
+          "pinyin": "héng",
+          "english": "Duration",
+          "lines_binary": [
+            0,
+            1,
+            1,
+            1,
+            0,
+            0
+          ],
+          "lower_trigram": "☴",
+          "upper_trigram": "☳",
+          "unicode": "䷟"
+        }
+      },
+      {
+        "king_wen_number": 33,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 33,
+          "name": "遁",
+          "pinyin": "dùn",
+          "english": "Retreat",
+          "lines_binary": [
+            0,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "lower_trigram": "☶",
+          "upper_trigram": "☰",
+          "unicode": "䷠"
+        }
+      },
+      {
+        "king_wen_number": 34,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 34,
+          "name": "大壮",
+          "pinyin": "dà zhuàng",
+          "english": "Great Power",
+          "lines_binary": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            0
+          ],
+          "lower_trigram": "☰",
+          "upper_trigram": "☳",
+          "unicode": "䷡"
+        }
+      },
+      {
+        "king_wen_number": 35,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 35,
+          "name": "晋",
+          "pinyin": "jìn",
+          "english": "Progress",
+          "lines_binary": [
+            0,
+            0,
+            0,
+            1,
+            0,
+            1
+          ],
+          "lower_trigram": "☷",
+          "upper_trigram": "☲",
+          "unicode": "䷢"
+        }
+      },
+      {
+        "king_wen_number": 36,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 36,
+          "name": "明夷",
+          "pinyin": "míng yí",
+          "english": "Darkening Of The Light",
+          "lines_binary": [
+            1,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "lower_trigram": "☲",
+          "upper_trigram": "☷",
+          "unicode": "䷣"
+        }
+      },
+      {
+        "king_wen_number": 37,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 37,
+          "name": "家人",
+          "pinyin": "jiā rén",
+          "english": "The Family",
+          "lines_binary": [
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          "lower_trigram": "☲",
+          "upper_trigram": "☴",
+          "unicode": "䷤"
+        }
+      },
+      {
+        "king_wen_number": 38,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 38,
+          "name": "睽",
+          "pinyin": "kuí",
+          "english": "Opposition",
+          "lines_binary": [
+            1,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "lower_trigram": "☱",
+          "upper_trigram": "☲",
+          "unicode": "䷥"
+        }
+      },
+      {
+        "king_wen_number": 39,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 39,
+          "name": "蹇",
+          "pinyin": "jiǎn",
+          "english": "Obstruction",
+          "lines_binary": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            0
+          ],
+          "lower_trigram": "☶",
+          "upper_trigram": "☵",
+          "unicode": "䷦"
+        }
+      },
+      {
+        "king_wen_number": 40,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 40,
+          "name": "解",
+          "pinyin": "jiě",
+          "english": "Deliverance",
+          "lines_binary": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            0
+          ],
+          "lower_trigram": "☵",
+          "upper_trigram": "☳",
+          "unicode": "䷧"
+        }
+      },
+      {
+        "king_wen_number": 41,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 41,
+          "name": "损",
+          "pinyin": "sǔn",
+          "english": "Decrease",
+          "lines_binary": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "lower_trigram": "☱",
+          "upper_trigram": "☶",
+          "unicode": "䷨"
+        }
+      },
+      {
+        "king_wen_number": 42,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 42,
+          "name": "益",
+          "pinyin": "yì",
+          "english": "Increase",
+          "lines_binary": [
+            1,
+            0,
+            0,
+            0,
+            1,
+            1
+          ],
+          "lower_trigram": "☳",
+          "upper_trigram": "☴",
+          "unicode": "䷩"
+        }
+      },
+      {
+        "king_wen_number": 43,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 43,
+          "name": "夬",
+          "pinyin": "guài",
+          "english": "Breakthrough",
+          "lines_binary": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            0
+          ],
+          "lower_trigram": "☰",
+          "upper_trigram": "☱",
+          "unicode": "䷪"
+        }
+      },
+      {
+        "king_wen_number": 44,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 44,
+          "name": "姤",
+          "pinyin": "gòu",
+          "english": "Coming To Meet",
+          "lines_binary": [
+            0,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "lower_trigram": "☴",
+          "upper_trigram": "☰",
+          "unicode": "䷫"
+        }
+      },
+      {
+        "king_wen_number": 45,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 45,
+          "name": "萃",
+          "pinyin": "cuì",
+          "english": "Gathering Together",
+          "lines_binary": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            0
+          ],
+          "lower_trigram": "☷",
+          "upper_trigram": "☱",
+          "unicode": "䷬"
+        }
+      },
+      {
+        "king_wen_number": 46,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 46,
+          "name": "升",
+          "pinyin": "shēng",
+          "english": "Pushing Upward",
+          "lines_binary": [
+            0,
+            1,
+            1,
+            0,
+            0,
+            0
+          ],
+          "lower_trigram": "☴",
+          "upper_trigram": "☷",
+          "unicode": "䷭"
+        }
+      },
+      {
+        "king_wen_number": 47,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 47,
+          "name": "困",
+          "pinyin": "kùn",
+          "english": "Oppression",
+          "lines_binary": [
+            0,
+            1,
+            0,
+            1,
+            1,
+            0
+          ],
+          "lower_trigram": "☵",
+          "upper_trigram": "☱",
+          "unicode": "䷮"
+        }
+      },
+      {
+        "king_wen_number": 48,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 48,
+          "name": "井",
+          "pinyin": "jǐng",
+          "english": "The Well",
+          "lines_binary": [
+            0,
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          "lower_trigram": "☴",
+          "upper_trigram": "☵",
+          "unicode": "䷯"
+        }
+      },
+      {
+        "king_wen_number": 49,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 49,
+          "name": "革",
+          "pinyin": "gé",
+          "english": "Revolution",
+          "lines_binary": [
+            1,
+            0,
+            1,
+            1,
+            1,
+            0
+          ],
+          "lower_trigram": "☲",
+          "upper_trigram": "☱",
+          "unicode": "䷰"
+        }
+      },
+      {
+        "king_wen_number": 50,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 50,
+          "name": "鼎",
+          "pinyin": "dǐng",
+          "english": "The Cauldron",
+          "lines_binary": [
+            0,
+            1,
+            1,
+            1,
+            0,
+            1
+          ],
+          "lower_trigram": "☴",
+          "upper_trigram": "☲",
+          "unicode": "䷱"
+        }
+      },
+      {
+        "king_wen_number": 51,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 51,
+          "name": "震",
+          "pinyin": "zhèn",
+          "english": "The Arousing Thunder",
+          "lines_binary": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "lower_trigram": "☳",
+          "upper_trigram": "☳",
+          "unicode": "䷲"
+        }
+      },
+      {
+        "king_wen_number": 52,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 52,
+          "name": "艮",
+          "pinyin": "gèn",
+          "english": "The Keeping Still Mountain",
+          "lines_binary": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            1
+          ],
+          "lower_trigram": "☶",
+          "upper_trigram": "☶",
+          "unicode": "䷳"
+        }
+      },
+      {
+        "king_wen_number": 53,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 53,
+          "name": "渐",
+          "pinyin": "jiàn",
+          "english": "Development",
+          "lines_binary": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          "lower_trigram": "☶",
+          "upper_trigram": "☴",
+          "unicode": "䷴"
+        }
+      },
+      {
+        "king_wen_number": 54,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 54,
+          "name": "归妹",
+          "pinyin": "guī mèi",
+          "english": "The Marrying Maiden",
+          "lines_binary": [
+            1,
+            1,
+            0,
+            1,
+            0,
+            0
+          ],
+          "lower_trigram": "☱",
+          "upper_trigram": "☳",
+          "unicode": "䷵"
+        }
+      },
+      {
+        "king_wen_number": 55,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 55,
+          "name": "丰",
+          "pinyin": "fēng",
+          "english": "Abundance",
+          "lines_binary": [
+            1,
+            0,
+            1,
+            1,
+            0,
+            0
+          ],
+          "lower_trigram": "☲",
+          "upper_trigram": "☳",
+          "unicode": "䷶"
+        }
+      },
+      {
+        "king_wen_number": 56,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 56,
+          "name": "旅",
+          "pinyin": "lǚ",
+          "english": "The Wanderer",
+          "lines_binary": [
+            0,
+            0,
+            1,
+            1,
+            0,
+            1
+          ],
+          "lower_trigram": "☶",
+          "upper_trigram": "☲",
+          "unicode": "䷷"
+        }
+      },
+      {
+        "king_wen_number": 57,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 57,
+          "name": "巽",
+          "pinyin": "xùn",
+          "english": "The Gentle Wind",
+          "lines_binary": [
+            0,
+            1,
+            1,
+            0,
+            1,
+            1
+          ],
+          "lower_trigram": "☴",
+          "upper_trigram": "☴",
+          "unicode": "䷸"
+        }
+      },
+      {
+        "king_wen_number": 58,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 58,
+          "name": "兑",
+          "pinyin": "duì",
+          "english": "The Joyous Lake",
+          "lines_binary": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            0
+          ],
+          "lower_trigram": "☱",
+          "upper_trigram": "☱",
+          "unicode": "䷹"
+        }
+      },
+      {
+        "king_wen_number": 59,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 59,
+          "name": "涣",
+          "pinyin": "huàn",
+          "english": "Dispersion",
+          "lines_binary": [
+            0,
+            1,
+            0,
+            0,
+            1,
+            1
+          ],
+          "lower_trigram": "☵",
+          "upper_trigram": "☴",
+          "unicode": "䷺"
+        }
+      },
+      {
+        "king_wen_number": 60,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 60,
+          "name": "节",
+          "pinyin": "jié",
+          "english": "Limitation",
+          "lines_binary": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0
+          ],
+          "lower_trigram": "☱",
+          "upper_trigram": "☵",
+          "unicode": "䷻"
+        }
+      },
+      {
+        "king_wen_number": 61,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 61,
+          "name": "中孚",
+          "pinyin": "zhōng fú",
+          "english": "Inner Truth",
+          "lines_binary": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            1
+          ],
+          "lower_trigram": "☱",
+          "upper_trigram": "☴",
+          "unicode": "䷼"
+        }
+      },
+      {
+        "king_wen_number": 62,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 62,
+          "name": "小过",
+          "pinyin": "xiǎo guò",
+          "english": "Small Preponderance",
+          "lines_binary": [
+            0,
+            0,
+            1,
+            1,
+            0,
+            0
+          ],
+          "lower_trigram": "☶",
+          "upper_trigram": "☳",
+          "unicode": "䷽"
+        }
+      },
+      {
+        "king_wen_number": 63,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 63,
+          "name": "既济",
+          "pinyin": "jì jì",
+          "english": "After Completion",
+          "lines_binary": [
+            1,
+            0,
+            1,
+            0,
+            1,
+            0
+          ],
+          "lower_trigram": "☲",
+          "upper_trigram": "☵",
+          "unicode": "䷾"
+        }
+      },
+      {
+        "king_wen_number": 64,
+        "status": "MATCH",
+        "mismatching_fields": [],
+        "external_reference": {
+          "king_wen_number": 64,
+          "name": "未济",
+          "pinyin": "wèi jì",
+          "english": "Before Completion",
+          "lines_binary": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "lower_trigram": "☵",
+          "upper_trigram": "☲",
+          "unicode": "䷿"
+        }
+      }
+    ]
+  },
+  "current_raw_result_audit": {
+    "source_fragment": "{\n  \"throws_bottom_up\": [[2,2,2], [2,2,3], ...],\n  \"lines_bottom_up\": [6, 7, 8, 9, 7, 8],\n  \"yin_yang_bottom_up\": [\"yang\", \"yin\", ...],\n  \"moving_lines\": [1, 4],\n  \"transformed_lines_bottom_up\": [7, 7, 8, 8, 7, 8],\n  \"king_wen_number\": null,\n  \"text_corpus\": null\n}",
+    "valid_json": false,
+    "contains_placeholders": true,
+    "declared_polarity_prefix": [
+      "yang",
+      "yin"
+    ],
+    "expected_polarity_from_declared_lines": [
+      "yin",
+      "yang",
+      "yin",
+      "yang",
+      "yang",
+      "yin"
+    ],
+    "contradictory_positions": [
+      1,
+      2
+    ],
+    "claimed_runtime_example": false
+  },
+  "document_conflicts": [
+    {
+      "case": "qwen-05",
+      "field": "moving_count",
+      "qwen_label": 4,
+      "audit": 5
+    },
+    {
+      "case": "qwen-05",
+      "field": "reading_rule.priority",
+      "json_predominant_line": 6,
+      "prose_and_outer_priority_line": 5,
+      "status": "INTERNAL_CONTRADICTION; neither priority applied"
+    },
+    {
+      "field": "Legge URL template",
+      "prose": "ic{N}.htm without leading zero",
+      "examples": "ic01.htm, ic02.htm, ic05.htm, ic09.htm",
+      "status": "INTERNAL_CONTRADICTION; actual pages BLOCKED_SOURCE"
+    }
+  ]
+}
