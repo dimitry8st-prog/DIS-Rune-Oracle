@@ -1,0 +1,25 @@
+{
+  "event_id": "synthetic-only",
+  "question": "Synthetic test, not a real prediction",
+  "mode": "analysis",
+  "cutoff_at": "2020-01-01T00:00:00Z",
+  "facts": [],
+  "axes": [
+    {
+      "axis_id": "primary",
+      "condition_id": "fixed-test-condition",
+      "deadline": "2026-01-01T00:00:00Z",
+      "baseline": "B",
+      "scenarios": [
+        {
+          "scenario_id": "A",
+          "criterion": "Synthetic result A"
+        },
+        {
+          "scenario_id": "B",
+          "criterion": "Synthetic result B"
+        }
+      ]
+    }
+  ]
+}
