@@ -1,0 +1,184 @@
+{
+  "checked_on": "2026-10-14",
+  "pinned_sources": [
+    {
+      "label": "oeis",
+      "url": "https://raw.githubusercontent.com/oeis/oeisdata/5e58e93f885c5f1db9d0523b42a74cc616b16d49/seq/A102/A102241.seq",
+      "final_url": "https://raw.githubusercontent.com/oeis/oeisdata/5e58e93f885c5f1db9d0523b42a74cc616b16d49/seq/A102/A102241.seq",
+      "http_status": 200,
+      "bytes": 3754,
+      "sha256": "919a64b8acdbc4e52a6eb6f4a4badd24f8a7c895cdd79206bca6acaba94ad9f3",
+      "status": "VERIFIED_SHA256"
+    },
+    {
+      "label": "unicode",
+      "url": "https://raw.githubusercontent.com/unicode-org/unicodetools/b28e4ed4e1d4cad66ea6f6d2f7ab80db8d5188b7/unicodetools/data/ucd/dev/NamesList.txt",
+      "final_url": "https://raw.githubusercontent.com/unicode-org/unicodetools/b28e4ed4e1d4cad66ea6f6d2f7ab80db8d5188b7/unicodetools/data/ucd/dev/NamesList.txt",
+      "http_status": 200,
+      "bytes": 2113856,
+      "sha256": "437388f4710d55db0fd19462ab3af9bc33e53b1f37e468b989752d15f3dffa6a",
+      "status": "VERIFIED_SHA256"
+    },
+    {
+      "label": "chinese_names",
+      "url": "https://raw.githubusercontent.com/JinyangWang27/ichingpy/01e50a25d7b1d696ff9c8b9fa5d718a5ca0f63a8/src/ichingpy/data/iching_zh.json",
+      "final_url": "https://raw.githubusercontent.com/JinyangWang27/ichingpy/01e50a25d7b1d696ff9c8b9fa5d718a5ca0f63a8/src/ichingpy/data/iching_zh.json",
+      "http_status": 200,
+      "bytes": 100735,
+      "sha256": "1b6529b4a06642d1b5b59324f19003615cea72e2224eb2d1b6b83fc40712bf2f",
+      "status": "VERIFIED_SHA256"
+    },
+    {
+      "label": "wikipedia",
+      "url": "https://en.wikipedia.org/w/index.php?title=List_of_hexagrams_of_the_I_Ching&oldid=1344901076",
+      "final_url": "https://en.wikipedia.org/w/index.php?title=List_of_hexagrams_of_the_I_Ching&oldid=1344901076",
+      "http_status": 200,
+      "bytes": 469274,
+      "sha256": "e0e79f5ab7fd71c31045bae43309556b610bea20d90b36e4be691fbf7e08416a",
+      "status": "VERIFIED_FACTS",
+      "raw_html_sha256_matches": true
+    }
+  ],
+  "proposed_sources": [
+    {
+      "label": "wikipedia_table",
+      "url": "https://en.wikipedia.org/wiki/List_of_hexagrams_of_the_I_Ching",
+      "final_url": "https://en.wikipedia.org/wiki/List_of_hexagrams_of_the_I_Ching",
+      "http_status": 200,
+      "bytes": 466663,
+      "sha256": "94a90b21829003ef404a526f420a037a616caba2597e4b8a2df761372bf17315",
+      "status": "FETCHED_NOT_REVIEWED"
+    },
+    {
+      "label": "adler_original_url",
+      "url": "http://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+      "final_url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+      "http_status": 200,
+      "bytes": 8775493,
+      "sha256": "dd6257aaab57c78049ae294aab02a90a79d11c9e959198114db557e0ceea2a72",
+      "status": "FETCHED_NOT_REVIEWED"
+    },
+    {
+      "label": "adler_https",
+      "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+      "final_url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+      "http_status": 200,
+      "bytes": 8775493,
+      "sha256": "dd6257aaab57c78049ae294aab02a90a79d11c9e959198114db557e0ceea2a72",
+      "status": "FETCHED_NOT_REVIEWED"
+    },
+    {
+      "label": "legge_index",
+      "url": "https://sacred-texts.com/ich/index.htm",
+      "final_url": "https://sacred-texts.com/categories/i-ching",
+      "http_status": 200,
+      "bytes": 261557,
+      "sha256": "845101b7ef405419cf5a2a6564ce59c6c1120b30bedc62cc5f90cf929def7986",
+      "status": "FETCHED_NOT_REVIEWED"
+    },
+    {
+      "label": "legge_1882_pdf",
+      "url": "https://www.biroco.com/yijing/Legge1882.pdf",
+      "final_url": "https://www.biroco.com/yijing/Legge1882.pdf",
+      "http_status": 200,
+      "bytes": 35916717,
+      "sha256": "6b03be7f6264dc607f95f77b867183041fad8eae7b22a0142f84bd89834c6775",
+      "status": "FETCHED_NOT_REVIEWED"
+    },
+    {
+      "label": "legge_title",
+      "url": "https://sacred-texts.com/book/the-i-ching/title-page",
+      "final_url": "https://sacred-texts.com/book/the-i-ching/title-page",
+      "http_status": 200,
+      "bytes": 318868,
+      "sha256": "b0a3270ce2ad0a05a6479092aaba5307c715c05a6401ad6fab488377b573636d",
+      "status": "FETCHED_NOT_REVIEWED"
+    },
+    {
+      "label": "legge_unpadded_1",
+      "url": "https://sacred-texts.com/ich/ic1.htm",
+      "status": "HTTP_404",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "label": "legge_unpadded_9",
+      "url": "https://sacred-texts.com/ich/ic9.htm",
+      "status": "HTTP_404",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "label": "qwen_cited_url",
+      "url": "https://sacred-texts.com/ich/ic01.htm",
+      "final_url": "https://sacred-texts.com/book/the-i-ching/i-the-khien-hexagram",
+      "http_status": 200,
+      "bytes": 336538,
+      "sha256": "05e1313cd67b77f5973982bc13edfb79cb096fef0daf6ecc15a8dc659a40ca7d",
+      "status": "FETCHED_NOT_REVIEWED"
+    },
+    {
+      "label": "qwen_cited_url",
+      "url": "https://sacred-texts.com/ich/ic02.htm",
+      "final_url": "https://sacred-texts.com/book/the-i-ching/ii-the-khwan-hexagram",
+      "http_status": 200,
+      "bytes": 331857,
+      "sha256": "6251c8ceacbd8333967a47fc6d830ebb076bdc7a85d9a012f6181365a2169900",
+      "status": "FETCHED_NOT_REVIEWED"
+    },
+    {
+      "label": "qwen_cited_url",
+      "url": "https://sacred-texts.com/ich/ic05.htm",
+      "final_url": "https://sacred-texts.com/book/the-i-ching/v-the-hsu-hexagram",
+      "http_status": 200,
+      "bytes": 331247,
+      "sha256": "6ca58a70c149e6f2e0d75761b0490b1f8b80c2a8175ffba939b93c6efe9c84e1",
+      "status": "FETCHED_NOT_REVIEWED"
+    },
+    {
+      "label": "qwen_cited_url",
+      "url": "https://sacred-texts.com/ich/ic09.htm",
+      "final_url": "https://sacred-texts.com/book/the-i-ching/ix-the-hsiao-khu-hexagram",
+      "http_status": 200,
+      "bytes": 333967,
+      "sha256": "6982689c0fa743558e76aeafede4493e38d309d867e99cf3dff71add2812ea64",
+      "status": "FETCHED_NOT_REVIEWED"
+    },
+    {
+      "label": "qwen_cited_url",
+      "url": "https://sacred-texts.com/ich/ic37.htm",
+      "final_url": "https://sacred-texts.com/book/the-i-ching/xxxvii-the-kia-zan-hexagram",
+      "http_status": 200,
+      "bytes": 330476,
+      "sha256": "e03fc7d7880efdc7ad06e37ee4476167b87d26fba9a1283468434ec20c75eacc",
+      "status": "FETCHED_NOT_REVIEWED"
+    },
+    {
+      "label": "qwen_cited_url",
+      "url": "https://sacred-texts.com/ich/ic39.htm",
+      "final_url": "https://sacred-texts.com/book/the-i-ching/xxxix-the-kien-hexagram",
+      "http_status": 200,
+      "bytes": 333668,
+      "sha256": "6079915ce005681105abc94fd3b05baef85ff7c9b628815c33b7ecb9057ebe76",
+      "status": "FETCHED_NOT_REVIEWED"
+    },
+    {
+      "label": "qwen_cited_url",
+      "url": "https://sacred-texts.com/ich/ic43.htm",
+      "final_url": "https://sacred-texts.com/book/the-i-ching/xliii-the-kwai-hexagram",
+      "http_status": 200,
+      "bytes": 334882,
+      "sha256": "b08ca24ccabc96faf5b977e74213e5270609185eb308f18974a2707eeac9b84a",
+      "status": "FETCHED_NOT_REVIEWED"
+    },
+    {
+      "label": "qwen_cited_url",
+      "url": "https://sacred-texts.com/ich/ic47.htm",
+      "final_url": "https://sacred-texts.com/book/the-i-ching/xlvii-the-khwan-hexagram",
+      "http_status": 200,
+      "bytes": 336491,
+      "sha256": "0e00b2ca8fb9c7d581116ceab412d98c140ad4bde628dc12b7f77f60486c50df",
+      "status": "FETCHED_NOT_REVIEWED"
+    }
+  ],
+  "reading_rules_status": "See reading_evidence.json for manual content review and unresolved rules",
+  "note": "Access alone never certifies page identity, edition or a reading rule; review document content."
+}

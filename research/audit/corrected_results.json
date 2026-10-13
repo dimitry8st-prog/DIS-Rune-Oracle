@@ -1,0 +1,1751 @@
+{
+  "schema_version": "yijing-independent-audit-v1",
+  "line_order": "bottom-up",
+  "source_sha256": {
+    "research/qwen/yijing_examples_v2_UNVERIFIED.json": "d53966201cfc442e6cd3568ddbc5918a76c86f76ed5b2fea8d8b7294f3f965dc",
+    "research/qwen/YIJING_SPECIFICATION_v2_UNVERIFIED.md": "8cbf6d702be342331aa05fd713b1b673636d8b8b3e578c4cd5e3bba3157aa988"
+  },
+  "scope": "Offline mechanical research results; no runtime integration or reading rules.",
+  "cases": [
+    {
+      "id": "qwen-01",
+      "source_case_index": 1,
+      "original_label": "1: 0 изменяющихся линий",
+      "input": {
+        "throws_bottom_up": [
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            3
+          ],
+          [
+            3,
+            2,
+            3
+          ],
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            2
+          ]
+        ]
+      },
+      "result": {
+        "throws_bottom_up": [
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            3
+          ],
+          [
+            3,
+            2,
+            3
+          ],
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            2
+          ]
+        ],
+        "lines_bottom_up": [
+          7,
+          7,
+          7,
+          8,
+          7,
+          7
+        ],
+        "yin_yang_bottom_up": [
+          "yang",
+          "yang",
+          "yang",
+          "yin",
+          "yang",
+          "yang"
+        ],
+        "moving_lines": [],
+        "moving_count": 0,
+        "stable_lines": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "transformed_lines_bottom_up": [
+          7,
+          7,
+          7,
+          8,
+          7,
+          7
+        ],
+        "transformed_yin_yang_bottom_up": [
+          "yang",
+          "yang",
+          "yang",
+          "yin",
+          "yang",
+          "yang"
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 9,
+          "name": "小畜",
+          "pinyin": "xiǎo xù",
+          "english": "Small Taming",
+          "lines_binary": [
+            1,
+            1,
+            1,
+            0,
+            1,
+            1
+          ],
+          "lower_trigram": "☰",
+          "upper_trigram": "☴",
+          "unicode": "䷈"
+        },
+        "relating_hexagram": null,
+        "procedure_status": "OK",
+        "interpretation_status": "ABSTAIN",
+        "interpretation_reason": "No edition-certified text corpus or interpretation/forecast claims supplied.",
+        "claims": [],
+        "runtime_changed": false,
+        "reading_rule": {
+          "moving_count": 0,
+          "method": "zhu_xi",
+          "status": "VERIFIED_SOURCE",
+          "citation": {
+            "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+            "section": "III. Examining the Prognostications of the Changes",
+            "printed_page": 63,
+            "pdf_page": 63,
+            "quote": "the original hexagram's T'uan statement"
+          },
+          "reason": null,
+          "ruling_texts": [
+            {
+              "type": "judgment",
+              "hexagram": 9
+            }
+          ],
+          "priority": null,
+          "text_corpus_status": "EDITION_CONFLICT"
+        }
+      }
+    },
+    {
+      "id": "qwen-02",
+      "source_case_index": 2,
+      "original_label": "2: 1 изменяющаяся линия",
+      "input": {
+        "throws_bottom_up": [
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            2,
+            3
+          ],
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            3
+          ],
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            3
+          ]
+        ]
+      },
+      "result": {
+        "throws_bottom_up": [
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            2,
+            3
+          ],
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            3
+          ],
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            3
+          ]
+        ],
+        "lines_bottom_up": [
+          6,
+          8,
+          7,
+          8,
+          7,
+          8
+        ],
+        "yin_yang_bottom_up": [
+          "yin",
+          "yin",
+          "yang",
+          "yin",
+          "yang",
+          "yin"
+        ],
+        "moving_lines": [
+          1
+        ],
+        "moving_count": 1,
+        "stable_lines": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "transformed_lines_bottom_up": [
+          7,
+          8,
+          7,
+          8,
+          7,
+          8
+        ],
+        "transformed_yin_yang_bottom_up": [
+          "yang",
+          "yin",
+          "yang",
+          "yin",
+          "yang",
+          "yin"
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 39,
+          "name": "蹇",
+          "pinyin": "jiǎn",
+          "english": "Obstruction",
+          "lines_binary": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            0
+          ],
+          "lower_trigram": "☶",
+          "upper_trigram": "☵",
+          "unicode": "䷦"
+        },
+        "relating_hexagram": {
+          "king_wen_number": 63,
+          "name": "既济",
+          "pinyin": "jì jì",
+          "english": "After Completion",
+          "lines_binary": [
+            1,
+            0,
+            1,
+            0,
+            1,
+            0
+          ],
+          "lower_trigram": "☲",
+          "upper_trigram": "☵",
+          "unicode": "䷾"
+        },
+        "procedure_status": "OK",
+        "interpretation_status": "ABSTAIN",
+        "interpretation_reason": "No edition-certified text corpus or interpretation/forecast claims supplied.",
+        "claims": [],
+        "runtime_changed": false,
+        "reading_rule": {
+          "moving_count": 1,
+          "method": "zhu_xi",
+          "status": "VERIFIED_SOURCE",
+          "citation": {
+            "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+            "section": "III. Examining the Prognostications of the Changes",
+            "printed_page": 63,
+            "pdf_page": 63,
+            "quote": "we take the statement of the original hexagram's changing line as the prognostication."
+          },
+          "reason": null,
+          "ruling_texts": [
+            {
+              "type": "line",
+              "hexagram": 39,
+              "line_number": 1
+            }
+          ],
+          "priority": "single_line",
+          "text_corpus_status": "EDITION_CONFLICT"
+        }
+      }
+    },
+    {
+      "id": "qwen-03",
+      "source_case_index": 3,
+      "original_label": "3: 2 изменяющиеся линии",
+      "input": {
+        "throws_bottom_up": [
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            3
+          ],
+          [
+            2,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            3
+          ]
+        ]
+      },
+      "result": {
+        "throws_bottom_up": [
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            3
+          ],
+          [
+            2,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            3
+          ]
+        ],
+        "lines_bottom_up": [
+          6,
+          7,
+          8,
+          9,
+          7,
+          8
+        ],
+        "yin_yang_bottom_up": [
+          "yin",
+          "yang",
+          "yin",
+          "yang",
+          "yang",
+          "yin"
+        ],
+        "moving_lines": [
+          1,
+          4
+        ],
+        "moving_count": 2,
+        "stable_lines": [
+          2,
+          3,
+          5,
+          6
+        ],
+        "transformed_lines_bottom_up": [
+          7,
+          7,
+          8,
+          8,
+          7,
+          8
+        ],
+        "transformed_yin_yang_bottom_up": [
+          "yang",
+          "yang",
+          "yin",
+          "yin",
+          "yang",
+          "yin"
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 47,
+          "name": "困",
+          "pinyin": "kùn",
+          "english": "Oppression",
+          "lines_binary": [
+            0,
+            1,
+            0,
+            1,
+            1,
+            0
+          ],
+          "lower_trigram": "☵",
+          "upper_trigram": "☱",
+          "unicode": "䷮"
+        },
+        "relating_hexagram": {
+          "king_wen_number": 60,
+          "name": "节",
+          "pinyin": "jié",
+          "english": "Limitation",
+          "lines_binary": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0
+          ],
+          "lower_trigram": "☱",
+          "upper_trigram": "☵",
+          "unicode": "䷻"
+        },
+        "procedure_status": "OK",
+        "interpretation_status": "ABSTAIN",
+        "interpretation_reason": "No edition-certified text corpus or interpretation/forecast claims supplied.",
+        "claims": [],
+        "runtime_changed": false,
+        "reading_rule": {
+          "moving_count": 2,
+          "method": "zhu_xi",
+          "status": "VERIFIED_SOURCE",
+          "citation": {
+            "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+            "section": "III. Examining the Prognostications of the Changes",
+            "printed_page": 64,
+            "pdf_page": 64,
+            "quote": "we take the upper line [of the two] as ruler."
+          },
+          "reason": null,
+          "ruling_texts": [
+            {
+              "type": "line",
+              "hexagram": 47,
+              "line_number": 1
+            },
+            {
+              "type": "line",
+              "hexagram": 47,
+              "line_number": 4,
+              "priority": "predominant"
+            }
+          ],
+          "priority": "upper_line",
+          "text_corpus_status": "EDITION_CONFLICT"
+        }
+      }
+    },
+    {
+      "id": "qwen-04",
+      "source_case_index": 4,
+      "original_label": "4: 3 изменяющиеся линии",
+      "input": {
+        "throws_bottom_up": [
+          [
+            2,
+            2,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            3
+          ],
+          [
+            3,
+            2,
+            2
+          ]
+        ]
+      },
+      "result": {
+        "throws_bottom_up": [
+          [
+            2,
+            2,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            3
+          ],
+          [
+            3,
+            2,
+            2
+          ]
+        ],
+        "lines_bottom_up": [
+          7,
+          9,
+          6,
+          9,
+          7,
+          7
+        ],
+        "yin_yang_bottom_up": [
+          "yang",
+          "yang",
+          "yin",
+          "yang",
+          "yang",
+          "yang"
+        ],
+        "moving_lines": [
+          2,
+          3,
+          4
+        ],
+        "moving_count": 3,
+        "stable_lines": [
+          1,
+          5,
+          6
+        ],
+        "transformed_lines_bottom_up": [
+          7,
+          8,
+          7,
+          8,
+          7,
+          7
+        ],
+        "transformed_yin_yang_bottom_up": [
+          "yang",
+          "yin",
+          "yang",
+          "yin",
+          "yang",
+          "yang"
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 10,
+          "name": "履",
+          "pinyin": "lǚ",
+          "english": "Treading",
+          "lines_binary": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1
+          ],
+          "lower_trigram": "☱",
+          "upper_trigram": "☰",
+          "unicode": "䷉"
+        },
+        "relating_hexagram": {
+          "king_wen_number": 37,
+          "name": "家人",
+          "pinyin": "jiā rén",
+          "english": "The Family",
+          "lines_binary": [
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          "lower_trigram": "☲",
+          "upper_trigram": "☴",
+          "unicode": "䷤"
+        },
+        "procedure_status": "OK",
+        "interpretation_status": "ABSTAIN",
+        "interpretation_reason": "No edition-certified text corpus or interpretation/forecast claims supplied.",
+        "claims": [],
+        "runtime_changed": false,
+        "reading_rule": {
+          "moving_count": 3,
+          "method": "zhu_xi",
+          "status": "BLOCKED_SOURCE",
+          "citation": {
+            "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+            "section": "III. Examining the Prognostications of the Changes",
+            "printed_page": 64,
+            "pdf_page": 64,
+            "quote": "the prognostication is the T'uan statement of the original hexagram and the resulting hexagram"
+          },
+          "reason": "Both hexagram statements confirmed. The first-ten/latter-ten ruler distinction is explicit on p.64; Figure 19 priority mapping has not been independently transcribed. No guessed priority.",
+          "ruling_texts": [],
+          "priority": null,
+          "text_corpus_status": "EDITION_CONFLICT"
+        }
+      }
+    },
+    {
+      "id": "qwen-05",
+      "source_case_index": 5,
+      "original_label": "5: 4 изменяющиеся линии",
+      "input": {
+        "throws_bottom_up": [
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            3
+          ]
+        ]
+      },
+      "result": {
+        "throws_bottom_up": [
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            3
+          ]
+        ],
+        "lines_bottom_up": [
+          9,
+          6,
+          9,
+          6,
+          9,
+          7
+        ],
+        "yin_yang_bottom_up": [
+          "yang",
+          "yin",
+          "yang",
+          "yin",
+          "yang",
+          "yang"
+        ],
+        "moving_lines": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "moving_count": 5,
+        "stable_lines": [
+          6
+        ],
+        "transformed_lines_bottom_up": [
+          8,
+          7,
+          8,
+          7,
+          8,
+          7
+        ],
+        "transformed_yin_yang_bottom_up": [
+          "yin",
+          "yang",
+          "yin",
+          "yang",
+          "yin",
+          "yang"
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 37,
+          "name": "家人",
+          "pinyin": "jiā rén",
+          "english": "The Family",
+          "lines_binary": [
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          "lower_trigram": "☲",
+          "upper_trigram": "☴",
+          "unicode": "䷤"
+        },
+        "relating_hexagram": {
+          "king_wen_number": 64,
+          "name": "未济",
+          "pinyin": "wèi jì",
+          "english": "Before Completion",
+          "lines_binary": [
+            0,
+            1,
+            0,
+            1,
+            0,
+            1
+          ],
+          "lower_trigram": "☵",
+          "upper_trigram": "☲",
+          "unicode": "䷿"
+        },
+        "procedure_status": "OK",
+        "interpretation_status": "ABSTAIN",
+        "interpretation_reason": "No edition-certified text corpus or interpretation/forecast claims supplied.",
+        "claims": [],
+        "runtime_changed": false,
+        "reading_rule": {
+          "moving_count": 5,
+          "method": "zhu_xi",
+          "status": "VERIFIED_SOURCE",
+          "citation": {
+            "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+            "section": "III. Examining the Prognostications of the Changes",
+            "printed_page": 65,
+            "pdf_page": 65,
+            "quote": "we use the unchanging line of the resulting hexagram as the prognostication."
+          },
+          "reason": null,
+          "ruling_texts": [
+            {
+              "type": "line",
+              "hexagram": 64,
+              "line_number": 6
+            }
+          ],
+          "priority": "stable_line_in_relating",
+          "text_corpus_status": "EDITION_CONFLICT"
+        }
+      }
+    },
+    {
+      "id": "qwen-06",
+      "source_case_index": 6,
+      "original_label": "6: 5 изменяющихся линий",
+      "input": {
+        "throws_bottom_up": [
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            3
+          ]
+        ]
+      },
+      "result": {
+        "throws_bottom_up": [
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            3
+          ]
+        ],
+        "lines_bottom_up": [
+          9,
+          9,
+          6,
+          9,
+          9,
+          7
+        ],
+        "yin_yang_bottom_up": [
+          "yang",
+          "yang",
+          "yin",
+          "yang",
+          "yang",
+          "yang"
+        ],
+        "moving_lines": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "moving_count": 5,
+        "stable_lines": [
+          6
+        ],
+        "transformed_lines_bottom_up": [
+          8,
+          8,
+          7,
+          8,
+          8,
+          7
+        ],
+        "transformed_yin_yang_bottom_up": [
+          "yin",
+          "yin",
+          "yang",
+          "yin",
+          "yin",
+          "yang"
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 10,
+          "name": "履",
+          "pinyin": "lǚ",
+          "english": "Treading",
+          "lines_binary": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1
+          ],
+          "lower_trigram": "☱",
+          "upper_trigram": "☰",
+          "unicode": "䷉"
+        },
+        "relating_hexagram": {
+          "king_wen_number": 52,
+          "name": "艮",
+          "pinyin": "gèn",
+          "english": "The Keeping Still Mountain",
+          "lines_binary": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            1
+          ],
+          "lower_trigram": "☶",
+          "upper_trigram": "☶",
+          "unicode": "䷳"
+        },
+        "procedure_status": "OK",
+        "interpretation_status": "ABSTAIN",
+        "interpretation_reason": "No edition-certified text corpus or interpretation/forecast claims supplied.",
+        "claims": [],
+        "runtime_changed": false,
+        "reading_rule": {
+          "moving_count": 5,
+          "method": "zhu_xi",
+          "status": "VERIFIED_SOURCE",
+          "citation": {
+            "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+            "section": "III. Examining the Prognostications of the Changes",
+            "printed_page": 65,
+            "pdf_page": 65,
+            "quote": "we use the unchanging line of the resulting hexagram as the prognostication."
+          },
+          "reason": null,
+          "ruling_texts": [
+            {
+              "type": "line",
+              "hexagram": 52,
+              "line_number": 6
+            }
+          ],
+          "priority": "stable_line_in_relating",
+          "text_corpus_status": "EDITION_CONFLICT"
+        }
+      }
+    },
+    {
+      "id": "qwen-07",
+      "source_case_index": 7,
+      "original_label": "7: 6 изменяющихся линий (все 9 — Цянь → Кунь)",
+      "input": {
+        "throws_bottom_up": [
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ]
+        ]
+      },
+      "result": {
+        "throws_bottom_up": [
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ]
+        ],
+        "lines_bottom_up": [
+          9,
+          9,
+          9,
+          9,
+          9,
+          9
+        ],
+        "yin_yang_bottom_up": [
+          "yang",
+          "yang",
+          "yang",
+          "yang",
+          "yang",
+          "yang"
+        ],
+        "moving_lines": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "moving_count": 6,
+        "stable_lines": [],
+        "transformed_lines_bottom_up": [
+          8,
+          8,
+          8,
+          8,
+          8,
+          8
+        ],
+        "transformed_yin_yang_bottom_up": [
+          "yin",
+          "yin",
+          "yin",
+          "yin",
+          "yin",
+          "yin"
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 1,
+          "name": "乾",
+          "pinyin": "qián",
+          "english": "The Creative Heaven",
+          "lines_binary": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "lower_trigram": "☰",
+          "upper_trigram": "☰",
+          "unicode": "䷀"
+        },
+        "relating_hexagram": {
+          "king_wen_number": 2,
+          "name": "坤",
+          "pinyin": "kūn",
+          "english": "The Receptive Earth",
+          "lines_binary": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "lower_trigram": "☷",
+          "upper_trigram": "☷",
+          "unicode": "䷁"
+        },
+        "procedure_status": "OK",
+        "interpretation_status": "ABSTAIN",
+        "interpretation_reason": "No edition-certified text corpus or interpretation/forecast claims supplied.",
+        "claims": [],
+        "runtime_changed": false,
+        "reading_rule": {
+          "moving_count": 6,
+          "method": "zhu_xi",
+          "status": "BLOCKED_SOURCE",
+          "citation": {
+            "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+            "section": "III. Examining the Prognostications of the Changes",
+            "printed_page": 65,
+            "pdf_page": 65,
+            "quote": "in the cases of Ch'ien and K'un, the prognostications of both are used."
+          },
+          "reason": "Pages 62 and 65-66 discuss using 9/6 and both prognostications. Qwen sole yong-nine/yong-six selector is not established as a complete rule; no abbreviated rule applied.",
+          "ruling_texts": [],
+          "priority": null,
+          "text_corpus_status": "EDITION_CONFLICT"
+        }
+      }
+    },
+    {
+      "id": "qwen-08",
+      "source_case_index": 8,
+      "original_label": "8: 6 изменяющихся линий (все 6 — Кунь → Цянь)",
+      "input": {
+        "throws_bottom_up": [
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ]
+        ]
+      },
+      "result": {
+        "throws_bottom_up": [
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ]
+        ],
+        "lines_bottom_up": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "yin_yang_bottom_up": [
+          "yin",
+          "yin",
+          "yin",
+          "yin",
+          "yin",
+          "yin"
+        ],
+        "moving_lines": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "moving_count": 6,
+        "stable_lines": [],
+        "transformed_lines_bottom_up": [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "transformed_yin_yang_bottom_up": [
+          "yang",
+          "yang",
+          "yang",
+          "yang",
+          "yang",
+          "yang"
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 2,
+          "name": "坤",
+          "pinyin": "kūn",
+          "english": "The Receptive Earth",
+          "lines_binary": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "lower_trigram": "☷",
+          "upper_trigram": "☷",
+          "unicode": "䷁"
+        },
+        "relating_hexagram": {
+          "king_wen_number": 1,
+          "name": "乾",
+          "pinyin": "qián",
+          "english": "The Creative Heaven",
+          "lines_binary": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "lower_trigram": "☰",
+          "upper_trigram": "☰",
+          "unicode": "䷀"
+        },
+        "procedure_status": "OK",
+        "interpretation_status": "ABSTAIN",
+        "interpretation_reason": "No edition-certified text corpus or interpretation/forecast claims supplied.",
+        "claims": [],
+        "runtime_changed": false,
+        "reading_rule": {
+          "moving_count": 6,
+          "method": "zhu_xi",
+          "status": "BLOCKED_SOURCE",
+          "citation": {
+            "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+            "section": "III. Examining the Prognostications of the Changes",
+            "printed_page": 65,
+            "pdf_page": 65,
+            "quote": "in the cases of Ch'ien and K'un, the prognostications of both are used."
+          },
+          "reason": "Pages 62 and 65-66 discuss using 9/6 and both prognostications. Qwen sole yong-nine/yong-six selector is not established as a complete rule; no abbreviated rule applied.",
+          "ruling_texts": [],
+          "priority": null,
+          "text_corpus_status": "EDITION_CONFLICT"
+        }
+      }
+    },
+    {
+      "id": "audit-four-changes-01",
+      "source_case_index": null,
+      "input": {
+        "throws_bottom_up": [
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            3
+          ],
+          [
+            2,
+            2,
+            3
+          ]
+        ]
+      },
+      "result": {
+        "throws_bottom_up": [
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            3
+          ],
+          [
+            2,
+            2,
+            3
+          ]
+        ],
+        "lines_bottom_up": [
+          9,
+          6,
+          9,
+          6,
+          7,
+          7
+        ],
+        "yin_yang_bottom_up": [
+          "yang",
+          "yin",
+          "yang",
+          "yin",
+          "yang",
+          "yang"
+        ],
+        "moving_lines": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "moving_count": 4,
+        "stable_lines": [
+          5,
+          6
+        ],
+        "transformed_lines_bottom_up": [
+          8,
+          7,
+          8,
+          7,
+          7,
+          7
+        ],
+        "transformed_yin_yang_bottom_up": [
+          "yin",
+          "yang",
+          "yin",
+          "yang",
+          "yang",
+          "yang"
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 37,
+          "name": "家人",
+          "pinyin": "jiā rén",
+          "english": "The Family",
+          "lines_binary": [
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+          ],
+          "lower_trigram": "☲",
+          "upper_trigram": "☴",
+          "unicode": "䷤"
+        },
+        "relating_hexagram": {
+          "king_wen_number": 6,
+          "name": "讼",
+          "pinyin": "sòng",
+          "english": "Conflict",
+          "lines_binary": [
+            0,
+            1,
+            0,
+            1,
+            1,
+            1
+          ],
+          "lower_trigram": "☵",
+          "upper_trigram": "☰",
+          "unicode": "䷅"
+        },
+        "procedure_status": "OK",
+        "interpretation_status": "ABSTAIN",
+        "interpretation_reason": "No edition-certified text corpus or interpretation/forecast claims supplied.",
+        "claims": [],
+        "runtime_changed": false,
+        "reading_rule": {
+          "moving_count": 4,
+          "method": "zhu_xi",
+          "status": "VERIFIED_SOURCE",
+          "citation": {
+            "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+            "section": "III. Examining the Prognostications of the Changes",
+            "printed_page": 65,
+            "pdf_page": 65,
+            "quote": "we use the two unchanging lines in the resulting hexagram as the prognostication. But we take the lower line as ruler."
+          },
+          "reason": null,
+          "ruling_texts": [
+            {
+              "type": "line",
+              "hexagram": 6,
+              "line_number": 5,
+              "priority": "predominant"
+            },
+            {
+              "type": "line",
+              "hexagram": 6,
+              "line_number": 6
+            }
+          ],
+          "priority": "lower_stable_line_in_relating",
+          "text_corpus_status": "EDITION_CONFLICT"
+        }
+      }
+    },
+    {
+      "id": "audit-six-changes-ordinary-01",
+      "source_case_index": null,
+      "input": {
+        "throws_bottom_up": [
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ]
+        ]
+      },
+      "result": {
+        "throws_bottom_up": [
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ]
+        ],
+        "lines_bottom_up": [
+          6,
+          9,
+          6,
+          9,
+          9,
+          6
+        ],
+        "yin_yang_bottom_up": [
+          "yin",
+          "yang",
+          "yin",
+          "yang",
+          "yang",
+          "yin"
+        ],
+        "moving_lines": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "moving_count": 6,
+        "stable_lines": [],
+        "transformed_lines_bottom_up": [
+          7,
+          8,
+          7,
+          8,
+          8,
+          7
+        ],
+        "transformed_yin_yang_bottom_up": [
+          "yang",
+          "yin",
+          "yang",
+          "yin",
+          "yin",
+          "yang"
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 47,
+          "name": "困",
+          "pinyin": "kùn",
+          "english": "Oppression",
+          "lines_binary": [
+            0,
+            1,
+            0,
+            1,
+            1,
+            0
+          ],
+          "lower_trigram": "☵",
+          "upper_trigram": "☱",
+          "unicode": "䷮"
+        },
+        "relating_hexagram": {
+          "king_wen_number": 22,
+          "name": "贲",
+          "pinyin": "bì",
+          "english": "Grace",
+          "lines_binary": [
+            1,
+            0,
+            1,
+            0,
+            0,
+            1
+          ],
+          "lower_trigram": "☲",
+          "upper_trigram": "☶",
+          "unicode": "䷕"
+        },
+        "procedure_status": "OK",
+        "interpretation_status": "ABSTAIN",
+        "interpretation_reason": "No edition-certified text corpus or interpretation/forecast claims supplied.",
+        "claims": [],
+        "runtime_changed": false,
+        "reading_rule": {
+          "moving_count": 6,
+          "method": "zhu_xi",
+          "status": "VERIFIED_SOURCE",
+          "citation": {
+            "url": "https://www2.kenyon.edu/Depts/Religion/Fac/Adler/Writings/Qimeng-3.pdf",
+            "section": "III. Examining the Prognostications of the Changes",
+            "printed_page": 65,
+            "pdf_page": 65,
+            "quote": "For other hexagrams, the prognostication is the T'uan statement of the resulting hexagram."
+          },
+          "reason": null,
+          "ruling_texts": [
+            {
+              "type": "judgment",
+              "hexagram": 22
+            }
+          ],
+          "priority": "judgment_in_relating",
+          "text_corpus_status": "EDITION_CONFLICT"
+        }
+      }
+    }
+  ]
+}
