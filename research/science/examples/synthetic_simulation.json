@@ -1,0 +1,23 @@
+{
+  "provenance": "SYNTHETIC",
+  "model": "independent uniform 4-of-20 fields",
+  "n": 1000,
+  "seed": 20261016,
+  "hit_histograms": [
+    [
+      364,
+      458,
+      165,
+      13,
+      0
+    ],
+    [
+      349,
+      498,
+      141,
+      11,
+      1
+    ]
+  ],
+  "note": "Pseudorandom educational model; no physical time loop or actual lottery data."
+}
