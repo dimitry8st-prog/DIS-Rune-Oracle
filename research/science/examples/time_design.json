@@ -1,0 +1,11 @@
+{
+  "provenance": "MATHEMATICAL_DESIGN_NOT_EXPERIMENTAL_DATA",
+  "n": 1000,
+  "alpha": "1/200",
+  "null_success_probability": "1/2",
+  "critical_successes": 542,
+  "actual_null_tail": 0.0043199745011302665,
+  "alternative_success_probability": "14/25",
+  "power": 0.8806228420448081,
+  "assumptions": "independent Bernoulli trials, fixed N, no optional stopping; full evaluability for stated power"
+}

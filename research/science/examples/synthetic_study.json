@@ -1,0 +1,565 @@
+{
+  "schema_version": "dis-statistics-v1",
+  "study_id": "synthetic-demonstration-only",
+  "provenance": "SYNTHETIC",
+  "method_id": "method-v1",
+  "control_id": "control-v1",
+  "registered_at": "2026-01-01T00:00:00Z",
+  "analysis_at": "2026-01-20T00:00:00Z",
+  "binary_event": "field_1_contains_1",
+  "events": [
+    {
+      "event_id": "synthetic-01",
+      "registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-04T12:00:00Z"
+    },
+    {
+      "event_id": "synthetic-02",
+      "registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-05T12:00:00Z"
+    },
+    {
+      "event_id": "synthetic-03",
+      "registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-06T12:00:00Z"
+    },
+    {
+      "event_id": "synthetic-04",
+      "registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-07T12:00:00Z"
+    },
+    {
+      "event_id": "synthetic-05",
+      "registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-08T12:00:00Z"
+    },
+    {
+      "event_id": "synthetic-06",
+      "registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-09T12:00:00Z"
+    },
+    {
+      "event_id": "synthetic-07",
+      "registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-10T12:00:00Z"
+    },
+    {
+      "event_id": "synthetic-08",
+      "registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-11T12:00:00Z"
+    }
+  ],
+  "predictions": [
+    {
+      "prediction_id": "synthetic-01-method-v1",
+      "event_id": "synthetic-01",
+      "strategy_id": "method-v1",
+      "mode": "forecast",
+      "status": "PICK",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "confirmation": "CONFIRMED",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "fields": [
+        [
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          5,
+          6,
+          7,
+          8
+        ]
+      ],
+      "probability": 0.2
+    },
+    {
+      "prediction_id": "synthetic-01-control-v1",
+      "event_id": "synthetic-01",
+      "strategy_id": "control-v1",
+      "mode": "forecast",
+      "status": "PICK",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "confirmation": "CONFIRMED",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "fields": [
+        [
+          2,
+          9,
+          10,
+          11
+        ],
+        [
+          1,
+          5,
+          10,
+          20
+        ]
+      ],
+      "probability": 0.2
+    },
+    {
+      "prediction_id": "synthetic-02-method-v1",
+      "event_id": "synthetic-02",
+      "strategy_id": "method-v1",
+      "mode": "forecast",
+      "status": "PICK",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "confirmation": "CONFIRMED",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "fields": [
+        [
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          5,
+          6,
+          7,
+          8
+        ]
+      ],
+      "probability": 0.2
+    },
+    {
+      "prediction_id": "synthetic-02-control-v1",
+      "event_id": "synthetic-02",
+      "strategy_id": "control-v1",
+      "mode": "forecast",
+      "status": "PICK",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "confirmation": "CONFIRMED",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "fields": [
+        [
+          2,
+          9,
+          10,
+          11
+        ],
+        [
+          1,
+          5,
+          10,
+          20
+        ]
+      ],
+      "probability": 0.2
+    },
+    {
+      "prediction_id": "synthetic-03-method-v1",
+      "event_id": "synthetic-03",
+      "strategy_id": "method-v1",
+      "mode": "retrospective",
+      "status": "PICK",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "confirmation": "CONFIRMED",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "fields": [
+        [
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          5,
+          6,
+          7,
+          8
+        ]
+      ],
+      "probability": 0.2
+    },
+    {
+      "prediction_id": "synthetic-03-control-v1",
+      "event_id": "synthetic-03",
+      "strategy_id": "control-v1",
+      "mode": "forecast",
+      "status": "PICK",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "confirmation": "CONFIRMED",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "fields": [
+        [
+          2,
+          9,
+          10,
+          11
+        ],
+        [
+          1,
+          5,
+          10,
+          20
+        ]
+      ],
+      "probability": 0.2
+    },
+    {
+      "prediction_id": "synthetic-04-method-v1",
+      "event_id": "synthetic-04",
+      "strategy_id": "method-v1",
+      "mode": "forecast",
+      "status": "PICK",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "confirmation": "UNCONFIRMED",
+      "evidence_ref": null,
+      "fields": [
+        [
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          5,
+          6,
+          7,
+          8
+        ]
+      ],
+      "probability": 0.2
+    },
+    {
+      "prediction_id": "synthetic-04-control-v1",
+      "event_id": "synthetic-04",
+      "strategy_id": "control-v1",
+      "mode": "forecast",
+      "status": "PICK",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "confirmation": "CONFIRMED",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "fields": [
+        [
+          2,
+          9,
+          10,
+          11
+        ],
+        [
+          1,
+          5,
+          10,
+          20
+        ]
+      ],
+      "probability": 0.2
+    },
+    {
+      "prediction_id": "synthetic-05-control-v1",
+      "event_id": "synthetic-05",
+      "strategy_id": "control-v1",
+      "mode": "forecast",
+      "status": "PICK",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "confirmation": "CONFIRMED",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "fields": [
+        [
+          2,
+          9,
+          10,
+          11
+        ],
+        [
+          1,
+          5,
+          10,
+          20
+        ]
+      ],
+      "probability": 0.2
+    },
+    {
+      "prediction_id": "synthetic-06-method-v1",
+      "event_id": "synthetic-06",
+      "strategy_id": "method-v1",
+      "mode": "forecast",
+      "status": "ABSTAIN",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "confirmation": "CONFIRMED",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "fields": null,
+      "probability": null
+    },
+    {
+      "prediction_id": "synthetic-06-control-v1",
+      "event_id": "synthetic-06",
+      "strategy_id": "control-v1",
+      "mode": "forecast",
+      "status": "PICK",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "confirmation": "CONFIRMED",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "fields": [
+        [
+          2,
+          9,
+          10,
+          11
+        ],
+        [
+          1,
+          5,
+          10,
+          20
+        ]
+      ],
+      "probability": 0.2
+    },
+    {
+      "prediction_id": "synthetic-07-method-v1",
+      "event_id": "synthetic-07",
+      "strategy_id": "method-v1",
+      "mode": "forecast",
+      "status": "PICK",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "confirmation": "CONFIRMED",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "fields": [
+        [
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          5,
+          6,
+          7,
+          8
+        ]
+      ],
+      "probability": 0.2
+    },
+    {
+      "prediction_id": "synthetic-07-control-v1",
+      "event_id": "synthetic-07",
+      "strategy_id": "control-v1",
+      "mode": "forecast",
+      "status": "PICK",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "confirmation": "CONFIRMED",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "fields": [
+        [
+          2,
+          9,
+          10,
+          11
+        ],
+        [
+          1,
+          5,
+          10,
+          20
+        ]
+      ],
+      "probability": 0.2
+    },
+    {
+      "prediction_id": "synthetic-08-method-v1",
+      "event_id": "synthetic-08",
+      "strategy_id": "method-v1",
+      "mode": "forecast",
+      "status": "PICK",
+      "fixed_at": "2026-01-11T12:00:00Z",
+      "confirmation": "CONFIRMED",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "fields": [
+        [
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          5,
+          6,
+          7,
+          8
+        ]
+      ],
+      "probability": 0.2
+    },
+    {
+      "prediction_id": "synthetic-08-control-v1",
+      "event_id": "synthetic-08",
+      "strategy_id": "control-v1",
+      "mode": "forecast",
+      "status": "PICK",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "confirmation": "CONFIRMED",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "fields": [
+        [
+          2,
+          9,
+          10,
+          11
+        ],
+        [
+          1,
+          5,
+          10,
+          20
+        ]
+      ],
+      "probability": 0.2
+    }
+  ],
+  "outcomes": [
+    {
+      "event_id": "synthetic-01",
+      "occurred_at": "2026-01-04T12:00:00Z",
+      "recorded_at": "2026-01-04T13:00:00Z",
+      "confirmation": "CONFIRMED",
+      "source_ref": "synthetic-not-official-draw",
+      "fields": [
+        [
+          1,
+          2,
+          12,
+          13
+        ],
+        [
+          5,
+          9,
+          10,
+          11
+        ]
+      ]
+    },
+    {
+      "event_id": "synthetic-02",
+      "occurred_at": "2026-01-05T12:00:00Z",
+      "recorded_at": "2026-01-05T13:00:00Z",
+      "confirmation": "CONFIRMED",
+      "source_ref": "synthetic-not-official-draw",
+      "fields": [
+        [
+          13,
+          14,
+          15,
+          16
+        ],
+        [
+          13,
+          14,
+          15,
+          16
+        ]
+      ]
+    },
+    {
+      "event_id": "synthetic-03",
+      "occurred_at": "2026-01-06T12:00:00Z",
+      "recorded_at": "2026-01-06T13:00:00Z",
+      "confirmation": "CONFIRMED",
+      "source_ref": "synthetic-not-official-draw",
+      "fields": [
+        [
+          1,
+          2,
+          12,
+          13
+        ],
+        [
+          5,
+          9,
+          10,
+          11
+        ]
+      ]
+    },
+    {
+      "event_id": "synthetic-04",
+      "occurred_at": "2026-01-07T12:00:00Z",
+      "recorded_at": "2026-01-07T13:00:00Z",
+      "confirmation": "CONFIRMED",
+      "source_ref": "synthetic-not-official-draw",
+      "fields": [
+        [
+          13,
+          14,
+          15,
+          16
+        ],
+        [
+          13,
+          14,
+          15,
+          16
+        ]
+      ]
+    },
+    {
+      "event_id": "synthetic-05",
+      "occurred_at": "2026-01-08T12:00:00Z",
+      "recorded_at": "2026-01-08T13:00:00Z",
+      "confirmation": "CONFIRMED",
+      "source_ref": "synthetic-not-official-draw",
+      "fields": [
+        [
+          1,
+          2,
+          12,
+          13
+        ],
+        [
+          5,
+          9,
+          10,
+          11
+        ]
+      ]
+    },
+    {
+      "event_id": "synthetic-06",
+      "occurred_at": "2026-01-09T12:00:00Z",
+      "recorded_at": "2026-01-09T13:00:00Z",
+      "confirmation": "CONFIRMED",
+      "source_ref": "synthetic-not-official-draw",
+      "fields": [
+        [
+          13,
+          14,
+          15,
+          16
+        ],
+        [
+          13,
+          14,
+          15,
+          16
+        ]
+      ]
+    },
+    {
+      "event_id": "synthetic-08",
+      "occurred_at": "2026-01-11T12:00:00Z",
+      "recorded_at": "2026-01-11T13:00:00Z",
+      "confirmation": "CONFIRMED",
+      "source_ref": "synthetic-not-official-draw",
+      "fields": [
+        [
+          13,
+          14,
+          15,
+          16
+        ],
+        [
+          13,
+          14,
+          15,
+          16
+        ]
+      ]
+    }
+  ]
+}
