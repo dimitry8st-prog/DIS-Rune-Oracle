@@ -16,7 +16,7 @@ def freeze(journal, run_id, event, cards, *, frozen_at=None):
     journal.verify()
     existing = journal.get(key)
     if existing:
-        if existing["input_hash"] != digest(fixed_input):
+        if existing["input_hash"] != digest(dict(fixed_input, engine_version=existing["engine_version"])):
             raise JournalError("run_id already frozen with different inputs")
         return existing
     at = timestamp(frozen_at)

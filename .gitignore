@@ -5,3 +5,5 @@ __pycache__/
 *.sqlite*
 private-runs/
 .pytest_cache/
+build/
+dist/

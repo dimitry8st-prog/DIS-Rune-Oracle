@@ -12,14 +12,16 @@ from .journal import Journal, JournalError
 from .router import compare
 from .adapters.runes import RuneSessions
 from .adapters.yijing import run as yijing_run
+from .cycle_cli import add_commands, execute as execute_cycle
+from research_stats.core import load_json
 
 
 def read_json(path):
-    return json.loads(Path(path).read_text(encoding="utf-8"))
+    return load_json(Path(path).read_text(encoding="utf-8"))
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="DIS universal research engine v0.2")
+    parser = argparse.ArgumentParser(description="DIS universal research engine v0.3")
     commands = parser.add_subparsers(dest="command", required=True)
     route = commands.add_parser("compare", help="Validate and compare without freezing a forecast")
     route.add_argument("input", help="JSON with event and cards")
@@ -55,11 +57,14 @@ def main(argv=None):
     bundle.add_argument("--rune-session", required=True)
     bundle.add_argument("--yijing-db", required=True)
     bundle.add_argument("--yijing-run", required=True)
+    add_commands(commands)
     args = parser.parse_args(argv)
     journal = None
     sessions = None
     try:
-        if args.command.startswith("rune-"):
+        if args.command.startswith("cycle-"):
+            result = execute_cycle(args)
+        elif args.command.startswith("rune-"):
             if args.command != "rune-prepare" and not Path(args.db).is_file():
                 raise ContractError("rune session DB does not exist")
             sessions = RuneSessions(args.db)

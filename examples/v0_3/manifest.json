@@ -1,0 +1,163 @@
+{
+  "schema_version": "integrated-cycle-v0.3",
+  "provenance": "SYNTHETIC",
+  "event": {
+    "event_id": "SYNTHETIC-v03-001",
+    "question": "Synthetic teaching target, not a real forecast experiment",
+    "mode": "forecast",
+    "cutoff_at": "2026-01-01T00:00:00Z",
+    "axes": [
+      {
+        "axis_id": "target",
+        "condition_id": "synthetic-binary-v1",
+        "deadline": "2099-01-01T00:00:00Z",
+        "scenarios": [
+          {
+            "scenario_id": "A",
+            "criterion": "Synthetic fixture A"
+          },
+          {
+            "scenario_id": "B",
+            "criterion": "Synthetic fixture B"
+          }
+        ],
+        "baseline": "B"
+      }
+    ],
+    "facts": []
+  },
+  "adapters": {
+    "rune": {
+      "choices": [
+        {
+          "slot": 1,
+          "rotation": 0
+        },
+        {
+          "slot": 2,
+          "rotation": 180
+        },
+        {
+          "slot": 3,
+          "rotation": 0
+        }
+      ]
+    },
+    "yijing": {
+      "mode": "manual",
+      "throws": [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          3
+        ],
+        [
+          2,
+          3,
+          3
+        ],
+        [
+          3,
+          3,
+          3
+        ],
+        [
+          2,
+          2,
+          3
+        ],
+        [
+          2,
+          3,
+          3
+        ]
+      ]
+    },
+    "mo": {
+      "mode": "manual",
+      "first_throw": 1,
+      "second_throw": 6
+    },
+    "qiuqian": {
+      "mode": "manual",
+      "max_attempts": 2,
+      "stick_number": 42
+    }
+  },
+  "source_refs": [
+    "SYNTHETIC teaching fixture, no empirical efficacy claim",
+    "docs/INTEGRATED_ENGINE_V0_3.md"
+  ],
+  "numeric_study": {
+    "schema_version": "dis-statistics-v1",
+    "study_id": "SYNTHETIC-explicit-numeric-v1",
+    "provenance": "SYNTHETIC",
+    "method_id": "manual-fixture-v1",
+    "control_id": "fixed-control-v1",
+    "registered_at": "2026-01-01T00:00:00Z",
+    "analysis_at": "2026-01-01T00:00:00Z",
+    "events": [
+      {
+        "event_id": "SYNTHETIC-v03-001",
+        "registered_at": "2026-01-01T00:00:00Z",
+        "target_at": "2099-01-01T00:00:00Z"
+      }
+    ],
+    "predictions": [
+      {
+        "prediction_id": "SYNTHETIC-manual-fixture-v1",
+        "event_id": "SYNTHETIC-v03-001",
+        "strategy_id": "manual-fixture-v1",
+        "mode": "forecast",
+        "status": "PICK",
+        "fixed_at": "2026-01-01T00:00:00Z",
+        "confirmation": "CONFIRMED",
+        "evidence_ref": "SYNTHETIC declaration only; local manifest fixes it before target",
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ]
+      },
+      {
+        "prediction_id": "SYNTHETIC-fixed-control-v1",
+        "event_id": "SYNTHETIC-v03-001",
+        "strategy_id": "fixed-control-v1",
+        "mode": "forecast",
+        "status": "PICK",
+        "fixed_at": "2026-01-01T00:00:00Z",
+        "confirmation": "CONFIRMED",
+        "evidence_ref": "SYNTHETIC declaration only; local manifest fixes it before target",
+        "fields": [
+          [
+            1,
+            5,
+            9,
+            13
+          ],
+          [
+            2,
+            6,
+            10,
+            14
+          ]
+        ]
+      }
+    ],
+    "outcomes": []
+  }
+}
