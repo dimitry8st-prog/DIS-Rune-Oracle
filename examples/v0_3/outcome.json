@@ -1,0 +1,7 @@
+{
+  "event_id": "SYNTHETIC-v03-001",
+  "axis_id": "target",
+  "scenario_id": "A",
+  "source": "SYNTHETIC deterministic teaching fixture; no actual draw",
+  "observed_at": "2099-01-01T00:00:00Z"
+}

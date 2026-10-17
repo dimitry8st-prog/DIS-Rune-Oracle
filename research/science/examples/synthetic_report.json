@@ -1,0 +1,543 @@
+{
+  "study_id": "synthetic-demonstration-only",
+  "provenance": "SYNTHETIC",
+  "registered_events": 8,
+  "inventory": {
+    "method-v1": {
+      "registered_slots": 8,
+      "scored": 2,
+      "classification_counts": {
+        "PROSPECTIVE": 4,
+        "RETROSPECTIVE": 1,
+        "UNCONFIRMED": 1,
+        "MISSING": 1,
+        "LATE": 1
+      },
+      "confirmation_counts": {
+        "CONFIRMED": 6,
+        "UNCONFIRMED": 1,
+        "MISSING": 1
+      },
+      "status_counts": {
+        "PICK": 6,
+        "MISSING": 1,
+        "ABSTAIN": 1
+      },
+      "exclusion_reason_counts": {
+        "RETROSPECTIVE": 1,
+        "UNCONFIRMED": 1,
+        "MISSING_PREDICTION": 1,
+        "ABSTAIN": 1,
+        "MISSING_OUTCOME": 1,
+        "LATE": 1
+      },
+      "hit_histograms": [
+        [
+          1,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "control-v1": {
+      "registered_slots": 8,
+      "scored": 7,
+      "classification_counts": {
+        "PROSPECTIVE": 8
+      },
+      "confirmation_counts": {
+        "CONFIRMED": 8
+      },
+      "status_counts": {
+        "PICK": 8
+      },
+      "exclusion_reason_counts": {
+        "MISSING_OUTCOME": 1
+      },
+      "hit_histograms": [
+        [
+          4,
+          3,
+          0,
+          0,
+          0
+        ],
+        [
+          4,
+          0,
+          3,
+          0,
+          0
+        ]
+      ]
+    }
+  },
+  "trials": [
+    {
+      "event_id": "synthetic-01",
+      "strategy_id": "method-v1",
+      "event_registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-04T12:00:00Z",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "outcome_at": "2026-01-04T12:00:00Z",
+      "outcome_source": "synthetic-not-official-draw",
+      "prediction_id": "synthetic-01-method-v1",
+      "classification": "PROSPECTIVE",
+      "confirmation": "CONFIRMED",
+      "prediction_status": "PICK",
+      "exclusion_reasons": [],
+      "hits_by_field": [
+        2,
+        1
+      ],
+      "descriptive_hits_not_prospective": null,
+      "brier": 0.6400000000000001
+    },
+    {
+      "event_id": "synthetic-01",
+      "strategy_id": "control-v1",
+      "event_registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-04T12:00:00Z",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "outcome_at": "2026-01-04T12:00:00Z",
+      "outcome_source": "synthetic-not-official-draw",
+      "prediction_id": "synthetic-01-control-v1",
+      "classification": "PROSPECTIVE",
+      "confirmation": "CONFIRMED",
+      "prediction_status": "PICK",
+      "exclusion_reasons": [],
+      "hits_by_field": [
+        1,
+        2
+      ],
+      "descriptive_hits_not_prospective": null,
+      "brier": 0.6400000000000001
+    },
+    {
+      "event_id": "synthetic-02",
+      "strategy_id": "method-v1",
+      "event_registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-05T12:00:00Z",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "outcome_at": "2026-01-05T12:00:00Z",
+      "outcome_source": "synthetic-not-official-draw",
+      "prediction_id": "synthetic-02-method-v1",
+      "classification": "PROSPECTIVE",
+      "confirmation": "CONFIRMED",
+      "prediction_status": "PICK",
+      "exclusion_reasons": [],
+      "hits_by_field": [
+        0,
+        0
+      ],
+      "descriptive_hits_not_prospective": null,
+      "brier": 0.04000000000000001
+    },
+    {
+      "event_id": "synthetic-02",
+      "strategy_id": "control-v1",
+      "event_registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-05T12:00:00Z",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "outcome_at": "2026-01-05T12:00:00Z",
+      "outcome_source": "synthetic-not-official-draw",
+      "prediction_id": "synthetic-02-control-v1",
+      "classification": "PROSPECTIVE",
+      "confirmation": "CONFIRMED",
+      "prediction_status": "PICK",
+      "exclusion_reasons": [],
+      "hits_by_field": [
+        0,
+        0
+      ],
+      "descriptive_hits_not_prospective": null,
+      "brier": 0.04000000000000001
+    },
+    {
+      "event_id": "synthetic-03",
+      "strategy_id": "method-v1",
+      "event_registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-06T12:00:00Z",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "outcome_at": "2026-01-06T12:00:00Z",
+      "outcome_source": "synthetic-not-official-draw",
+      "prediction_id": "synthetic-03-method-v1",
+      "classification": "RETROSPECTIVE",
+      "confirmation": "CONFIRMED",
+      "prediction_status": "PICK",
+      "exclusion_reasons": [
+        "RETROSPECTIVE"
+      ],
+      "hits_by_field": null,
+      "descriptive_hits_not_prospective": [
+        2,
+        1
+      ],
+      "brier": null
+    },
+    {
+      "event_id": "synthetic-03",
+      "strategy_id": "control-v1",
+      "event_registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-06T12:00:00Z",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "outcome_at": "2026-01-06T12:00:00Z",
+      "outcome_source": "synthetic-not-official-draw",
+      "prediction_id": "synthetic-03-control-v1",
+      "classification": "PROSPECTIVE",
+      "confirmation": "CONFIRMED",
+      "prediction_status": "PICK",
+      "exclusion_reasons": [],
+      "hits_by_field": [
+        1,
+        2
+      ],
+      "descriptive_hits_not_prospective": null,
+      "brier": 0.6400000000000001
+    },
+    {
+      "event_id": "synthetic-04",
+      "strategy_id": "method-v1",
+      "event_registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-07T12:00:00Z",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "evidence_ref": null,
+      "outcome_at": "2026-01-07T12:00:00Z",
+      "outcome_source": "synthetic-not-official-draw",
+      "prediction_id": "synthetic-04-method-v1",
+      "classification": "UNCONFIRMED",
+      "confirmation": "UNCONFIRMED",
+      "prediction_status": "PICK",
+      "exclusion_reasons": [
+        "UNCONFIRMED"
+      ],
+      "hits_by_field": null,
+      "descriptive_hits_not_prospective": [
+        0,
+        0
+      ],
+      "brier": null
+    },
+    {
+      "event_id": "synthetic-04",
+      "strategy_id": "control-v1",
+      "event_registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-07T12:00:00Z",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "outcome_at": "2026-01-07T12:00:00Z",
+      "outcome_source": "synthetic-not-official-draw",
+      "prediction_id": "synthetic-04-control-v1",
+      "classification": "PROSPECTIVE",
+      "confirmation": "CONFIRMED",
+      "prediction_status": "PICK",
+      "exclusion_reasons": [],
+      "hits_by_field": [
+        0,
+        0
+      ],
+      "descriptive_hits_not_prospective": null,
+      "brier": 0.04000000000000001
+    },
+    {
+      "event_id": "synthetic-05",
+      "strategy_id": "method-v1",
+      "event_registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-08T12:00:00Z",
+      "fixed_at": null,
+      "evidence_ref": null,
+      "outcome_at": "2026-01-08T12:00:00Z",
+      "outcome_source": "synthetic-not-official-draw",
+      "prediction_id": null,
+      "classification": "MISSING",
+      "confirmation": null,
+      "prediction_status": "MISSING",
+      "exclusion_reasons": [
+        "MISSING_PREDICTION"
+      ],
+      "hits_by_field": null,
+      "descriptive_hits_not_prospective": null,
+      "brier": null
+    },
+    {
+      "event_id": "synthetic-05",
+      "strategy_id": "control-v1",
+      "event_registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-08T12:00:00Z",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "outcome_at": "2026-01-08T12:00:00Z",
+      "outcome_source": "synthetic-not-official-draw",
+      "prediction_id": "synthetic-05-control-v1",
+      "classification": "PROSPECTIVE",
+      "confirmation": "CONFIRMED",
+      "prediction_status": "PICK",
+      "exclusion_reasons": [],
+      "hits_by_field": [
+        1,
+        2
+      ],
+      "descriptive_hits_not_prospective": null,
+      "brier": 0.6400000000000001
+    },
+    {
+      "event_id": "synthetic-06",
+      "strategy_id": "method-v1",
+      "event_registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-09T12:00:00Z",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "outcome_at": "2026-01-09T12:00:00Z",
+      "outcome_source": "synthetic-not-official-draw",
+      "prediction_id": "synthetic-06-method-v1",
+      "classification": "PROSPECTIVE",
+      "confirmation": "CONFIRMED",
+      "prediction_status": "ABSTAIN",
+      "exclusion_reasons": [
+        "ABSTAIN"
+      ],
+      "hits_by_field": null,
+      "descriptive_hits_not_prospective": null,
+      "brier": null
+    },
+    {
+      "event_id": "synthetic-06",
+      "strategy_id": "control-v1",
+      "event_registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-09T12:00:00Z",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "outcome_at": "2026-01-09T12:00:00Z",
+      "outcome_source": "synthetic-not-official-draw",
+      "prediction_id": "synthetic-06-control-v1",
+      "classification": "PROSPECTIVE",
+      "confirmation": "CONFIRMED",
+      "prediction_status": "PICK",
+      "exclusion_reasons": [],
+      "hits_by_field": [
+        0,
+        0
+      ],
+      "descriptive_hits_not_prospective": null,
+      "brier": 0.04000000000000001
+    },
+    {
+      "event_id": "synthetic-07",
+      "strategy_id": "method-v1",
+      "event_registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-10T12:00:00Z",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "outcome_at": null,
+      "outcome_source": null,
+      "prediction_id": "synthetic-07-method-v1",
+      "classification": "PROSPECTIVE",
+      "confirmation": "CONFIRMED",
+      "prediction_status": "PICK",
+      "exclusion_reasons": [
+        "MISSING_OUTCOME"
+      ],
+      "hits_by_field": null,
+      "descriptive_hits_not_prospective": null,
+      "brier": null
+    },
+    {
+      "event_id": "synthetic-07",
+      "strategy_id": "control-v1",
+      "event_registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-10T12:00:00Z",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "outcome_at": null,
+      "outcome_source": null,
+      "prediction_id": "synthetic-07-control-v1",
+      "classification": "PROSPECTIVE",
+      "confirmation": "CONFIRMED",
+      "prediction_status": "PICK",
+      "exclusion_reasons": [
+        "MISSING_OUTCOME"
+      ],
+      "hits_by_field": null,
+      "descriptive_hits_not_prospective": null,
+      "brier": null
+    },
+    {
+      "event_id": "synthetic-08",
+      "strategy_id": "method-v1",
+      "event_registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-11T12:00:00Z",
+      "fixed_at": "2026-01-11T12:00:00Z",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "outcome_at": "2026-01-11T12:00:00Z",
+      "outcome_source": "synthetic-not-official-draw",
+      "prediction_id": "synthetic-08-method-v1",
+      "classification": "LATE",
+      "confirmation": "CONFIRMED",
+      "prediction_status": "PICK",
+      "exclusion_reasons": [
+        "LATE"
+      ],
+      "hits_by_field": null,
+      "descriptive_hits_not_prospective": [
+        0,
+        0
+      ],
+      "brier": null
+    },
+    {
+      "event_id": "synthetic-08",
+      "strategy_id": "control-v1",
+      "event_registered_at": "2026-01-02T00:00:00Z",
+      "target_at": "2026-01-11T12:00:00Z",
+      "fixed_at": "2026-01-03T00:00:00Z",
+      "evidence_ref": "synthetic-placeholder-not-a-real-attestation",
+      "outcome_at": "2026-01-11T12:00:00Z",
+      "outcome_source": "synthetic-not-official-draw",
+      "prediction_id": "synthetic-08-control-v1",
+      "classification": "PROSPECTIVE",
+      "confirmation": "CONFIRMED",
+      "prediction_status": "PICK",
+      "exclusion_reasons": [],
+      "hits_by_field": [
+        0,
+        0
+      ],
+      "descriptive_hits_not_prospective": null,
+      "brier": 0.04000000000000001
+    }
+  ],
+  "matched_pairs": [
+    {
+      "event_id": "synthetic-01",
+      "method": [
+        2,
+        1
+      ],
+      "control": [
+        1,
+        2
+      ],
+      "differences": [
+        1,
+        -1
+      ]
+    },
+    {
+      "event_id": "synthetic-02",
+      "method": [
+        0,
+        0
+      ],
+      "control": [
+        0,
+        0
+      ],
+      "differences": [
+        0,
+        0
+      ]
+    }
+  ],
+  "matched_mean_hits_by_field": {
+    "method": [
+      1.0,
+      0.5
+    ],
+    "control": [
+      0.5,
+      1.0
+    ]
+  },
+  "paired_total": {
+    "n": 2,
+    "mean_method_minus_control": 0.0,
+    "confidence": 0.95,
+    "ci_method": "Hoeffding; independent bounded event pairs",
+    "mean_ci": [
+      -8,
+      8
+    ],
+    "sign_test": {
+      "wins": 0,
+      "losses": 0,
+      "ties": 2,
+      "non_ties": 0,
+      "p_two_sided": null,
+      "p_exact": null
+    }
+  },
+  "paired_by_field_exploratory": [
+    {
+      "n": 2,
+      "mean_method_minus_control": 0.5,
+      "confidence": 0.95,
+      "ci_method": "Hoeffding; independent bounded event pairs",
+      "mean_ci": [
+        -4,
+        4
+      ],
+      "sign_test": {
+        "wins": 1,
+        "losses": 0,
+        "ties": 1,
+        "non_ties": 1,
+        "p_two_sided": 1.0,
+        "p_exact": "1"
+      }
+    },
+    {
+      "n": 2,
+      "mean_method_minus_control": -0.5,
+      "confidence": 0.95,
+      "ci_method": "Hoeffding; independent bounded event pairs",
+      "mean_ci": [
+        -4,
+        4
+      ],
+      "sign_test": {
+        "wins": 0,
+        "losses": 1,
+        "ties": 1,
+        "non_ties": 1,
+        "p_two_sided": 1.0,
+        "p_exact": "1"
+      }
+    }
+  ],
+  "matched_brier_pairs": [
+    {
+      "event_id": "synthetic-01",
+      "method": 0.6400000000000001,
+      "control": 0.6400000000000001
+    },
+    {
+      "event_id": "synthetic-02",
+      "method": 0.04000000000000001,
+      "control": 0.04000000000000001
+    }
+  ],
+  "brier_mean_method_minus_control": 0.0,
+  "limitations": [
+    "Imported confirmation/time references are declarations; signatures and sources are not authenticated.",
+    "Paired tests assume independent event pairs and prespecified sampling/stopping; missingness may select the sample.",
+    "Sign test concerns non-tie win probability; Hoeffding interval concerns the bounded mean difference.",
+    "Field tests are exploratory; no multiplicity-adjusted efficacy claim.",
+    "Technical validation is not predictive efficacy or evidence for retrocausality."
+  ],
+  "input_sha256": "6338777c91405e13618e047726f23b8733233c32f56c0f6dd4844d62f4721520"
+}

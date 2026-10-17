@@ -1,0 +1,58 @@
+{
+  "event": {
+    "event_id": "synthetic-only",
+    "question": "Synthetic test, not a real prediction",
+    "mode": "analysis",
+    "cutoff_at": "2020-01-01T00:00:00Z",
+    "facts": [],
+    "axes": [
+      {
+        "axis_id": "primary",
+        "condition_id": "fixed-test-condition",
+        "deadline": "2026-01-01T00:00:00Z",
+        "baseline": "B",
+        "scenarios": [
+          {
+            "scenario_id": "A",
+            "criterion": "Synthetic result A"
+          },
+          {
+            "scenario_id": "B",
+            "criterion": "Synthetic result B"
+          }
+        ]
+      }
+    ]
+  },
+  "cards": [
+    {
+      "core_id": "rune",
+      "status": "OK",
+      "reason": "",
+      "protocol_version": "synthetic-v1",
+      "inputs": {
+        "synthetic": true,
+        "core": "rune"
+      },
+      "input_hash": "30d71ace3ec5d0148a147a26cdbe800741ed1aefa12b32633beb9eeddc11913d",
+      "raw_result": {
+        "synthetic": true
+      },
+      "interpretation": "Synthetic interpretation, no traditional procedure performed.",
+      "claims": [
+        {
+          "claim_id": "rune-primary-A-SUPPORT",
+          "type": "FORECAST",
+          "text": "Synthetic claim",
+          "source_fragment": "Synthetic",
+          "axis_id": "primary",
+          "scenario_id": "A",
+          "polarity": "SUPPORT",
+          "review_status": "ACCEPTED",
+          "reviewed_by": "synthetic-test-reviewer",
+          "reviewed_at": "2020-01-02T00:00:00Z"
+        }
+      ]
+    }
+  ]
+}

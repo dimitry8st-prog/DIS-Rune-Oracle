@@ -1,0 +1,682 @@
+{
+  "oeis": {
+    "url": "https://raw.githubusercontent.com/oeis/oeisdata/5e58e93f885c5f1db9d0523b42a74cc616b16d49/seq/A102/A102241.seq",
+    "commit": "5e58e93f885c5f1db9d0523b42a74cc616b16d49",
+    "sha256": "919a64b8acdbc4e52a6eb6f4a4badd24f8a7c895cdd79206bca6acaba94ad9f3",
+    "retrieved_on": "2026-10-14",
+    "status": "FETCHED",
+    "values": [
+      63,
+      0,
+      17,
+      34,
+      23,
+      58,
+      2,
+      16,
+      55,
+      59,
+      7,
+      56,
+      61,
+      47,
+      4,
+      8,
+      25,
+      38,
+      3,
+      48,
+      41,
+      37,
+      32,
+      1,
+      57,
+      39,
+      33,
+      30,
+      18,
+      45,
+      28,
+      14,
+      60,
+      15,
+      40,
+      5,
+      53,
+      43,
+      20,
+      10,
+      35,
+      49,
+      31,
+      62,
+      24,
+      6,
+      26,
+      22,
+      29,
+      46,
+      9,
+      36,
+      52,
+      11,
+      13,
+      44,
+      54,
+      27,
+      50,
+      19,
+      51,
+      12,
+      21,
+      42
+    ],
+    "orientation_quote": "Hexagrams of the Yi Jing [or I Ching] interpreted in base 10, with the top line = 2^5 (most significant bit) and the bottom line as 2^0 (least significant bit).",
+    "sequence_context_quote": "There are at least 5 orderings: The popular book order (known as the Wen-Wan ordering, this sequence), the MaWangDui order (A125638), the Lian-Shan ordering (partial), the Kuei-Tsan ordering (partial) and the most recent binary ordering, known as the Fu-Hsi ordering (probably by Shao Yung, +1000 most certainly influenced by Yang Hsiung's Tai Hsuan Jing +10).",
+    "academic_reference": "D. E. Knuth, The Art of Computer Programming, vol. 4A, Section 7.2.1.7, p. 486 (cited by OEIS; book not accessed in this audit)."
+  },
+  "unicode": {
+    "url": "https://raw.githubusercontent.com/unicode-org/unicodetools/b28e4ed4e1d4cad66ea6f6d2f7ab80db8d5188b7/unicodetools/data/ucd/dev/NamesList.txt",
+    "commit": "b28e4ed4e1d4cad66ea6f6d2f7ab80db8d5188b7",
+    "sha256": "437388f4710d55db0fd19462ab3af9bc33e53b1f37e468b989752d15f3dffa6a",
+    "retrieved_on": "2026-10-14",
+    "status": "FETCHED",
+    "hexagram_names": {
+      "1": "THE CREATIVE HEAVEN",
+      "2": "THE RECEPTIVE EARTH",
+      "3": "DIFFICULTY AT THE BEGINNING",
+      "4": "YOUTHFUL FOLLY",
+      "5": "WAITING",
+      "6": "CONFLICT",
+      "7": "THE ARMY",
+      "8": "HOLDING TOGETHER",
+      "9": "SMALL TAMING",
+      "10": "TREADING",
+      "11": "PEACE",
+      "12": "STANDSTILL",
+      "13": "FELLOWSHIP",
+      "14": "GREAT POSSESSION",
+      "15": "MODESTY",
+      "16": "ENTHUSIASM",
+      "17": "FOLLOWING",
+      "18": "WORK ON THE DECAYED",
+      "19": "APPROACH",
+      "20": "CONTEMPLATION",
+      "21": "BITING THROUGH",
+      "22": "GRACE",
+      "23": "SPLITTING APART",
+      "24": "RETURN",
+      "25": "INNOCENCE",
+      "26": "GREAT TAMING",
+      "27": "MOUTH CORNERS",
+      "28": "GREAT PREPONDERANCE",
+      "29": "THE ABYSMAL WATER",
+      "30": "THE CLINGING FIRE",
+      "31": "INFLUENCE",
+      "32": "DURATION",
+      "33": "RETREAT",
+      "34": "GREAT POWER",
+      "35": "PROGRESS",
+      "36": "DARKENING OF THE LIGHT",
+      "37": "THE FAMILY",
+      "38": "OPPOSITION",
+      "39": "OBSTRUCTION",
+      "40": "DELIVERANCE",
+      "41": "DECREASE",
+      "42": "INCREASE",
+      "43": "BREAKTHROUGH",
+      "44": "COMING TO MEET",
+      "45": "GATHERING TOGETHER",
+      "46": "PUSHING UPWARD",
+      "47": "OPPRESSION",
+      "48": "THE WELL",
+      "49": "REVOLUTION",
+      "50": "THE CAULDRON",
+      "51": "THE AROUSING THUNDER",
+      "52": "THE KEEPING STILL MOUNTAIN",
+      "53": "DEVELOPMENT",
+      "54": "THE MARRYING MAIDEN",
+      "55": "ABUNDANCE",
+      "56": "THE WANDERER",
+      "57": "THE GENTLE WIND",
+      "58": "THE JOYOUS LAKE",
+      "59": "DISPERSION",
+      "60": "LIMITATION",
+      "61": "INNER TRUTH",
+      "62": "SMALL PREPONDERANCE",
+      "63": "AFTER COMPLETION",
+      "64": "BEFORE COMPLETION"
+    }
+  },
+  "chinese_names": {
+    "url": "https://raw.githubusercontent.com/JinyangWang27/ichingpy/01e50a25d7b1d696ff9c8b9fa5d718a5ca0f63a8/src/ichingpy/data/iching_zh.json",
+    "commit": "01e50a25d7b1d696ff9c8b9fa5d718a5ca0f63a8",
+    "sha256": "1b6529b4a06642d1b5b59324f19003615cea72e2224eb2d1b6b83fc40712bf2f",
+    "retrieved_on": "2026-10-14",
+    "status": "FETCHED",
+    "names_by_lines": {
+      "111111": "乾",
+      "000000": "坤",
+      "100010": "屯",
+      "010001": "蒙",
+      "111010": "需",
+      "010111": "讼",
+      "010000": "师",
+      "000010": "比",
+      "111011": "小畜",
+      "110111": "履",
+      "111000": "泰",
+      "000111": "否",
+      "101111": "同人",
+      "111101": "大有",
+      "001000": "谦",
+      "000100": "豫",
+      "100110": "随",
+      "011001": "蛊",
+      "110000": "临",
+      "000011": "观",
+      "100101": "噬嗑",
+      "101001": "贲",
+      "000001": "剥",
+      "100000": "复",
+      "100111": "无妄",
+      "111001": "大畜",
+      "100001": "颐",
+      "011110": "大过",
+      "010010": "坎",
+      "101101": "离",
+      "001110": "咸",
+      "011100": "恒",
+      "001111": "遁",
+      "111100": "大壮",
+      "000101": "晋",
+      "101000": "明夷",
+      "101011": "家人",
+      "110101": "睽",
+      "001010": "蹇",
+      "010100": "解",
+      "110001": "损",
+      "100011": "益",
+      "111110": "夬",
+      "011111": "姤",
+      "000110": "萃",
+      "011000": "升",
+      "010110": "困",
+      "011010": "井",
+      "101110": "革",
+      "011101": "鼎",
+      "100100": "震",
+      "001001": "艮",
+      "001011": "渐",
+      "110100": "归妹",
+      "101100": "丰",
+      "001101": "旅",
+      "011011": "巽",
+      "110110": "兑",
+      "010011": "涣",
+      "110010": "节",
+      "110011": "中孚",
+      "001100": "小过",
+      "101010": "既济",
+      "010101": "未济"
+    },
+    "scope": "Secondary software dataset; Chinese names only. Not evidence for Zhu Xi reading rules or historical commentary."
+  },
+  "wikipedia": {
+    "url": "https://en.wikipedia.org/w/index.php?title=List_of_hexagrams_of_the_I_Ching&oldid=1344901076",
+    "revision": 1344901076,
+    "sha256": "e0e79f5ab7fd71c31045bae43309556b610bea20d90b36e4be691fbf7e08416a",
+    "retrieved_on": "2026-10-14",
+    "status": "FETCHED",
+    "rows": [
+      {
+        "king_wen_number": 1,
+        "name": "乾",
+        "pinyin": "qián",
+        "lower_trigram": "☰",
+        "upper_trigram": "☰"
+      },
+      {
+        "king_wen_number": 2,
+        "name": "坤",
+        "pinyin": "kūn",
+        "lower_trigram": "☷",
+        "upper_trigram": "☷"
+      },
+      {
+        "king_wen_number": 3,
+        "name": "屯",
+        "pinyin": "zhūn",
+        "lower_trigram": "☳",
+        "upper_trigram": "☵"
+      },
+      {
+        "king_wen_number": 4,
+        "name": "蒙",
+        "pinyin": "méng",
+        "lower_trigram": "☵",
+        "upper_trigram": "☶"
+      },
+      {
+        "king_wen_number": 5,
+        "name": "需",
+        "pinyin": "xū",
+        "lower_trigram": "☰",
+        "upper_trigram": "☵"
+      },
+      {
+        "king_wen_number": 6,
+        "name": "訟",
+        "pinyin": "sòng",
+        "lower_trigram": "☵",
+        "upper_trigram": "☰"
+      },
+      {
+        "king_wen_number": 7,
+        "name": "師",
+        "pinyin": "shī",
+        "lower_trigram": "☵",
+        "upper_trigram": "☷"
+      },
+      {
+        "king_wen_number": 8,
+        "name": "比",
+        "pinyin": "bǐ",
+        "lower_trigram": "☷",
+        "upper_trigram": "☵"
+      },
+      {
+        "king_wen_number": 9,
+        "name": "小畜",
+        "pinyin": "xiǎo xù",
+        "lower_trigram": "☰",
+        "upper_trigram": "☴"
+      },
+      {
+        "king_wen_number": 10,
+        "name": "履",
+        "pinyin": "lǚ",
+        "lower_trigram": "☱",
+        "upper_trigram": "☰"
+      },
+      {
+        "king_wen_number": 11,
+        "name": "泰",
+        "pinyin": "tài",
+        "lower_trigram": "☰",
+        "upper_trigram": "☷"
+      },
+      {
+        "king_wen_number": 12,
+        "name": "否",
+        "pinyin": "pǐ",
+        "lower_trigram": "☷",
+        "upper_trigram": "☰"
+      },
+      {
+        "king_wen_number": 13,
+        "name": "同人",
+        "pinyin": "tóng rén",
+        "lower_trigram": "☲",
+        "upper_trigram": "☰"
+      },
+      {
+        "king_wen_number": 14,
+        "name": "大有",
+        "pinyin": "dà yǒu",
+        "lower_trigram": "☰",
+        "upper_trigram": "☲"
+      },
+      {
+        "king_wen_number": 15,
+        "name": "謙",
+        "pinyin": "qiān",
+        "lower_trigram": "☶",
+        "upper_trigram": "☷"
+      },
+      {
+        "king_wen_number": 16,
+        "name": "豫",
+        "pinyin": "yù",
+        "lower_trigram": "☷",
+        "upper_trigram": "☳"
+      },
+      {
+        "king_wen_number": 17,
+        "name": "隨",
+        "pinyin": "suí",
+        "lower_trigram": "☳",
+        "upper_trigram": "☱"
+      },
+      {
+        "king_wen_number": 18,
+        "name": "蠱",
+        "pinyin": "gǔ",
+        "lower_trigram": "☴",
+        "upper_trigram": "☶"
+      },
+      {
+        "king_wen_number": 19,
+        "name": "臨",
+        "pinyin": "lín",
+        "lower_trigram": "☱",
+        "upper_trigram": "☷"
+      },
+      {
+        "king_wen_number": 20,
+        "name": "觀",
+        "pinyin": "guān",
+        "lower_trigram": "☷",
+        "upper_trigram": "☴"
+      },
+      {
+        "king_wen_number": 21,
+        "name": "噬嗑",
+        "pinyin": "shì kè",
+        "lower_trigram": "☳",
+        "upper_trigram": "☲"
+      },
+      {
+        "king_wen_number": 22,
+        "name": "賁",
+        "pinyin": "bì",
+        "lower_trigram": "☲",
+        "upper_trigram": "☶"
+      },
+      {
+        "king_wen_number": 23,
+        "name": "剝",
+        "pinyin": "bō",
+        "lower_trigram": "☷",
+        "upper_trigram": "☶"
+      },
+      {
+        "king_wen_number": 24,
+        "name": "復",
+        "pinyin": "fù",
+        "lower_trigram": "☳",
+        "upper_trigram": "☷"
+      },
+      {
+        "king_wen_number": 25,
+        "name": "无妄",
+        "pinyin": "wú wàng",
+        "lower_trigram": "☳",
+        "upper_trigram": "☰"
+      },
+      {
+        "king_wen_number": 26,
+        "name": "大畜",
+        "pinyin": "dà xù",
+        "lower_trigram": "☰",
+        "upper_trigram": "☶"
+      },
+      {
+        "king_wen_number": 27,
+        "name": "頤",
+        "pinyin": "yí",
+        "lower_trigram": "☳",
+        "upper_trigram": "☶"
+      },
+      {
+        "king_wen_number": 28,
+        "name": "大過",
+        "pinyin": "dà guò",
+        "lower_trigram": "☴",
+        "upper_trigram": "☱"
+      },
+      {
+        "king_wen_number": 29,
+        "name": "坎",
+        "pinyin": "kǎn",
+        "lower_trigram": "☵",
+        "upper_trigram": "☵"
+      },
+      {
+        "king_wen_number": 30,
+        "name": "離",
+        "pinyin": "lí",
+        "lower_trigram": "☲",
+        "upper_trigram": "☲"
+      },
+      {
+        "king_wen_number": 31,
+        "name": "咸",
+        "pinyin": "xián",
+        "lower_trigram": "☶",
+        "upper_trigram": "☱"
+      },
+      {
+        "king_wen_number": 32,
+        "name": "恆",
+        "pinyin": "héng",
+        "lower_trigram": "☴",
+        "upper_trigram": "☳"
+      },
+      {
+        "king_wen_number": 33,
+        "name": "遯",
+        "pinyin": "dùn",
+        "lower_trigram": "☶",
+        "upper_trigram": "☰"
+      },
+      {
+        "king_wen_number": 34,
+        "name": "大壯",
+        "pinyin": "dà zhuàng",
+        "lower_trigram": "☰",
+        "upper_trigram": "☳"
+      },
+      {
+        "king_wen_number": 35,
+        "name": "晉",
+        "pinyin": "jìn",
+        "lower_trigram": "☷",
+        "upper_trigram": "☲"
+      },
+      {
+        "king_wen_number": 36,
+        "name": "明夷",
+        "pinyin": "míng yí",
+        "lower_trigram": "☲",
+        "upper_trigram": "☷"
+      },
+      {
+        "king_wen_number": 37,
+        "name": "家人",
+        "pinyin": "jiā rén",
+        "lower_trigram": "☲",
+        "upper_trigram": "☴"
+      },
+      {
+        "king_wen_number": 38,
+        "name": "睽",
+        "pinyin": "kuí",
+        "lower_trigram": "☱",
+        "upper_trigram": "☲"
+      },
+      {
+        "king_wen_number": 39,
+        "name": "蹇",
+        "pinyin": "jiǎn",
+        "lower_trigram": "☶",
+        "upper_trigram": "☵"
+      },
+      {
+        "king_wen_number": 40,
+        "name": "解",
+        "pinyin": "jiě",
+        "lower_trigram": "☵",
+        "upper_trigram": "☳"
+      },
+      {
+        "king_wen_number": 41,
+        "name": "損",
+        "pinyin": "sǔn",
+        "lower_trigram": "☱",
+        "upper_trigram": "☶"
+      },
+      {
+        "king_wen_number": 42,
+        "name": "益",
+        "pinyin": "yì",
+        "lower_trigram": "☳",
+        "upper_trigram": "☴"
+      },
+      {
+        "king_wen_number": 43,
+        "name": "夬",
+        "pinyin": "guài",
+        "lower_trigram": "☰",
+        "upper_trigram": "☱"
+      },
+      {
+        "king_wen_number": 44,
+        "name": "姤",
+        "pinyin": "gòu",
+        "lower_trigram": "☴",
+        "upper_trigram": "☰"
+      },
+      {
+        "king_wen_number": 45,
+        "name": "萃",
+        "pinyin": "cuì",
+        "lower_trigram": "☷",
+        "upper_trigram": "☱"
+      },
+      {
+        "king_wen_number": 46,
+        "name": "升",
+        "pinyin": "shēng",
+        "lower_trigram": "☴",
+        "upper_trigram": "☷"
+      },
+      {
+        "king_wen_number": 47,
+        "name": "困",
+        "pinyin": "kùn",
+        "lower_trigram": "☵",
+        "upper_trigram": "☱"
+      },
+      {
+        "king_wen_number": 48,
+        "name": "井",
+        "pinyin": "jǐng",
+        "lower_trigram": "☴",
+        "upper_trigram": "☵"
+      },
+      {
+        "king_wen_number": 49,
+        "name": "革",
+        "pinyin": "gé",
+        "lower_trigram": "☲",
+        "upper_trigram": "☱"
+      },
+      {
+        "king_wen_number": 50,
+        "name": "鼎",
+        "pinyin": "dǐng",
+        "lower_trigram": "☴",
+        "upper_trigram": "☲"
+      },
+      {
+        "king_wen_number": 51,
+        "name": "震",
+        "pinyin": "zhèn",
+        "lower_trigram": "☳",
+        "upper_trigram": "☳"
+      },
+      {
+        "king_wen_number": 52,
+        "name": "艮",
+        "pinyin": "gèn",
+        "lower_trigram": "☶",
+        "upper_trigram": "☶"
+      },
+      {
+        "king_wen_number": 53,
+        "name": "漸",
+        "pinyin": "jiàn",
+        "lower_trigram": "☶",
+        "upper_trigram": "☴"
+      },
+      {
+        "king_wen_number": 54,
+        "name": "歸妹",
+        "pinyin": "guī mèi",
+        "lower_trigram": "☱",
+        "upper_trigram": "☳"
+      },
+      {
+        "king_wen_number": 55,
+        "name": "豐",
+        "pinyin": "fēng",
+        "lower_trigram": "☲",
+        "upper_trigram": "☳"
+      },
+      {
+        "king_wen_number": 56,
+        "name": "旅",
+        "pinyin": "lǚ",
+        "lower_trigram": "☶",
+        "upper_trigram": "☲"
+      },
+      {
+        "king_wen_number": 57,
+        "name": "巽",
+        "pinyin": "xùn",
+        "lower_trigram": "☴",
+        "upper_trigram": "☴"
+      },
+      {
+        "king_wen_number": 58,
+        "name": "兌",
+        "pinyin": "duì",
+        "lower_trigram": "☱",
+        "upper_trigram": "☱"
+      },
+      {
+        "king_wen_number": 59,
+        "name": "渙",
+        "pinyin": "huàn",
+        "lower_trigram": "☵",
+        "upper_trigram": "☴"
+      },
+      {
+        "king_wen_number": 60,
+        "name": "節",
+        "pinyin": "jié",
+        "lower_trigram": "☱",
+        "upper_trigram": "☵"
+      },
+      {
+        "king_wen_number": 61,
+        "name": "中孚",
+        "pinyin": "zhōng fú",
+        "lower_trigram": "☱",
+        "upper_trigram": "☴"
+      },
+      {
+        "king_wen_number": 62,
+        "name": "小過",
+        "pinyin": "xiǎo guò",
+        "lower_trigram": "☶",
+        "upper_trigram": "☳"
+      },
+      {
+        "king_wen_number": 63,
+        "name": "既濟",
+        "pinyin": "jì jì",
+        "lower_trigram": "☲",
+        "upper_trigram": "☵"
+      },
+      {
+        "king_wen_number": 64,
+        "name": "未濟",
+        "pinyin": "wèi jì",
+        "lower_trigram": "☵",
+        "upper_trigram": "☲"
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "report_id": "after-outcome-v1",
+  "reason": "Synthetic outcome added; original unchanged",
+  "supersedes": "before-outcome-v1",
+  "numeric_outcomes": [
+    {
+      "event_id": "SYNTHETIC-v03-001",
+      "occurred_at": "2099-01-01T00:00:00Z",
+      "recorded_at": "2099-01-01T00:00:01Z",
+      "confirmation": "CONFIRMED",
+      "source_ref": "SYNTHETIC deterministic teaching fixture; no actual draw",
+      "fields": [
+        [
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          5,
+          6,
+          7,
+          8
+        ]
+      ]
+    }
+  ]
+}

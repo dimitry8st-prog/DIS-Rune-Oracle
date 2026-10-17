@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dis-rune-oracle"
+version = "0.3.0"
+description = "Research engine for preserved hypotheses and outcome evaluation"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+dis-oracle = "dis_oracle.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["dis_oracle*", "research_stats*"]
+
+[tool.setuptools.package-data]
+"dis_oracle" = ["demo_manifest.json"]
+"dis_oracle.adapters" = ["rune_map.json"]

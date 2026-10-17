@@ -1,0 +1,774 @@
+{
+  "status": "UNVERIFIED_RESEARCH_INPUT",
+  "source": "workspace2.tar:docs/YIJING_SPECIFICATION.md",
+  "source_sha256": "8cbf6d702be342331aa05fd713b1b673636d8b8b3e578c4cd5e3bba3157aa988",
+  "line_order": "bottom-up",
+  "cases": [
+    {
+      "label": "1: 0 изменяющихся линий",
+      "input": {
+        "throws_bottom_up": [
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            3
+          ],
+          [
+            3,
+            2,
+            3
+          ],
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            2
+          ]
+        ]
+      },
+      "qwen_expected_unverified": {
+        "lines_bottom_up": [
+          7,
+          7,
+          7,
+          8,
+          7,
+          7
+        ],
+        "moving_lines": [],
+        "primary_hexagram": {
+          "king_wen_number": 9,
+          "name": "小畜",
+          "pinyin": "xiǎo xù",
+          "english": "Small Taming",
+          "lines_binary": [
+            1,
+            1,
+            1,
+            0,
+            1,
+            1
+          ]
+        },
+        "relating_hexagram": null,
+        "reading_rule": {
+          "moving_count": 0,
+          "method": "zhu_xi",
+          "ruling_texts": [
+            {
+              "type": "judgment",
+              "hexagram": 9,
+              "source": "Legge 1899, The Yî King, Hexagram 9, Judgment",
+              "url": "https://sacred-texts.com/ich/ic09.htm"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "2: 1 изменяющаяся линия",
+      "input": {
+        "throws_bottom_up": [
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            2,
+            3
+          ],
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            3
+          ],
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            3
+          ]
+        ]
+      },
+      "qwen_expected_unverified": {
+        "lines_bottom_up": [
+          6,
+          8,
+          7,
+          8,
+          7,
+          8
+        ],
+        "moving_lines": [
+          1
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 39,
+          "name": "蹇",
+          "pinyin": "jiǎn",
+          "english": "Obstruction",
+          "lines_binary": [
+            0,
+            0,
+            1,
+            0,
+            1,
+            0
+          ]
+        },
+        "relating_hexagram": {
+          "king_wen_number": 53,
+          "name": "渐",
+          "pinyin": "jiàn",
+          "english": "Gradual Progress",
+          "lines_binary": [
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+          ]
+        },
+        "reading_rule": {
+          "moving_count": 1,
+          "method": "zhu_xi",
+          "ruling_texts": [
+            {
+              "type": "line",
+              "hexagram": 39,
+              "line_number": 1,
+              "source": "Legge 1899, The Yî King, Hexagram 39, Line 1",
+              "url": "https://sacred-texts.com/ich/ic39.htm"
+            }
+          ],
+          "priority": "single_line"
+        }
+      }
+    },
+    {
+      "label": "3: 2 изменяющиеся линии",
+      "input": {
+        "throws_bottom_up": [
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            3
+          ],
+          [
+            2,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            2,
+            3
+          ]
+        ]
+      },
+      "qwen_expected_unverified": {
+        "lines_bottom_up": [
+          6,
+          7,
+          8,
+          9,
+          7,
+          8
+        ],
+        "moving_lines": [
+          1,
+          4
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 47,
+          "name": "困",
+          "pinyin": "kùn",
+          "english": "Oppression (Exhaustion)",
+          "lines_binary": [
+            0,
+            1,
+            0,
+            1,
+            1,
+            0
+          ]
+        },
+        "relating_hexagram": {
+          "king_wen_number": 60,
+          "name": "节",
+          "pinyin": "jié",
+          "english": "Limitation",
+          "lines_binary": [
+            1,
+            1,
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        "reading_rule": {
+          "moving_count": 2,
+          "method": "zhu_xi",
+          "ruling_texts": [
+            {
+              "type": "line",
+              "hexagram": 47,
+              "line_number": 1,
+              "source": "Legge 1899, The Yî King, Hexagram 47, Line 1",
+              "url": "https://sacred-texts.com/ich/ic47.htm"
+            },
+            {
+              "type": "line",
+              "hexagram": 47,
+              "line_number": 4,
+              "source": "Legge 1899, The Yî King, Hexagram 47, Line 4",
+              "url": "https://sacred-texts.com/ich/ic47.htm",
+              "priority": "predominant"
+            }
+          ],
+          "priority": "upper_line",
+          "note": "Two moving lines: read both, upper line (4) is predominant."
+        }
+      }
+    },
+    {
+      "label": "4: 3 изменяющиеся линии",
+      "input": {
+        "throws_bottom_up": [
+          [
+            2,
+            2,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            3
+          ],
+          [
+            3,
+            2,
+            2
+          ]
+        ]
+      },
+      "qwen_expected_unverified": {
+        "lines_bottom_up": [
+          7,
+          9,
+          6,
+          9,
+          7,
+          7
+        ],
+        "moving_lines": [
+          2,
+          3,
+          4
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 43,
+          "name": "夬",
+          "pinyin": "guài",
+          "english": "Breakthrough",
+          "lines_binary": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "relating_hexagram": {
+          "king_wen_number": 37,
+          "name": "家人",
+          "pinyin": "jiā rén",
+          "english": "The Family",
+          "lines_binary": [
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+          ]
+        },
+        "reading_rule": {
+          "moving_count": 3,
+          "method": "zhu_xi",
+          "ruling_texts": [
+            {
+              "type": "judgment",
+              "hexagram": 43,
+              "source": "Legge 1899, The Yî King, Hexagram 43, Judgment",
+              "url": "https://sacred-texts.com/ich/ic43.htm",
+              "note": "Primary hexagram judgment (as question)"
+            },
+            {
+              "type": "judgment",
+              "hexagram": 37,
+              "source": "Legge 1899, The Yî King, Hexagram 37, Judgment",
+              "url": "https://sacred-texts.com/ich/ic37.htm",
+              "note": "Relating hexagram judgment (as prognostication)"
+            }
+          ],
+          "priority": "both_judgments",
+          "note": "Three moving lines: read judgments of both hexagrams. REQUIRES VERIFICATION against Adler Chapter IV."
+        }
+      }
+    },
+    {
+      "label": "5: 4 изменяющиеся линии",
+      "input": {
+        "throws_bottom_up": [
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            3
+          ]
+        ]
+      },
+      "qwen_expected_unverified": {
+        "lines_bottom_up": [
+          9,
+          6,
+          9,
+          6,
+          9,
+          7
+        ],
+        "moving_lines": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 59,
+          "name": "涣",
+          "pinyin": "huàn",
+          "english": "Dispersion",
+          "lines_binary": [
+            1,
+            0,
+            1,
+            0,
+            1,
+            1
+          ]
+        },
+        "relating_hexagram": {
+          "king_wen_number": 5,
+          "name": "需",
+          "pinyin": "xū",
+          "english": "Waiting",
+          "lines_binary": [
+            0,
+            1,
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "reading_rule": {
+          "moving_count": 4,
+          "method": "zhu_xi",
+          "ruling_texts": [
+            {
+              "type": "line",
+              "hexagram": 5,
+              "line_number": 5,
+              "source": "Legge 1899, The Yî King, Hexagram 5, Line 5",
+              "url": "https://sacred-texts.com/ich/ic05.htm"
+            },
+            {
+              "type": "line",
+              "hexagram": 5,
+              "line_number": 6,
+              "source": "Legge 1899, The Yî King, Hexagram 5, Line 6",
+              "url": "https://sacred-texts.com/ich/ic05.htm",
+              "priority": "predominant"
+            }
+          ],
+          "priority": "lower_stable_line_in_relating",
+          "note": "Four moving lines: read the lower of two unchanging lines in the relating hexagram (line 5)."
+        }
+      }
+    },
+    {
+      "label": "6: 5 изменяющихся линий",
+      "input": {
+        "throws_bottom_up": [
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            2,
+            2,
+            3
+          ]
+        ]
+      },
+      "qwen_expected_unverified": {
+        "lines_bottom_up": [
+          9,
+          9,
+          6,
+          9,
+          9,
+          7
+        ],
+        "moving_lines": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 43,
+          "name": "夬",
+          "pinyin": "guài",
+          "english": "Breakthrough",
+          "lines_binary": [
+            1,
+            1,
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "relating_hexagram": {
+          "king_wen_number": 2,
+          "name": "坤",
+          "pinyin": "kūn",
+          "english": "The Receptive",
+          "lines_binary": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        "reading_rule": {
+          "moving_count": 5,
+          "method": "zhu_xi",
+          "ruling_texts": [
+            {
+              "type": "line",
+              "hexagram": 43,
+              "line_number": 6,
+              "source": "Legge 1899, The Yî King, Hexagram 43, Line 6",
+              "url": "https://sacred-texts.com/ich/ic43.htm"
+            }
+          ],
+          "priority": "stable_line_in_primary",
+          "note": "Five moving lines: read the unchanging line in the PRIMARY hexagram (line 6), NOT the relating hexagram."
+        }
+      }
+    },
+    {
+      "label": "7: 6 изменяющихся линий (все 9 — Цянь → Кунь)",
+      "input": {
+        "throws_bottom_up": [
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ],
+          [
+            3,
+            3,
+            3
+          ]
+        ]
+      },
+      "qwen_expected_unverified": {
+        "lines_bottom_up": [
+          9,
+          9,
+          9,
+          9,
+          9,
+          9
+        ],
+        "moving_lines": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 1,
+          "name": "乾",
+          "pinyin": "qián",
+          "english": "The Creative",
+          "lines_binary": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "relating_hexagram": {
+          "king_wen_number": 2,
+          "name": "坤",
+          "pinyin": "kūn",
+          "english": "The Receptive",
+          "lines_binary": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "reading_rule": {
+          "moving_count": 6,
+          "method": "zhu_xi",
+          "ruling_texts": [
+            {
+              "type": "yong_nine",
+              "hexagram": 1,
+              "source": "Legge 1899, The Yî King, Hexagram 1, All Nines (用九)",
+              "url": "https://sacred-texts.com/ich/ic01.htm"
+            }
+          ],
+          "priority": "special_yong_nine",
+          "note": "All six lines changing in Hexagram 1: use special 'yong nine' text."
+        }
+      }
+    },
+    {
+      "label": "8: 6 изменяющихся линий (все 6 — Кунь → Цянь)",
+      "input": {
+        "throws_bottom_up": [
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ],
+          [
+            2,
+            2,
+            2
+          ]
+        ]
+      },
+      "qwen_expected_unverified": {
+        "lines_bottom_up": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "moving_lines": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "primary_hexagram": {
+          "king_wen_number": 2,
+          "name": "坤",
+          "pinyin": "kūn",
+          "english": "The Receptive",
+          "lines_binary": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "relating_hexagram": {
+          "king_wen_number": 1,
+          "name": "乾",
+          "pinyin": "qián",
+          "english": "The Creative",
+          "lines_binary": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "reading_rule": {
+          "moving_count": 6,
+          "method": "zhu_xi",
+          "ruling_texts": [
+            {
+              "type": "yong_six",
+              "hexagram": 2,
+              "source": "Legge 1899, The Yî King, Hexagram 2, All Sixes (用六)",
+              "url": "https://sacred-texts.com/ich/ic02.htm"
+            }
+          ],
+          "priority": "special_yong_six",
+          "note": "All six lines changing in Hexagram 2: use special 'yong six' text."
+        }
+      }
+    }
+  ]
+}

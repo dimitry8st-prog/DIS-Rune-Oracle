@@ -1,0 +1,152 @@
+{
+  "schema_version": "mo-qiuqian-tables-v2-corrected",
+  "created_at": "2026-10-14",
+  "status": "DRAFT",
+  "mo": {
+    "adapter_id": "mo",
+    "protocol_version": "mo-mipham-v1-draft",
+    "source": {
+      "author": "Jamgon Mipham (1846-1912)",
+      "title": "Mo: Tibetan Divination System",
+      "publisher": "Shambhala Publications",
+      "tradition": "Nyingma",
+      "url": "https://www.shambhala.com/snowlion_articles/mo-tibetan-divination-system/",
+      "status": "DESCRIPTION_ONLY",
+      "note": "Full text not extracted; 36 interpretations table not verified against specific pages"
+    },
+    "mechanics": {
+      "throws": 2,
+      "die_faces": 6,
+      "total_combinations": 36,
+      "ordered": true,
+      "note": "(a,b) differs from (b,a) when a != b"
+    },
+    "die_symbols": {
+      "traditional": ["A", "Ra", "Pa", "Ca", "Na", "Dhi"],
+      "note": "Syllables of Manjushri mantra; digital adaptation uses integers 1-6",
+      "status": "UNVERIFIED_MAPPING",
+      "reason": "Correspondence between numbers 1-6 and syllables not confirmed from specific edition"
+    },
+    "combinations_table": {
+      "status": "UNAVAILABLE",
+      "reason": "Full text of Mipham book not extracted; specific pages not verified",
+      "required_fields": ["combination_id", "first_throw", "second_throw", "name", "interpretation", "source_page"],
+      "expected_count": 36,
+      "mechanical_structure": {
+        "total": 36,
+        "ordered_pairs": true,
+        "example_structure": {
+          "combination_id": "mo-3-5",
+          "first_throw": 3,
+          "second_throw": 5,
+          "name": "UNAVAILABLE",
+          "interpretation": "UNAVAILABLE",
+          "source_page": "UNAVAILABLE"
+        }
+      }
+    },
+    "example_pa_na": {
+      "status": "UNVERIFIED",
+      "reason": "Page number and exact text not confirmed from source",
+      "note": "PA NA / Golden Lotus mentioned in secondary sources but not verified against book"
+    }
+  },
+  "qiuqian": {
+    "adapter_id": "qiuqian",
+    "protocol_version": "qiuqian-guanyin-kwan-im-v1-draft",
+    "source": {
+      "temple": "Kwan Im Thong Hood Cho Temple",
+      "location": "Singapore",
+      "address": "178 Waterloo Street, Singapore 187964",
+      "deity": "Guanyin (Avalokiteshvara)",
+      "total_sticks": 100,
+      "description_url": "https://www.nlb.gov.sg/main/article-detail?cmsuuid=d9189e20-2326-46b4-828c-db52113b78e5",
+      "status": "PROCEDURE_DESCRIBED",
+      "note": "Procedure described; full text corpus of 100 sticks not extracted"
+    },
+    "confirmation_system": {
+      "name": "jiaobei",
+      "chinese": "筊杯",
+      "tools": "Two wooden crescent blocks",
+      "sides": {
+        "convex": {
+          "chinese": "陰",
+          "pinyin": "yin",
+          "meaning": "down"
+        },
+        "flat": {
+          "chinese": "陽",
+          "pinyin": "yang",
+          "meaning": "up"
+        }
+      },
+      "outcomes": {
+        "sheng_bei": {
+          "chinese": "聖筊",
+          "description": "One convex up, one flat up",
+          "meaning": "Confirmation / divine approval",
+          "mathematical_probability": 0.50,
+          "status": "MATHEMATICAL_MODEL",
+          "note": "Mathematical model of two independent fair sides, not measured or traditional probability"
+        },
+        "yin_bei": {
+          "chinese": "陰筊",
+          "description": "Both convex sides up",
+          "meaning": "Negative answer / rejection",
+          "mathematical_probability": 0.25,
+          "status": "MATHEMATICAL_MODEL",
+          "note": "Mathematical model of two independent fair sides, not measured or traditional probability"
+        },
+        "xiao_bei": {
+          "chinese": "笑筊",
+          "description": "Both flat sides up",
+          "meaning": "Question unclear / cannot determine",
+          "mathematical_probability": 0.25,
+          "status": "MATHEMATICAL_MODEL",
+          "note": "Mathematical model of two independent fair sides, not measured or traditional probability"
+        }
+      },
+      "source": {
+        "temple": "Xingtian Temple",
+        "chinese": "行天宮",
+        "url": "https://www.ht.org.tw/religion207.htm",
+        "purpose": "Official source for jiaobei rules; used to identify discrepancies",
+        "note": "Different temple from Kwan Im Thong Hood Cho Temple"
+      }
+    },
+    "repeat_rules": {
+      "xingtian_temple": {
+        "status": "VERIFIED",
+        "rule": "One throw is sufficient; no repetition required until sheng_bei",
+        "source": "https://www.ht.org.tw/religion207.htm"
+      },
+      "kwan_im_temple": {
+        "status": "BLOCKED_SOURCE",
+        "reason": "Repeat rules for Kwan Im Thong Hood Cho Temple not confirmed from available sources"
+      },
+      "digital_adaptation": {
+        "max_retries": 3,
+        "status": "TECHNICAL_LIMIT",
+        "note": "Technical limit for digital version to prevent infinite loops; not historical rule"
+      }
+    },
+    "sticks_corpus": {
+      "status": "UNAVAILABLE",
+      "reason": "Full text of 100 stick interpretations not extracted from available sources",
+      "required_fields": ["stick_number", "title", "poem_or_text", "interpretation", "source_page"],
+      "expected_count": 100
+    },
+    "terminal_states": {
+      "confirmed": {
+        "description": "Stick selected and confirmed via jiaobei",
+        "card_status": "ABSTAIN",
+        "card_reason": "TEXT_CORPUS_NOT_FIXED"
+      },
+      "no_confirmation": {
+        "description": "Max retries exceeded without confirmation",
+        "card_status": "ABSTAIN",
+        "card_reason": "CONFIRMATION_NOT_RECEIVED"
+      }
+    }
+  }
+}

@@ -1,0 +1,299 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "study_id",
+    "provenance",
+    "method_id",
+    "control_id",
+    "registered_at",
+    "analysis_at",
+    "events",
+    "predictions",
+    "outcomes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "dis-statistics-v1"
+    },
+    "study_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provenance": {
+      "enum": [
+        "SYNTHETIC",
+        "IMPORTED"
+      ]
+    },
+    "method_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "control_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "registered_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "analysis_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "binary_event": {
+      "anyOf": [
+        {
+          "const": "field_1_contains_1"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "event_id",
+          "registered_at",
+          "target_at"
+        ],
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "registered_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "target_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "predictions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "prediction_id",
+          "event_id",
+          "strategy_id",
+          "mode",
+          "status",
+          "fixed_at",
+          "confirmation",
+          "evidence_ref",
+          "fields"
+        ],
+        "properties": {
+          "prediction_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "event_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "strategy_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mode": {
+            "enum": [
+              "forecast",
+              "retrospective"
+            ]
+          },
+          "status": {
+            "enum": [
+              "PICK",
+              "ABSTAIN"
+            ]
+          },
+          "fixed_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "confirmation": {
+            "enum": [
+              "CONFIRMED",
+              "UNCONFIRMED"
+            ]
+          },
+          "evidence_ref": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "fields": {
+            "anyOf": [
+              {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "items": {
+                  "type": "array",
+                  "minItems": 4,
+                  "maxItems": 4,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 20
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "probability": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "ABSTAIN"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "fields": {
+                  "type": "null"
+                },
+                "probability": {
+                  "type": "null"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "fields": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": {
+                    "type": "array",
+                    "minItems": 4,
+                    "maxItems": 4,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 20
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "confirmation": {
+                  "const": "CONFIRMED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "evidence_ref": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "outcomes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "event_id",
+          "occurred_at",
+          "recorded_at",
+          "confirmation",
+          "source_ref",
+          "fields"
+        ],
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "occurred_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "recorded_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "confirmation": {
+            "enum": [
+              "CONFIRMED",
+              "UNCONFIRMED"
+            ]
+          },
+          "source_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fields": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "uniqueItems": true,
+              "items": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DIS independent statistics import v1",
+  "description": "Structural schema. research_stats.core.report additionally checks IDs, duplicate slots, aware timestamps, ordering and probability target. Confirmation metadata is not authenticated."
+}
