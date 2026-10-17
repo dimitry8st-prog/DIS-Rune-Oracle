@@ -1,0 +1,207 @@
+{
+  "version": "rune-map-v2.1",
+  "source": "prompts/MASTER_PROMPT_v2.1.md, modern authored map",
+  "source_sha256": "8effbb5a71d458a563b2f538cff014d3da7b95c6fa7daceb4d262cd9afe073a7",
+  "runes": [
+    {
+      "index": 1,
+      "rune_id": "fehu",
+      "name": "Fehu / Феху",
+      "symbol": "ᚠ",
+      "upright": "ценность, ресурс, приобретение, сохранение",
+      "reversed": "потеря, утечка, сомнительная выгода"
+    },
+    {
+      "index": 2,
+      "rune_id": "uruz",
+      "name": "Uruz / Уруз",
+      "symbol": "ᚢ",
+      "upright": "сила, жизненность, изменение формы",
+      "reversed": "слабость, неверное применение силы"
+    },
+    {
+      "index": 3,
+      "rune_id": "thurisaz",
+      "name": "Thurisaz / Турисаз",
+      "symbol": "ᚦ",
+      "upright": "порог, остановка, осторожность",
+      "reversed": "импульсивность, уязвимость, плохой момент"
+    },
+    {
+      "index": 4,
+      "rune_id": "ansuz",
+      "name": "Ansuz / Ансуз",
+      "symbol": "ᚨ",
+      "upright": "сообщение, понимание, получение знания",
+      "reversed": "искажение сообщения, непонимание"
+    },
+    {
+      "index": 5,
+      "rune_id": "raidho",
+      "name": "Raidho / Райдо",
+      "symbol": "ᚱ",
+      "upright": "путь, порядок, согласованное движение",
+      "reversed": "сбой пути, рассогласование"
+    },
+    {
+      "index": 6,
+      "rune_id": "kenaz",
+      "name": "Kenaz / Кеназ",
+      "symbol": "ᚲ",
+      "upright": "раскрытие, огонь, ясность",
+      "reversed": "угасание, потеря ясности, завершение формы"
+    },
+    {
+      "index": 7,
+      "rune_id": "gebo",
+      "name": "Gebo / Гебо",
+      "symbol": "ᚷ",
+      "upright": "обмен, дар, партнёрство, взаимность",
+      "reversed": null
+    },
+    {
+      "index": 8,
+      "rune_id": "wunjo",
+      "name": "Wunjo / Вуньо",
+      "symbol": "ᚹ",
+      "upright": "радость, согласованность, прояснение",
+      "reversed": "задержка, отчуждение, трудный переход"
+    },
+    {
+      "index": 9,
+      "rune_id": "hagalaz",
+      "name": "Hagalaz / Хагалаз",
+      "symbol": "ᚺ",
+      "upright": "нарушение старого порядка, внешняя сила, перестройка",
+      "reversed": null
+    },
+    {
+      "index": 10,
+      "rune_id": "nauthiz",
+      "name": "Nauthiz / Наутиз",
+      "symbol": "ᚾ",
+      "upright": "необходимость, ограничение, дисциплина",
+      "reversed": null
+    },
+    {
+      "index": 11,
+      "rune_id": "isa",
+      "name": "Isa / Иса",
+      "symbol": "ᛁ",
+      "upright": "остановка, концентрация, замораживание движения",
+      "reversed": null
+    },
+    {
+      "index": 12,
+      "rune_id": "jera",
+      "name": "Jera / Йера",
+      "symbol": "ᛃ",
+      "upright": "цикл, урожай, созревание",
+      "reversed": null
+    },
+    {
+      "index": 13,
+      "rune_id": "eihwaz",
+      "name": "Eihwaz / Эйваз",
+      "symbol": "ᛇ",
+      "upright": "защита, выносливость, ожидание, предвидение",
+      "reversed": null
+    },
+    {
+      "index": 14,
+      "rune_id": "perthro",
+      "name": "Perthro / Перт",
+      "symbol": "ᛈ",
+      "upright": "скрытое, неизвестное, неполная картина",
+      "reversed": "прежняя схема исчерпана, не спешить фиксировать"
+    },
+    {
+      "index": 15,
+      "rune_id": "algiz",
+      "name": "Algiz / Альгиз",
+      "symbol": "ᛉ",
+      "upright": "защита, граница, внимательность",
+      "reversed": "уязвимость, риск вовлечения"
+    },
+    {
+      "index": 16,
+      "rune_id": "sowilo",
+      "name": "Sowilo / Соулу",
+      "symbol": "ᛋ",
+      "upright": "целостность, энергия, ясное направление",
+      "reversed": null
+    },
+    {
+      "index": 17,
+      "rune_id": "tiwaz",
+      "name": "Tiwaz / Тейваз",
+      "symbol": "ᛏ",
+      "upright": "принцип, мужество, дисциплина",
+      "reversed": "утечка силы, несвоевременность, проверка мотивов"
+    },
+    {
+      "index": 18,
+      "rune_id": "berkano",
+      "name": "Berkano / Беркана",
+      "symbol": "ᛒ",
+      "upright": "рост, рождение формы, развитие",
+      "reversed": "препятствия росту, плохая подготовка"
+    },
+    {
+      "index": 19,
+      "rune_id": "ehwaz",
+      "name": "Ehwaz / Эваз",
+      "symbol": "ᛖ",
+      "upright": "движение, переход, прогресс",
+      "reversed": "движение блокируется или несвоевременно"
+    },
+    {
+      "index": 20,
+      "rune_id": "mannaz",
+      "name": "Mannaz / Манназ",
+      "symbol": "ᛗ",
+      "upright": "субъект, самопознание, соотнесение",
+      "reversed": "проекция, внутренняя блокировка"
+    },
+    {
+      "index": 21,
+      "rune_id": "laguz",
+      "name": "Laguz / Лагуз",
+      "symbol": "ᛚ",
+      "upright": "поток, интуиция, чувствительность",
+      "reversed": "перегрузка, потеря меры, действие сверх ресурса"
+    },
+    {
+      "index": 22,
+      "rune_id": "ingwaz",
+      "name": "Ingwaz / Ингуз",
+      "symbol": "ᛜ",
+      "upright": "созревание, завершение, освобождение для нового",
+      "reversed": null
+    },
+    {
+      "index": 23,
+      "rune_id": "dagaz",
+      "name": "Dagaz / Дагаз",
+      "symbol": "ᛞ",
+      "upright": "перелом, рассвет, качественный переход",
+      "reversed": null
+    },
+    {
+      "index": 24,
+      "rune_id": "othala",
+      "name": "Othala / Отала",
+      "symbol": "ᛟ",
+      "upright": "наследие, границы своего, структура",
+      "reversed": "зависимость от старой формы, спорная граница"
+    },
+    {
+      "index": 0,
+      "rune_id": "blank",
+      "name": "Пустой знак",
+      "symbol": "—",
+      "upright": "непроявленная форма, открытое будущее, запрет преждевременной фиксации",
+      "reversed": null
+    }
+  ]
+}

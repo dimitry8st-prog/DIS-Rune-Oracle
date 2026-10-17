@@ -1,0 +1,232 @@
+{
+  "event": {
+    "event_id": "synthetic-only",
+    "question": "Synthetic test, not a real prediction",
+    "mode": "analysis",
+    "cutoff_at": "2020-01-01T00:00:00Z",
+    "facts": [],
+    "axes": [
+      {
+        "axis_id": "primary",
+        "condition_id": "fixed-test-condition",
+        "deadline": "2099-01-01T00:00:00+00:00",
+        "baseline": "B",
+        "scenarios": [
+          {
+            "scenario_id": "A",
+            "criterion": "Synthetic result A"
+          },
+          {
+            "scenario_id": "B",
+            "criterion": "Synthetic result B"
+          }
+        ]
+      }
+    ]
+  },
+  "cards": [
+    {
+      "core_id": "rune",
+      "status": "OK",
+      "reason": "",
+      "protocol_version": "synthetic-v1",
+      "inputs": {
+        "synthetic": true,
+        "core": "rune"
+      },
+      "input_hash": "30d71ace3ec5d0148a147a26cdbe800741ed1aefa12b32633beb9eeddc11913d",
+      "raw_result": {
+        "synthetic": true
+      },
+      "interpretation": "Synthetic interpretation, no traditional procedure performed.",
+      "claims": [
+        {
+          "claim_id": "rune-primary-A-SUPPORT",
+          "type": "FORECAST",
+          "text": "Synthetic claim",
+          "source_fragment": "Synthetic",
+          "axis_id": "primary",
+          "scenario_id": "A",
+          "polarity": "SUPPORT",
+          "review_status": "ACCEPTED",
+          "reviewed_by": "synthetic-test-reviewer",
+          "reviewed_at": "2020-01-02T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "core_id": "yijing",
+      "status": "OK",
+      "reason": "",
+      "protocol_version": "synthetic-v1",
+      "inputs": {
+        "synthetic": true,
+        "core": "yijing"
+      },
+      "input_hash": "5cddea069a33f174af8c45466ae344b35226c1d65528dcd9fe90eea9441ffddd",
+      "raw_result": {
+        "synthetic": true
+      },
+      "interpretation": "Synthetic interpretation, no traditional procedure performed.",
+      "claims": [
+        {
+          "claim_id": "yijing-primary-A-SUPPORT",
+          "type": "FORECAST",
+          "text": "Synthetic claim",
+          "source_fragment": "Synthetic",
+          "axis_id": "primary",
+          "scenario_id": "A",
+          "polarity": "SUPPORT",
+          "review_status": "ACCEPTED",
+          "reviewed_by": "synthetic-test-reviewer",
+          "reviewed_at": "2020-01-02T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "core_id": "mo",
+      "status": "OK",
+      "reason": "",
+      "protocol_version": "synthetic-v1",
+      "inputs": {
+        "synthetic": true,
+        "core": "mo"
+      },
+      "input_hash": "7185631e07df473587a6b5352a08288d822328de9f834598ec22772b46a55f7b",
+      "raw_result": {
+        "synthetic": true
+      },
+      "interpretation": "Synthetic interpretation, no traditional procedure performed.",
+      "claims": [
+        {
+          "claim_id": "mo-primary-A-SUPPORT",
+          "type": "FORECAST",
+          "text": "Synthetic claim",
+          "source_fragment": "Synthetic",
+          "axis_id": "primary",
+          "scenario_id": "A",
+          "polarity": "SUPPORT",
+          "review_status": "ACCEPTED",
+          "reviewed_by": "synthetic-test-reviewer",
+          "reviewed_at": "2020-01-02T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "core_id": "qiuqian",
+      "status": "OK",
+      "reason": "",
+      "protocol_version": "synthetic-v1",
+      "inputs": {
+        "synthetic": true,
+        "core": "qiuqian"
+      },
+      "input_hash": "288dd5f02be4a36a8cca6156d6cba7cccee45435a254904f766750d55b42da2f",
+      "raw_result": {
+        "synthetic": true
+      },
+      "interpretation": "Synthetic interpretation, no traditional procedure performed.",
+      "claims": [
+        {
+          "claim_id": "qiuqian-primary-A-SUPPORT",
+          "type": "FORECAST",
+          "text": "Synthetic claim",
+          "source_fragment": "Synthetic",
+          "axis_id": "primary",
+          "scenario_id": "A",
+          "polarity": "SUPPORT",
+          "review_status": "ACCEPTED",
+          "reviewed_by": "synthetic-test-reviewer",
+          "reviewed_at": "2020-01-02T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "core_id": "daliuren",
+      "status": "OK",
+      "reason": "",
+      "protocol_version": "synthetic-v1",
+      "inputs": {
+        "synthetic": true,
+        "core": "daliuren"
+      },
+      "input_hash": "b621bbf6fc44ba94a8342463f1ca6d71d12f40c13919b027723cf2dde85d0ec8",
+      "raw_result": {
+        "synthetic": true
+      },
+      "interpretation": "Synthetic interpretation, no traditional procedure performed.",
+      "claims": [
+        {
+          "claim_id": "daliuren-primary-A-SUPPORT",
+          "type": "FORECAST",
+          "text": "Synthetic claim",
+          "source_fragment": "Synthetic",
+          "axis_id": "primary",
+          "scenario_id": "A",
+          "polarity": "SUPPORT",
+          "review_status": "ACCEPTED",
+          "reviewed_by": "synthetic-test-reviewer",
+          "reviewed_at": "2020-01-02T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "core_id": "egypt",
+      "status": "OK",
+      "reason": "",
+      "protocol_version": "synthetic-v1",
+      "inputs": {
+        "synthetic": true,
+        "core": "egypt"
+      },
+      "input_hash": "4a400fdc546c331743610e959801679e21b4997502d99dff06a0aa48eab4232f",
+      "raw_result": {
+        "synthetic": true
+      },
+      "interpretation": "Synthetic interpretation, no traditional procedure performed.",
+      "claims": [
+        {
+          "claim_id": "egypt-primary-B-SUPPORT",
+          "type": "FORECAST",
+          "text": "Synthetic claim",
+          "source_fragment": "Synthetic",
+          "axis_id": "primary",
+          "scenario_id": "B",
+          "polarity": "SUPPORT",
+          "review_status": "ACCEPTED",
+          "reviewed_by": "synthetic-test-reviewer",
+          "reviewed_at": "2020-01-02T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "core_id": "maya",
+      "status": "OK",
+      "reason": "",
+      "protocol_version": "synthetic-v1",
+      "inputs": {
+        "synthetic": true,
+        "core": "maya"
+      },
+      "input_hash": "75f3d189e8e327b2612fb3af30edd4a41559ff37c9f93c3629f3ac9c7a4a2a42",
+      "raw_result": {
+        "synthetic": true
+      },
+      "interpretation": "Synthetic interpretation, no traditional procedure performed.",
+      "claims": [
+        {
+          "claim_id": "maya-primary-B-SUPPORT",
+          "type": "FORECAST",
+          "text": "Synthetic claim",
+          "source_fragment": "Synthetic",
+          "axis_id": "primary",
+          "scenario_id": "B",
+          "polarity": "SUPPORT",
+          "review_status": "ACCEPTED",
+          "reviewed_by": "synthetic-test-reviewer",
+          "reviewed_at": "2020-01-02T00:00:00Z"
+        }
+      ]
+    }
+  ]
+}
