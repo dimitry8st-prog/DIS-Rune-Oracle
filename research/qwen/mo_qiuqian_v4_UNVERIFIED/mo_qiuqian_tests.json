@@ -1,0 +1,72 @@
+{
+  "schema_version": "mo-qiuqian-tests-v2-corrected",
+  "created_at": "2026-10-14",
+  "status": "DRAFT",
+  "execution_status": {
+    "code_executed": false,
+    "environment": "Python not available in current environment",
+    "note": "These are test vectors for verification, not executed tests"
+  },
+  "mo_tests": {
+    "adapter_id": "mo",
+    "test_count": 10,
+    "coverage": {
+      "all_36_combinations": "exhaustive enumeration provided",
+      "error_cases": 5,
+      "session_tests": 2
+    },
+    "test_vectors": [
+      {"id": "mo-01", "type": "normal", "use_csprng": false, "first": 3, "second": 5, "expected_id": "mo-3-5"},
+      {"id": "mo-02", "type": "normal", "use_csprng": false, "first": 5, "second": 3, "expected_id": "mo-5-3"},
+      {"id": "mo-03", "type": "csprng", "use_csprng": true, "expected_range": "1..6"},
+      {"id": "mo-04", "type": "error", "first": 1.5, "second": 2, "expected": "ContractError: type"},
+      {"id": "mo-05", "type": "error", "first": true, "second": 2, "expected": "ContractError: type"},
+      {"id": "mo-06", "type": "error", "first": 0, "second": 3, "expected": "ContractError: range"},
+      {"id": "mo-07", "type": "error", "first": 7, "second": 2, "expected": "ContractError: range"},
+      {"id": "mo-08", "type": "error", "first": 3, "second": null, "expected": "ContractError: partial"},
+      {"id": "mo-09", "type": "session_repeat", "session_id": "mo-01-session", "expected": "same result"},
+      {"id": "mo-10", "type": "session_mismatch", "session_id": "mo-01-session", "event_id": "different", "expected": "ContractError"}
+    ],
+    "exhaustive_36": [
+      "mo-1-1","mo-1-2","mo-1-3","mo-1-4","mo-1-5","mo-1-6",
+      "mo-2-1","mo-2-2","mo-2-3","mo-2-4","mo-2-5","mo-2-6",
+      "mo-3-1","mo-3-2","mo-3-3","mo-3-4","mo-3-5","mo-3-6",
+      "mo-4-1","mo-4-2","mo-4-3","mo-4-4","mo-4-5","mo-4-6",
+      "mo-5-1","mo-5-2","mo-5-3","mo-5-4","mo-5-5","mo-5-6",
+      "mo-6-1","mo-6-2","mo-6-3","mo-6-4","mo-6-5","mo-6-6"
+    ]
+  },
+  "qiuqian_tests": {
+    "adapter_id": "qiuqian",
+    "test_count": 12,
+    "coverage": {
+      "all_100_sticks": "exhaustive range 1..100",
+      "confirmation_branches": 3,
+      "error_cases": 4,
+      "session_tests": 2
+    },
+    "test_vectors": [
+      {"id": "qq-01", "type": "normal", "use_csprng": false, "stick": 42, "confirmation": "sheng_bei", "expected": "confirmed"},
+      {"id": "qq-02", "type": "normal", "use_csprng": false, "stick": 1, "confirmation": "yin_bei", "expected": "no_confirmation"},
+      {"id": "qq-03", "type": "normal", "use_csprng": false, "stick": 100, "confirmation": "xiao_bei", "expected": "no_confirmation"},
+      {"id": "qq-04", "type": "csprng", "use_csprng": true, "max_retries": 3, "expected_range": "1..100"},
+      {"id": "qq-05", "type": "error", "stick": 42.5, "expected": "ContractError: type"},
+      {"id": "qq-06", "type": "error", "stick": 0, "expected": "ContractError: range"},
+      {"id": "qq-07", "type": "error", "stick": 101, "expected": "ContractError: range"},
+      {"id": "qq-08", "type": "no_confirmation", "stick": 50, "confirmation": "yin_bei", "max_retries": 0, "expected": "ABSTAIN/CONFIRMATION_NOT_RECEIVED"},
+      {"id": "qq-09", "type": "session_repeat", "session_id": "qq-01-session", "expected": "same result"},
+      {"id": "qq-10", "type": "session_mismatch", "session_id": "qq-01-session", "event_id": "different", "expected": "ContractError"},
+      {"id": "qq-11", "type": "manual_no_retry", "use_csprng": false, "stick": 25, "confirmation": "xiao_bei", "max_retries": 3, "expected": "ContractError: manual mode"},
+      {"id": "qq-12", "type": "branch_coverage", "branches": ["sheng_bei", "yin_bei", "xiao_bei"]}
+    ]
+  },
+  "integration_tests": {
+    "test_count": 4,
+    "test_vectors": [
+      {"id": "int-01", "description": "mo card conforms to CoreResult contract"},
+      {"id": "int-02", "description": "qiuqian card conforms to CoreResult contract"},
+      {"id": "int-03", "description": "Neither adapter generates FORECAST claims automatically"},
+      {"id": "int-04", "description": "Cards can be processed by router with weight 0.10"}
+    ]
+  }
+}
