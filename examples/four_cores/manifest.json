@@ -1,0 +1,242 @@
+{
+  "schema_version": "integrated-cycle-v0.3",
+  "provenance": "SYNTHETIC",
+  "event": {
+    "event_id": "SYNTHETIC-v03-001",
+    "question": "Synthetic teaching target, not a real forecast experiment",
+    "mode": "forecast",
+    "cutoff_at": "2026-01-01T00:00:00Z",
+    "axes": [
+      {
+        "axis_id": "target",
+        "condition_id": "synthetic-binary-v1",
+        "deadline": "2099-01-01T00:00:00Z",
+        "scenarios": [
+          {
+            "scenario_id": "A",
+            "criterion": "Synthetic fixture A"
+          },
+          {
+            "scenario_id": "B",
+            "criterion": "Synthetic fixture B"
+          }
+        ],
+        "baseline": "B"
+      }
+    ],
+    "facts": []
+  },
+  "adapters": {
+    "rune": {
+      "choices": [
+        {
+          "slot": 1,
+          "rotation": 0
+        },
+        {
+          "slot": 2,
+          "rotation": 180
+        },
+        {
+          "slot": 3,
+          "rotation": 0
+        }
+      ]
+    },
+    "yijing": {
+      "mode": "manual",
+      "throws": [
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          3
+        ],
+        [
+          2,
+          3,
+          3
+        ],
+        [
+          3,
+          3,
+          3
+        ],
+        [
+          2,
+          2,
+          3
+        ],
+        [
+          2,
+          3,
+          3
+        ]
+      ]
+    },
+    "mo": {
+      "mode": "manual",
+      "first_throw": 1,
+      "second_throw": 6
+    },
+    "qiuqian": {
+      "mode": "manual",
+      "max_attempts": 2,
+      "stick_number": 42
+    },
+    "maya": {
+      "mode": "calendar_model",
+      "profile": "gmt584283-conditional-v1",
+      "year": 2012,
+      "month": 12,
+      "day": 21,
+      "day_boundary": "civil_midnight_proleptic_gregorian"
+    },
+    "shakuna": {
+      "mode": "manual_observation",
+      "observation": {
+        "object": "crow",
+        "action": "caws",
+        "direction": "west",
+        "side": "left",
+        "observed_at": "2025-12-31T12:00:00Z",
+        "location": "SYNTHETIC location",
+        "context": "SYNTHETIC journey",
+        "evidence_ref": "SYNTHETIC observation; no historical interpretation"
+      }
+    },
+    "slavic": {
+      "mode": "manual_observation",
+      "regional_variant": "SYNTHETIC observation schema; not historical attribution",
+      "protocol_ref": "SYNTHETIC fixture",
+      "participants": [
+        "p1",
+        "p2"
+      ],
+      "items": {
+        "i1": "p1",
+        "i2": "p2"
+      },
+      "song_order": [
+        "unknown-song-1",
+        "unknown-song-2"
+      ],
+      "return_policy": "without_replacement",
+      "rounds": [
+        {
+          "song_id": "unknown-song-1",
+          "song_source_ref": "SYNTHETIC unknown song; no meaning assigned",
+          "item_id": "i1",
+          "participant_id": "p1",
+          "song_started_at": "2025-12-31T10:01:00Z",
+          "drawn_at": "2025-12-31T10:01:10Z",
+          "song_finished_at": "2025-12-31T10:01:20Z",
+          "returned_at": "2025-12-31T10:01:30Z"
+        },
+        {
+          "song_id": "unknown-song-2",
+          "song_source_ref": "SYNTHETIC unknown song; no meaning assigned",
+          "item_id": "i2",
+          "participant_id": "p2",
+          "song_started_at": "2025-12-31T10:02:00Z",
+          "drawn_at": "2025-12-31T10:02:10Z",
+          "song_finished_at": "2025-12-31T10:02:20Z",
+          "returned_at": "2025-12-31T10:02:30Z"
+        }
+      ],
+      "completion": "all_participants_received"
+    },
+    "name_grids": {
+      "mode": "manual_strokes",
+      "profile": "author-five-grid-arithmetic-v1",
+      "surname": "山田",
+      "given_name": "一二",
+      "surname_strokes": [
+        3,
+        5
+      ],
+      "given_strokes": [
+        1,
+        2
+      ],
+      "stroke_standard": "SYNTHETIC declared counts, not dictionary verified",
+      "evidence_ref": "SYNTHETIC arithmetic fixture"
+    }
+  },
+  "source_refs": [
+    "SYNTHETIC teaching fixture, no empirical efficacy claim",
+    "docs/INTEGRATED_ENGINE_V0_3.md",
+    "research/audit/four_cores/REPORT.md; all historical sources BLOCKED_SOURCE"
+  ],
+  "numeric_study": {
+    "schema_version": "dis-statistics-v1",
+    "study_id": "SYNTHETIC-explicit-numeric-v1",
+    "provenance": "SYNTHETIC",
+    "method_id": "manual-fixture-v1",
+    "control_id": "fixed-control-v1",
+    "registered_at": "2026-01-01T00:00:00Z",
+    "analysis_at": "2026-01-01T00:00:00Z",
+    "events": [
+      {
+        "event_id": "SYNTHETIC-v03-001",
+        "registered_at": "2026-01-01T00:00:00Z",
+        "target_at": "2099-01-01T00:00:00Z"
+      }
+    ],
+    "predictions": [
+      {
+        "prediction_id": "SYNTHETIC-manual-fixture-v1",
+        "event_id": "SYNTHETIC-v03-001",
+        "strategy_id": "manual-fixture-v1",
+        "mode": "forecast",
+        "status": "PICK",
+        "fixed_at": "2026-01-01T00:00:00Z",
+        "confirmation": "CONFIRMED",
+        "evidence_ref": "SYNTHETIC declaration only; local manifest fixes it before target",
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ]
+      },
+      {
+        "prediction_id": "SYNTHETIC-fixed-control-v1",
+        "event_id": "SYNTHETIC-v03-001",
+        "strategy_id": "fixed-control-v1",
+        "mode": "forecast",
+        "status": "PICK",
+        "fixed_at": "2026-01-01T00:00:00Z",
+        "confirmation": "CONFIRMED",
+        "evidence_ref": "SYNTHETIC declaration only; local manifest fixes it before target",
+        "fields": [
+          [
+            1,
+            5,
+            9,
+            13
+          ],
+          [
+            2,
+            6,
+            10,
+            14
+          ]
+        ]
+      }
+    ],
+    "outcomes": []
+  }
+}

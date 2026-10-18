@@ -1,0 +1,65 @@
+[
+  {
+    "id": "maya_system",
+    "url": "https://maya.nmai.si.edu/calendar/calendar-system",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+    "accessed_at": "2026-10-18T15:36:20.113976+00:00",
+    "content_verified": false,
+    "status": "BLOCKED_SOURCE",
+    "full_text_available": false
+  },
+  {
+    "id": "maya_converter",
+    "url": "https://maya.nmai.si.edu/calendar/maya-calendar-converter",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+    "accessed_at": "2026-10-18T15:36:20.113996+00:00",
+    "content_verified": false,
+    "status": "BLOCKED_SOURCE",
+    "full_text_available": false
+  },
+  {
+    "id": "shakuna_qwen",
+    "url": "https://www.wisdomlib.org/hinduism/book/brihat-samhita/d/doc229349.html",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+    "accessed_at": "2026-10-18T15:36:20.113998+00:00",
+    "content_verified": false,
+    "status": "BLOCKED_SOURCE",
+    "full_text_available": false
+  },
+  {
+    "id": "slavic_qwen",
+    "url": "https://ru.wikisource.org/wiki/О_русском_народном_пении_(Львов)",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+    "accessed_at": "2026-10-18T15:36:20.114018+00:00",
+    "content_verified": false,
+    "status": "BLOCKED_SOURCE",
+    "full_text_available": false
+  },
+  {
+    "id": "name_qwen",
+    "url": "https://goseikaku.com/",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+    "accessed_at": "2026-10-18T15:36:20.114020+00:00",
+    "content_verified": false,
+    "status": "BLOCKED_SOURCE",
+    "full_text_available": false
+  },
+  {
+    "id": "name_kumazaki",
+    "url": "https://www.kumazaki-shiki.com/",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+    "accessed_at": "2026-10-18T15:36:20.114022+00:00",
+    "content_verified": false,
+    "status": "BLOCKED_SOURCE",
+    "full_text_available": false
+  },
+  {
+    "id": "name_seimei",
+    "url": "https://www.seimeihandan.jp/seimei3.html",
+    "error": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+    "accessed_at": "2026-10-18T15:36:20.114023+00:00",
+    "content_verified": false,
+    "status": "BLOCKED_SOURCE",
+    "full_text_available": false
+  }
+]

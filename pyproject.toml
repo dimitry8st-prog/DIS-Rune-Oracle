@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dis-rune-oracle"
-version = "0.3.0"
+version = "0.3.1"
 description = "Research engine for preserved hypotheses and outcome evaluation"
 requires-python = ">=3.11"
 dependencies = []

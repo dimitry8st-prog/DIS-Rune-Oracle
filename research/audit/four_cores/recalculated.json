@@ -1,0 +1,172 @@
+{
+  "schema_version": "qwen-four-audit-v1",
+  "source_sha256": "17a78dbf751fcdbccaf2086a009193b5c7d5a004a4f97b4d1717f62bf436951b",
+  "execution_scope": "only four reviewed embedded definitions; no archive .git, JavaScript, npm or installers executed",
+  "findings": [
+    {
+      "case": "maya-2000-1-1",
+      "qwen_claimed": [
+        3,
+        "Kib'"
+      ],
+      "qwen_code": {
+        "number": 7,
+        "sign_index": 1,
+        "sign_name": "Ik'",
+        "tzolkin_date": "7 Ik'"
+      },
+      "conditional_corrected_model": {
+        "jdn": 2451545,
+        "jd_at_civil_midnight": 2451544.5,
+        "long_count_days": 1867262,
+        "number": 11,
+        "sign_index": 1,
+        "sign_label": "Ik'"
+      },
+      "historical_source_status": "BLOCKED_SOURCE; corrected model arithmetic only"
+    },
+    {
+      "case": "maya-2012-12-21",
+      "qwen_claimed": [
+        4,
+        "Ajaw"
+      ],
+      "qwen_code": {
+        "number": 13,
+        "sign_index": 19,
+        "sign_name": "Ajaw",
+        "tzolkin_date": "13 Ajaw"
+      },
+      "conditional_corrected_model": {
+        "jdn": 2456283,
+        "jd_at_civil_midnight": 2456282.5,
+        "long_count_days": 1872000,
+        "number": 4,
+        "sign_index": 19,
+        "sign_label": "Ajaw"
+      },
+      "historical_source_status": "BLOCKED_SOURCE; corrected model arithmetic only"
+    },
+    {
+      "case": "maya-2026-10-17",
+      "qwen_claimed": [
+        8,
+        "Ben"
+      ],
+      "qwen_code": {
+        "number": 4,
+        "sign_index": 7,
+        "sign_name": "Lamat",
+        "tzolkin_date": "4 Lamat"
+      },
+      "conditional_corrected_model": {
+        "jdn": 2461331,
+        "jd_at_civil_midnight": 2461330.5,
+        "long_count_days": 1877048,
+        "number": 8,
+        "sign_index": 7,
+        "sign_label": "Lamat"
+      },
+      "historical_source_status": "BLOCKED_SOURCE; corrected model arithmetic only"
+    },
+    {
+      "case": "shakuna-incomplete-cat-still-OK",
+      "result": {
+        "core_id": "shakuna",
+        "status": "OK",
+        "reason": "",
+        "protocol_version": "shakuna-v1",
+        "inputs": {
+          "event_id": "audit",
+          "observation": {
+            "object": "cat",
+            "action": "crosses_path"
+          }
+        },
+        "input_hash": "calculated",
+        "raw_result": {
+          "matched_rule": "S07",
+          "rule": {
+            "object": "cat",
+            "action": "crosses_path",
+            "direction": "any",
+            "result": "postpone"
+          },
+          "source": "Brihat Samhita Chapter 86"
+        },
+        "interpretation": "Rule S07: postpone",
+        "claims": []
+      }
+    },
+    {
+      "case": "slavic-digital-dict-choice-error",
+      "error_type": "KeyError",
+      "error": "0"
+    },
+    {
+      "case": "name-01-original-dictionary",
+      "result": {
+        "core_id": "name_grids",
+        "status": "UNAVAILABLE",
+        "reason": "UNKNOWN_CHARACTERS",
+        "protocol_version": "name-grids-kumazaki-v1-draft",
+        "inputs": {
+          "event_id": "e",
+          "surname": "田中",
+          "given_name": "太郎"
+        },
+        "input_hash": "calculated",
+        "raw_result": {},
+        "interpretation": "Cannot calculate: unknown characters in name.",
+        "claims": []
+      }
+    },
+    {
+      "case": "name-multiple-character-formula",
+      "result": {
+        "tenkaku": 9,
+        "jinkaku": 11,
+        "chikaku": 4,
+        "gaikaku": 2,
+        "sōkaku": 11
+      }
+    },
+    {
+      "case": "name-conditional-arithmetic-counterexample",
+      "manual_per_character": [
+        [
+          3,
+          5
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "conditional_corrected_model": {
+        "tenkaku": 8,
+        "jinkaku": 6,
+        "chikaku": 3,
+        "gaikaku": 5,
+        "sokaku": 11
+      },
+      "historical_profile": "UNVERIFIED"
+    },
+    {
+      "case": "contract-maya",
+      "validator_result": "core input_hash mismatch"
+    },
+    {
+      "case": "contract-shakuna",
+      "validator_result": "core input_hash mismatch"
+    },
+    {
+      "case": "contract-slavic",
+      "validator_result": "core input_hash mismatch"
+    },
+    {
+      "case": "contract-name_grids",
+      "validator_result": "core input_hash mismatch"
+    }
+  ]
+}

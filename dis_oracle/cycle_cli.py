@@ -2,7 +2,6 @@
 from pathlib import Path
 from research_stats.core import load_json
 from .contracts import canonical, ContractError
-from .pipeline import Cycle
 
 
 def add_commands(commands):
@@ -12,13 +11,14 @@ def add_commands(commands):
         item.add_argument("--run-id", required=True)
         if action in ("start", "step", "review", "science", "evaluate"):
             item.add_argument("input")
-        if action in ("start", "freeze", "evaluate"):
+        if action in ("start", "freeze", "evaluate", "science"):
             item.add_argument("--at", help="Clock declaration, accepted only for SYNTHETIC fixtures")
     demo = commands.add_parser("cycle-demo", help="Complete SYNTHETIC cycle with explicit future simulated outcome")
     demo.add_argument("--directory", required=True, help="Must be a new empty directory")
 
 
 def execute(args):
+    from .pipeline import Cycle
     if args.command == "cycle-demo":
         return demo(args.directory)
     with Cycle(args.directory, args.run_id) as cycle:
@@ -30,12 +30,15 @@ def execute(args):
             return cycle.freeze(at=args.at)
         if action == "evaluate":
             return cycle.evaluate(data, at=args.at)
+        if action == "science":
+            return cycle.science(data, at=args.at)
         if action == "status":
             return cycle.status()
         return getattr(cycle, action)(data)
 
 
 def demo(directory):
+    from .pipeline import Cycle
     root = Path(directory)
     if root.exists() and any(root.iterdir()):
         raise ContractError("demo directory must be empty; no outputs are overwritten")
