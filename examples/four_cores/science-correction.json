@@ -1,0 +1,29 @@
+{
+  "report_id": "corrected-outcome-v2",
+  "reason": "SYNTHETIC example of an explicit source correction; original unchanged",
+  "supersedes": "after-outcome-v1",
+  "numeric_outcomes": [
+    {
+      "event_id": "SYNTHETIC-v03-001",
+      "occurred_at": "2099-01-01T00:00:00Z",
+      "recorded_at": "2099-01-01T00:01:30Z",
+      "confirmation": "CONFIRMED",
+      "source_ref": "SYNTHETIC corrected source, not a real draw",
+      "fields": [
+        [
+          1,
+          2,
+          3,
+          5
+        ],
+        [
+          5,
+          6,
+          7,
+          8
+        ]
+      ]
+    }
+  ],
+  "analysis_at": "2099-01-01T00:01:59Z"
+}

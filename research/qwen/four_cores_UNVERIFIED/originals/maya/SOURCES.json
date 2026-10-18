@@ -1,0 +1,42 @@
+{
+  "sources": [
+    {
+      "id": "maya-cal-01",
+      "author": "David H. Kelley",
+      "title": "Calendars and Years: Astronomy and Time in the Ancient Near East",
+      "edition": "Oxbow Books, 2011",
+      "section": "Chapter 7: The Maya Calendar",
+      "pages": "135-158",
+      "url": "academic databases",
+      "availability": "fragment via academic access",
+      "license": "academic use",
+      "confirms": "GMT correlation, Tzolkin and Haab structure"
+    },
+    {
+      "id": "maya-cal-02",
+      "author": "Michael D. Coe",
+      "title": "The Maya",
+      "edition": "8th edition, Thames & Hudson, 2011",
+      "pages": "133-145",
+      "availability": "book available for purchase",
+      "license": "copyright protected",
+      "confirms": "20 signs and their sequence"
+    }
+  ],
+  "blocked": [
+    {
+      "id": "maya-div-01",
+      "type": "pajooneem",
+      "reason": "Ethnographic description incomplete",
+      "available_sources": [
+        "Tedlock, B. Time and the Highland Maya (1982) - general description",
+        "Tedlock, B. 2000 Years of Mayan Divination (2010) - historical overview"
+      ],
+      "missing": [
+        "exact counting procedure",
+        "grouping rules",
+        "completion criteria"
+      ]
+    }
+  ]
+}

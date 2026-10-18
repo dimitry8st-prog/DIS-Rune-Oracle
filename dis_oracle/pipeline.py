@@ -4,7 +4,6 @@ The cycle lock serializes adapter dispatch across the separate private stores.
 Hashes and local time declarations do not authenticate sources or predictiveness.
 """
 from copy import deepcopy
-import fcntl
 from pathlib import Path
 
 from research_stats.core import report as statistics_report, paired_summary
@@ -13,6 +12,7 @@ from .contracts import (ContractError, CORES, digest, now_iso, shape, text,
                         timestamp, validate_event, validate_cards)
 from .engine import freeze, evaluate
 from .journal import Journal, JournalError
+from .adapters import audited_inputs
 from .adapters.runes import RuneSessions
 from .adapters.yijing import run as yijing_run, calculate
 from .adapters.mo import MoSessions
@@ -27,6 +27,7 @@ LIMITATIONS = [
     "Support percentages are not probabilities; no Brier score is inferred from core weights.",
     "Independent pairs, prespecified sampling/stopping and nonselective missingness are needed for inference.",
     "Mo/Qiuqian historical corpora and selected temple procedure remain unavailable.",
+    "Additional core cards are explicit conditional models/manual observations, not source-verified historical readings.",
 ]
 
 
@@ -44,9 +45,16 @@ def validate_manifest(manifest, at):
     if manifest["event"]["mode"] == "forecast" and any(timestamp(a["deadline"]) <= timestamp(at) for a in axes.values()):
         raise ContractError("late cycle registration; use retrospective mode")
     adapters = manifest["adapters"]
-    shape(adapters, (), ("rune", "yijing", "mo", "qiuqian"))
+    shape(adapters, (), ("rune", "yijing", "mo", "qiuqian", "maya", "shakuna", "slavic", "name_grids"))
     for core, config in adapters.items():
-        if core == "rune":
+        if core in ("maya", "shakuna", "slavic", "name_grids"):
+            audited_inputs.validate_config(core, config)
+            # Reported observations must already exist when the cycle is registered.
+            observed = ([config["observation"]["observed_at"]] if core == "shakuna" else
+                        [r["returned_at"] for r in config["rounds"]] if core == "slavic" else [])
+            if any(timestamp(t) > min(timestamp(at), timestamp(manifest["event"]["cutoff_at"])) for t in observed):
+                raise ContractError("reported observation is after registration/fact cutoff")
+        elif core == "rune":
             shape(config, ("choices",))
             choices = config["choices"]
             if not isinstance(choices, list) or len(choices) != 3:
@@ -111,6 +119,10 @@ class Cycle:
         self.prefix = "cycle:" + digest(run_id)
         self.private = self.root / "private" / digest(run_id)
         self.private.mkdir(parents=True, exist_ok=True, mode=0o700)
+        try:
+            import fcntl
+        except ImportError as exc:
+            raise ContractError("integrated cycles require POSIX fcntl; Windows cycles are not supported") from exc
         self.lock = (self.root / "cycle.lock").open("a")
         fcntl.flock(self.lock, fcntl.LOCK_EX)
         self.journal = Journal(self.root / "cycle-v03.sqlite3")
@@ -187,6 +199,14 @@ class Cycle:
                     card = state["card"]
                 finally:
                     store.close()
+            elif core in ("maya", "shakuna", "slavic", "name_grids"):
+                key = "adapter:audited:" + sid
+                card = self.journal.get(key)
+                if card is None:
+                    card = audited_inputs.card(core, eid, config)
+                    self.journal.append(key, card)
+                if card["inputs"] != {"event_id": eid, **config}:
+                    raise ContractError("saved audited adapter inputs differ")
             elif core == "yijing":
                 card = yijing_run(self.journal, sid, eid, config.get("throws"))
             else:
@@ -260,12 +280,17 @@ class Cycle:
             card["claims"] = deepcopy(reviews["claims_by_core"].get(card["core_id"], []))
         event = self._registration()["manifest"]["event"]
         validate_cards(cards, validate_event(event))
+        axes = validate_event(event)
         for card in cards:
             raw = card["raw_result"]
             reading_at = raw.get("reading_fixed_at", raw.get("generated_at")) if isinstance(raw, dict) else None
             for claim in card["claims"]:
                 if claim.get("reviewed_at") and reading_at and timestamp(claim["reviewed_at"]) < timestamp(reading_at):
                     raise ContractError("claim review precedes the adapter reading")
+                if claim.get("reviewed_at") and event["mode"] == "forecast":
+                    # Every forecast axis must still be freezable, including other axes.
+                    if any(timestamp(claim["reviewed_at"]) >= timestamp(a["deadline"]) for a in axes.values()):
+                        raise ContractError("review is incompatible with forecast deadlines; state unchanged")
         return self._save("review", {"state": "REVIEWED", "request": reviews,
                                      "original_cards_hash": digest(self._cards()), "cards": cards})
 
@@ -298,15 +323,21 @@ class Cycle:
             raise ContractError("evaluation precedes freeze")
         return evaluate(self.journal, self.run_id, outcome, evaluated_at=when)
 
-    def science(self, request):
+    def science(self, request, *, at=None):
         """Immutable versioned audit, reusing PR3 computations without altering originals."""
-        shape(request, ("report_id", "reason"), ("supersedes", "numeric_outcomes"))
+        shape(request, ("report_id", "reason"), ("supersedes", "numeric_outcomes", "analysis_at"))
         text(request["report_id"], "report_id"); text(request["reason"], "reason")
+        if "numeric_outcomes" in request and not isinstance(request["numeric_outcomes"], list):
+            raise ContractError("numeric_outcomes must be an array")
+        if request.get("supersedes") is not None:
+            text(request["supersedes"], "supersedes")
         key = "science:" + digest(request["report_id"])
         old = self._get(key)
         if old:
             if digest(old["request"]) != digest(request):
                 raise JournalError("scientific report id already used with different inputs")
+            if at is not None and old.get("analysis_clock_at") != at:
+                raise JournalError("scientific report clock already fixed")
             return old
         original = self._get("original")
         if not original:
@@ -316,6 +347,33 @@ class Cycle:
             raise ContractError("unknown superseded scientific report")
         reg = self._registration(); manifest = reg["manifest"]; frozen = original["frozen"]
         evaluations = [self.journal.get(f"run:{self.run_id}:outcome:{a['axis_id']}") for a in manifest["event"]["axes"]]
+        created_at = now_iso()  # Actual local creation time, separate from an analytical cutoff.
+        if at is not None:
+            clock_at = self._time(manifest, at)
+        elif manifest["provenance"] == "SYNTHETIC":
+            # Backward-compatible synthetic fixtures may already contain future declared times.
+            boundaries = [created_at, frozen["frozen_at"]] + [r["evaluated_at"] for r in evaluations if r]
+            boundaries += [r["recorded_at"] for r in request.get("numeric_outcomes", [])]
+            clock_at = max(boundaries, key=timestamp)
+        else:
+            clock_at = created_at
+        analysis_at = request.get("analysis_at", clock_at)
+        if not timestamp(frozen["frozen_at"]) <= timestamp(analysis_at) <= timestamp(clock_at):
+            raise ContractError("analysis cutoff must follow freeze and not exceed report clock")
+        if any(r and timestamp(r["evaluated_at"]) > timestamp(analysis_at) for r in evaluations):
+            raise ContractError("included evaluation is after analysis cutoff")
+        history = [r["payload"] for r in self.journal.export()
+                   if r["record_key"].startswith(self.prefix + ":science:")]
+        parent = self._get("science:" + digest(previous)) if previous is not None else None
+        if parent and parent["original_report_hash"] != digest(original):
+            raise ContractError("scientific parent belongs to a different original/event")
+        numeric_history = [r for r in history if r["request"].get("numeric_outcomes")]
+        new_outcomes = request.get("numeric_outcomes", [])
+        if numeric_history and digest(new_outcomes) != digest(history[-1]["request"].get("numeric_outcomes", [])):
+            if not parent or parent != history[-1]:
+                raise ContractError("changed/removed numeric outcome requires supersedes of the latest scientific version and a reason")
+        if parent and timestamp(parent["analysis_at"]) > timestamp(analysis_at):
+            raise ContractError("scientific correction cutoff precedes its parent")
         rows = []
         for axis, result in zip(manifest["event"]["axes"], evaluations):
             rows.append({"axis_id": axis["axis_id"], "deadline": axis["deadline"],
@@ -332,13 +390,16 @@ class Cycle:
         if study is not None:
             data = deepcopy(study)
             data["outcomes"] = request.get("numeric_outcomes", [])
-            data["analysis_at"] = max([frozen["frozen_at"]] + [r["evaluation"]["evaluated_at"] for r in rows if r["evaluation"]], key=timestamp)
+            data["analysis_at"] = analysis_at
             for outcome in data["outcomes"]:
                 if not evaluations[0] or timestamp(outcome["occurred_at"]) != timestamp(evaluations[0]["outcome"]["observed_at"]):
                     raise ContractError("numeric outcome requires matching registered resolved event/time")
             numeric = statistics_report(data)
-        analysis_at = max([frozen["frozen_at"]] + [r["evaluation"]["evaluated_at"] for r in rows if r["evaluation"]], key=timestamp)
-        report = {"state": "SCIENTIFIC_REPORT", "analysis_at": analysis_at,
+        report = {"state": "SCIENTIFIC_REPORT", "science_version": "scientific-audit-v0.3.1", "analysis_at": analysis_at,
+                  "created_at": created_at, "analysis_clock_at": clock_at,
+                  "analysis_clock_kind": "SYNTHETIC_DECLARED" if manifest["provenance"] == "SYNTHETIC" else "LOCAL_WALL_CLOCK",
+                  "event_id": manifest["event"]["event_id"], "run_id": self.run_id,
+                  "parent_report_hash": digest(parent) if parent else None,
                   "scope": "one registered event; axes are not independent samples", "request": request, "pipeline_version": VERSION,
                   "original_report_hash": digest(original), "registration_hash": digest(reg),
                   "provenance": manifest["provenance"], "synthetic_clock": reg["synthetic_clock"],
@@ -348,7 +409,8 @@ class Cycle:
                   "source_refs": manifest["source_refs"], "source_verification": "NOT_AUTHENTICATED",
                   "method_versions": {c["core_id"]: {"protocol": c["protocol_version"], "input_hash": c["input_hash"],
                                        "procedure_source": c["raw_result"].get("source") if isinstance(c["raw_result"], dict) else None,
-                                       "sources": {k: c["inputs"][k] for k in ("map_version", "map_hash", "set_id") if k in c["inputs"]}}
+                                       "source_verification": c["raw_result"].get("source_verification", "NOT_AUTHENTICATED") if isinstance(c["raw_result"], dict) else "NOT_AUTHENTICATED",
+                                       "sources": {k: c["inputs"][k] for k in ("map_version", "map_hash", "set_id", "profile", "day_boundary", "stroke_standard", "regional_variant", "protocol_ref") if k in c["inputs"]}}
                                       for c in frozen["raw_cards"]},
                   "router": {"core_weight": "0.10", "support_is_probability": False, "comparison": frozen["comparison"]},
                   "trials": rows, "registered_axes": len(rows), "resolved_axes": sum(r is not None for r in evaluations),
