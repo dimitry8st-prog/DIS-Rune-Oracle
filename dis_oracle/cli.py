@@ -13,6 +13,7 @@ from .router import compare
 from .adapters.runes import RuneSessions
 from .adapters.yijing import run as yijing_run
 from .cycle_cli import add_commands, execute as execute_cycle
+from .series import series_summary
 from research_stats.core import load_json
 
 
@@ -37,6 +38,8 @@ def main(argv=None):
     for command in ("verify", "export", "summary"):
         item = commands.add_parser(command)
         item.add_argument("--db", required=True)
+    series = commands.add_parser("series-summary", help="Read-only registry of lottery draws in one journal")
+    series.add_argument("--db", required=True)
     for command in ("rune-prepare", "rune-select", "rune-status", "rune-reveal"):
         item = commands.add_parser(command)
         item.add_argument("--db", required=True, help="Private session DB, not the public journal")
@@ -95,6 +98,11 @@ def main(argv=None):
         elif args.command == "compare":
             data = read_json(args.input)
             result = compare(data["event"], data["cards"])
+        elif args.command == "series-summary":
+            if not Path(args.db).is_file():
+                raise ContractError("journal does not exist")
+            journal = Journal(args.db)
+            result = series_summary(journal)
         else:
             # A missing DB is only created for a new freeze, never for audit/evaluation.
             if args.command != "freeze" and not Path(args.db).is_file():
@@ -116,6 +124,8 @@ def main(argv=None):
                 result = summary(journal)
             else:
                 result = journal.export()
+        if args.command == "series-summary":
+            print(result["table"], end="")
         print(canonical(result))
         return 0
     except (ContractError, JournalError, OSError, ValueError, KeyError, TypeError, sqlite3.Error) as exc:

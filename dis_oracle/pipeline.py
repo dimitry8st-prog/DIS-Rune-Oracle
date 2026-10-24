@@ -13,9 +13,9 @@ from .contracts import (ContractError, CORES, digest, now_iso, shape, text,
                         timestamp, validate_event, validate_cards)
 from .engine import freeze, evaluate
 from .journal import Journal, JournalError
-from .lottery import (CONTROL_ID, METHOD_VERSION, UNAVAILABLE, author_report,
-                      control_fields, method_fields, positions_from_card, statistics_study,
-                      validate_plan)
+from .lottery import (CONTROL_ID, METHOD_VERSION, UNAVAILABLE, author_outcome_slot,
+                      author_report, control_fields, draw_record_key, inherited_author_outcomes,
+                      method_fields, positions_from_card, statistics_study, validate_plan)
 from .adapters import audited_inputs
 from .adapters.runes import RuneSessions
 from .adapters.yijing import run as yijing_run, calculate
@@ -211,6 +211,7 @@ class Cycle:
         else:
             fixed_at = self._time(manifest, at)
             validate_manifest(manifest, fixed_at)  # all inputs before any randomness
+            self._claim_lottery_draw(manifest)
             # One local run per event prevents drawing several cycles and exporting only a favorite.
             self.journal.append("cycle-event:" + digest(manifest["event"]["event_id"]),
                                 {"run_id": self.run_id, "manifest_hash": digest(manifest)})
@@ -220,6 +221,20 @@ class Cycle:
         if not self._get("collected"):
             self._collect()
         return self.status()
+
+    def _claim_lottery_draw(self, manifest):
+        """Reserve one procedure per game and draw before any adapter RNG."""
+        plan = manifest.get("lottery_plan")
+        if plan is None:
+            return None
+        claim = {"game": plan["game"], "draw": plan["draw"], "run_id": self.run_id,
+                 "event_id": manifest["event"]["event_id"], "manifest_hash": digest(manifest),
+                 "method_version": METHOD_VERSION}
+        try:
+            self.journal.append(draw_record_key(plan["game"], plan["draw"]), claim)
+        except JournalError as exc:
+            raise ContractError("this game and draw already belong to another cycle") from exc
+        return claim
 
     def _collect(self):
         reg = self._registration()
@@ -274,13 +289,16 @@ class Cycle:
                     or existing["positions"] != positions or existing["draw"] != plan["draw"]):
                 raise ContractError("saved lottery numbers do not match the saved rune session")
             return existing
+        # The clock is read only after both picks exist. A control sample that
+        # crosses the draw time is stored and later excluded as LATE.
+        controls = control_fields()
+        fixed_at = reg["registered_at"] if reg["synthetic_clock"] else now_iso()
         record = {"state": "LOTTERY_NUMERIC_FIXED", "author_method": True,
                   "method_version": METHOD_VERSION, "control_id": CONTROL_ID,
                   "game": plan["game"], "draw": plan["draw"], "target_at": plan["target_at"],
                   "control_rule": plan["control_rule"], "registered_at": reg["registered_at"],
-                  "fixed_at": reg["registered_at"] if reg["synthetic_clock"] else now_iso(),
-                  "seed": seed, "positions": positions, "method_fields": picked,
-                  "control_fields": control_fields(),
+                  "fixed_at": fixed_at, "seed": seed, "positions": positions,
+                  "method_fields": picked, "control_fields": controls,
                   "session_commitment": rune["raw_result"].get("commitment")}
         return self._save("lottery-rune-hash-v2", record)
 
@@ -389,6 +407,27 @@ class Cycle:
             raise ContractError("evaluation precedes freeze")
         return evaluate(self.journal, self.run_id, outcome, evaluated_at=when)
 
+    def _guard_outcome_lineage(self, history, parent, request, manifest):
+        """One author slot shares every alias. An imported study keeps its own chain."""
+        message = "changed/removed numeric outcome requires supersedes of the latest scientific version and a reason"
+        if manifest.get("numeric_study") is None and manifest.get("lottery_plan") is not None:
+            proposed = author_outcome_slot(request)
+            if proposed is None or not history:
+                return
+            current = inherited_author_outcomes(row["request"] for row in history)
+            if digest(proposed) != digest(current) and (not parent or parent != history[-1]):
+                raise ContractError(message)
+            return
+        numeric_history = [row for row in history if row["request"].get("numeric_outcomes")]
+        new_outcomes = request.get("numeric_outcomes", [])
+        if numeric_history and digest(new_outcomes) != digest(history[-1]["request"].get("numeric_outcomes", [])):
+            if not parent or parent != history[-1]:
+                raise ContractError(message)
+        lottery_history = [row for row in history if "lottery_outcomes" in row["request"]]
+        if lottery_history and digest(request.get("lottery_outcomes", [])) != digest(history[-1]["request"].get("lottery_outcomes", [])):
+            if not parent or parent != history[-1]:
+                raise ContractError(message)
+
     def science(self, request, *, at=None):
         """Immutable versioned audit, reusing PR3 computations without altering originals."""
         shape(request, ("report_id", "reason"), ("supersedes", "numeric_outcomes", "lottery_outcomes", "analysis_at"))
@@ -436,15 +475,7 @@ class Cycle:
         parent = self._get("science:" + digest(previous)) if previous is not None else None
         if parent and parent["original_report_hash"] != digest(original):
             raise ContractError("scientific parent belongs to a different original/event")
-        numeric_history = [r for r in history if r["request"].get("numeric_outcomes")]
-        new_outcomes = request.get("numeric_outcomes", [])
-        if numeric_history and digest(new_outcomes) != digest(history[-1]["request"].get("numeric_outcomes", [])):
-            if not parent or parent != history[-1]:
-                raise ContractError("changed/removed numeric outcome requires supersedes of the latest scientific version and a reason")
-        lottery_history = [r for r in history if "lottery_outcomes" in r["request"]]
-        if lottery_history and digest(request.get("lottery_outcomes", [])) != digest(history[-1]["request"].get("lottery_outcomes", [])):
-            if not parent or parent != history[-1]:
-                raise ContractError("changed/removed numeric outcome requires supersedes of the latest scientific version and a reason")
+        self._guard_outcome_lineage(history, parent, request, manifest)
         if parent and timestamp(parent["analysis_at"]) > timestamp(analysis_at):
             raise ContractError("scientific correction cutoff precedes its parent")
         rows = []

@@ -45,6 +45,7 @@ python -m dis_oracle freeze examples/aligned.json --run-id demo-1 --db private-r
 python -m dis_oracle evaluate examples/outcome.json --run-id demo-1 --db private-runs/demo.sqlite
 python -m dis_oracle verify --db private-runs/demo.sqlite
 python -m dis_oracle summary --db private-runs/demo.sqlite
+python -m dis_oracle series-summary --db /tmp/dis-lottery/cycle-v03.sqlite3
 ```
 
 `cycle-demo` требует новый пустой каталог и явно использует SYNTHETIC данные

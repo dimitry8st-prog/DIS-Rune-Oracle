@@ -7,7 +7,7 @@ import hashlib
 import secrets
 
 from research_stats.core import field_distribution, fields, total_distribution
-from .contracts import ContractError, text
+from .contracts import ContractError, digest, text
 
 
 METHOD_VERSION = "lottery-rune-hash-v2"
@@ -27,9 +27,25 @@ def orientation_token(value):
     raise ContractError("final_orientation must be 0, 180 or None")
 
 
-def seed_text(draw, positions):
-    if type(draw) is not int or draw < 1:
+def positive_draw(value):
+    """Bool and float are not draw numbers. True == 1 and 15944.0 == 15944 must not pass."""
+    if type(value) is not int or value < 1:
         raise ContractError("draw must be a positive integer; bool is not a draw number")
+    return value
+
+
+def draw_identity(game, draw):
+    """Canonical game text plus integer draw. The journal key is the digest of this object."""
+    text(game, "game")
+    return {"game": game, "draw": positive_draw(draw)}
+
+
+def draw_record_key(game, draw):
+    return "lottery-draw:" + digest(draw_identity(game, draw))
+
+
+def seed_text(draw, positions):
+    positive_draw(draw)
     if not isinstance(positions, list) or len(positions) != 3:
         raise ContractError("lottery formula needs three saved rune positions")
     parts = []
@@ -79,9 +95,7 @@ def positions_from_card(card):
 def validate_plan(plan, adapters):
     from .contracts import shape, timestamp
     shape(plan, ("game", "draw", "target_at", "method_version", "control_rule"))
-    text(plan["game"], "game")
-    if type(plan["draw"]) is not int or plan["draw"] < 1:
-        raise ContractError("draw must be a positive integer; bool is not a draw number")
+    draw_identity(plan["game"], plan["draw"])
     if plan["target_at"] is not None:
         timestamp(plan["target_at"])
     if plan["method_version"] != METHOD_VERSION:
@@ -97,6 +111,7 @@ def validate_outcome(outcome, event_id, draw):
     from .contracts import shape, timestamp
     shape(outcome, ("event_id", "draw", "occurred_at", "recorded_at", "confirmation", "source_ref", "fields"))
     text(outcome["event_id"], "event_id")
+    positive_draw(outcome.get("draw"))
     if outcome["event_id"] != event_id or outcome["draw"] != draw:
         raise ContractError("numeric outcome is bound to another draw")
     for key in ("occurred_at", "recorded_at"):
@@ -109,6 +124,28 @@ def validate_outcome(outcome, event_id, draw):
         fields(outcome["fields"])
     except ValueError as exc:
         raise ContractError(str(exc)) from exc
+
+
+def author_outcome_slot(request):
+    """Without an imported study, numeric_outcomes and lottery_outcomes are one slot."""
+    has_numeric = "numeric_outcomes" in request
+    has_lottery = "lottery_outcomes" in request
+    if has_numeric and has_lottery:
+        raise ContractError("duplicate numeric outcome submission")
+    if has_lottery:
+        return request["lottery_outcomes"]
+    if has_numeric:
+        return request["numeric_outcomes"]
+    return None
+
+
+def inherited_author_outcomes(requests):
+    current = []
+    for request in requests:
+        slot = author_outcome_slot(request)
+        if slot is not None:
+            current = slot
+    return current
 
 
 def statistics_study(record, outcomes, analysis_at, provenance, event_id, mode):
