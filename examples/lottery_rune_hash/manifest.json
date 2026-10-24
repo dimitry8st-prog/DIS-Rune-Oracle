@@ -1,0 +1,42 @@
+{
+  "schema_version": "integrated-cycle-v0.3",
+  "provenance": "SYNTHETIC",
+  "event": {
+    "event_id": "SYNTHETIC-lottery-v2",
+    "question": "Synthetic teaching draw, not a real forecast experiment",
+    "mode": "forecast",
+    "cutoff_at": "2026-01-01T00:00:00Z",
+    "axes": [
+      {
+        "axis_id": "target",
+        "condition_id": "synthetic-binary-v1",
+        "deadline": "2099-01-01T00:00:00Z",
+        "scenarios": [
+          {"scenario_id": "A", "criterion": "Synthetic fixture A"},
+          {"scenario_id": "B", "criterion": "Synthetic fixture B"}
+        ],
+        "baseline": "B"
+      }
+    ],
+    "facts": []
+  },
+  "adapters": {
+    "rune": {
+      "choices": [
+        {"slot": 1, "rotation": 0},
+        {"slot": 2, "rotation": 180},
+        {"slot": 3, "rotation": 0}
+      ]
+    }
+  },
+  "source_refs": [
+    "SYNTHETIC teaching fixture, no empirical efficacy claim"
+  ],
+  "lottery_plan": {
+    "game": "synthetic-4-of-20",
+    "draw": 15944,
+    "target_at": "2099-01-01T00:00:00Z",
+    "method_version": "lottery-rune-hash-v2",
+    "control_rule": "uniform without replacement: four distinct integers 1..20 in each of two fields"
+  }
+}

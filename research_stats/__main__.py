@@ -22,7 +22,7 @@ def main():
     args = parser.parse_args()
     try:
         if args.command == "report":
-            raw = args.input.read_bytes()
+            raw = args.input.read_bytes().replace(b"\r\n", b"\n")
             result = report(load_json(raw))
             result["input_sha256"] = hashlib.sha256(raw).hexdigest()
         elif args.command == "simulate":

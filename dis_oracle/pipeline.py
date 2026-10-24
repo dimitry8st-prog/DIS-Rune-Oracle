@@ -5,6 +5,7 @@ Hashes and local time declarations do not authenticate sources or predictiveness
 """
 from copy import deepcopy
 from pathlib import Path
+import time
 
 from research_stats.core import report as statistics_report, paired_summary
 from . import __version__
@@ -12,6 +13,9 @@ from .contracts import (ContractError, CORES, digest, now_iso, shape, text,
                         timestamp, validate_event, validate_cards)
 from .engine import freeze, evaluate
 from .journal import Journal, JournalError
+from .lottery import (CONTROL_ID, METHOD_VERSION, UNAVAILABLE, author_report,
+                      control_fields, method_fields, positions_from_card, statistics_study,
+                      validate_plan)
 from .adapters import audited_inputs
 from .adapters.runes import RuneSessions
 from .adapters.yijing import run as yijing_run, calculate
@@ -32,7 +36,8 @@ LIMITATIONS = [
 
 
 def validate_manifest(manifest, at):
-    shape(manifest, ("schema_version", "provenance", "event", "adapters", "source_refs"), ("numeric_study",))
+    shape(manifest, ("schema_version", "provenance", "event", "adapters", "source_refs"),
+          ("numeric_study", "lottery_plan"))
     if manifest["schema_version"] != VERSION or manifest["provenance"] not in ("SYNTHETIC", "IMPORTED"):
         raise ContractError("unsupported cycle schema/provenance")
     axes = validate_event(manifest["event"])
@@ -107,7 +112,47 @@ def validate_manifest(manifest, at):
             raise ContractError("numeric study event/target does not match cycle")
         if manifest["event"]["mode"] != "forecast" and any(p["mode"] == "forecast" for p in data["predictions"]):
             raise ContractError("retrospective cycle cannot import prospective numeric predictions")
+    if manifest.get("lottery_plan") is not None:
+        # The plan is fixed before any draw. Picks are not part of this manifest.
+        validate_plan(manifest["lottery_plan"], adapters)
     return axes
+
+
+def _cycle_lock(path):
+    """Exclusive directory lock. POSIX keeps flock; Windows uses the same exclusion."""
+    try:
+        import fcntl
+    except ImportError:
+        fcntl = None
+    if fcntl is not None:
+        handle = path.open("a")
+        fcntl.flock(handle, fcntl.LOCK_EX)
+        return handle, None
+    try:
+        import msvcrt
+    except ImportError as exc:
+        raise ContractError("integrated cycles require POSIX fcntl; Windows cycles are not supported") from exc
+    handle = path.open("a+b")
+    handle.seek(0, 2)
+    if handle.tell() == 0:
+        handle.write(b"\0")
+        handle.flush()
+    handle.seek(0)
+    while True:
+        try:
+            msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+            break
+        except OSError:
+            time.sleep(0.05)
+
+    def unlock():
+        handle.seek(0)
+        try:
+            msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+        except OSError:
+            pass
+
+    return handle, unlock
 
 
 class Cycle:
@@ -119,16 +164,13 @@ class Cycle:
         self.prefix = "cycle:" + digest(run_id)
         self.private = self.root / "private" / digest(run_id)
         self.private.mkdir(parents=True, exist_ok=True, mode=0o700)
-        try:
-            import fcntl
-        except ImportError as exc:
-            raise ContractError("integrated cycles require POSIX fcntl; Windows cycles are not supported") from exc
-        self.lock = (self.root / "cycle.lock").open("a")
-        fcntl.flock(self.lock, fcntl.LOCK_EX)
+        self.lock, self._unlock = _cycle_lock(self.root / "cycle.lock")
         self.journal = Journal(self.root / "cycle-v03.sqlite3")
 
     def close(self):
         self.journal.close()
+        if self._unlock is not None:
+            self._unlock()
         self.lock.close()
 
     def __enter__(self):
@@ -215,8 +257,32 @@ class Cycle:
                     card = store.run(sid, eid, **config) if core == "mo" else store.start(sid, eid, **config)
             cards.append(card)
         validate_cards(cards, validate_event(manifest["event"]))
+        if manifest.get("lottery_plan") is not None:
+            self._fix_lottery(reg, cards)
         return self._save("collected", {"state": "COLLECTED", "cards": cards,
                                        "registration_hash": digest(reg)})
+
+    def _fix_lottery(self, reg, cards):
+        """Immutable method/control pair from the saved rune session. Manifest stays unchanged."""
+        plan = reg["manifest"]["lottery_plan"]
+        rune = next(card for card in cards if card["core_id"] == "rune")
+        positions = positions_from_card(rune)
+        seed, picked = method_fields(plan["draw"], positions)
+        existing = self._get("lottery-rune-hash-v2")
+        if existing:
+            if (existing["seed"] != seed or existing["method_fields"] != picked
+                    or existing["positions"] != positions or existing["draw"] != plan["draw"]):
+                raise ContractError("saved lottery numbers do not match the saved rune session")
+            return existing
+        record = {"state": "LOTTERY_NUMERIC_FIXED", "author_method": True,
+                  "method_version": METHOD_VERSION, "control_id": CONTROL_ID,
+                  "game": plan["game"], "draw": plan["draw"], "target_at": plan["target_at"],
+                  "control_rule": plan["control_rule"], "registered_at": reg["registered_at"],
+                  "fixed_at": reg["registered_at"] if reg["synthetic_clock"] else now_iso(),
+                  "seed": seed, "positions": positions, "method_fields": picked,
+                  "control_fields": control_fields(),
+                  "session_commitment": rune["raw_result"].get("commitment")}
+        return self._save("lottery-rune-hash-v2", record)
 
     def step(self, command):
         """One explicit idempotent Qiuqian command; never an automatic redraw."""
@@ -325,10 +391,11 @@ class Cycle:
 
     def science(self, request, *, at=None):
         """Immutable versioned audit, reusing PR3 computations without altering originals."""
-        shape(request, ("report_id", "reason"), ("supersedes", "numeric_outcomes", "analysis_at"))
+        shape(request, ("report_id", "reason"), ("supersedes", "numeric_outcomes", "lottery_outcomes", "analysis_at"))
         text(request["report_id"], "report_id"); text(request["reason"], "reason")
-        if "numeric_outcomes" in request and not isinstance(request["numeric_outcomes"], list):
-            raise ContractError("numeric_outcomes must be an array")
+        for key in ("numeric_outcomes", "lottery_outcomes"):
+            if key in request and not isinstance(request[key], list):
+                raise ContractError(f"{key} must be an array")
         if request.get("supersedes") is not None:
             text(request["supersedes"], "supersedes")
         key = "science:" + digest(request["report_id"])
@@ -353,7 +420,9 @@ class Cycle:
         elif manifest["provenance"] == "SYNTHETIC":
             # Backward-compatible synthetic fixtures may already contain future declared times.
             boundaries = [created_at, frozen["frozen_at"]] + [r["evaluated_at"] for r in evaluations if r]
-            boundaries += [r["recorded_at"] for r in request.get("numeric_outcomes", [])]
+            for outcome_key in ("numeric_outcomes", "lottery_outcomes"):
+                boundaries += [row["recorded_at"] for row in request.get(outcome_key, [])
+                               if isinstance(row, dict) and isinstance(row.get("recorded_at"), str)]
             clock_at = max(boundaries, key=timestamp)
         else:
             clock_at = created_at
@@ -372,6 +441,10 @@ class Cycle:
         if numeric_history and digest(new_outcomes) != digest(history[-1]["request"].get("numeric_outcomes", [])):
             if not parent or parent != history[-1]:
                 raise ContractError("changed/removed numeric outcome requires supersedes of the latest scientific version and a reason")
+        lottery_history = [r for r in history if "lottery_outcomes" in r["request"]]
+        if lottery_history and digest(request.get("lottery_outcomes", [])) != digest(history[-1]["request"].get("lottery_outcomes", [])):
+            if not parent or parent != history[-1]:
+                raise ContractError("changed/removed numeric outcome requires supersedes of the latest scientific version and a reason")
         if parent and timestamp(parent["analysis_at"]) > timestamp(analysis_at):
             raise ContractError("scientific correction cutoff precedes its parent")
         rows = []
@@ -385,8 +458,13 @@ class Cycle:
         paired = paired_summary([r["baseline_error"] - r["error"] for r in scored], 1) if len(rows) == 1 else None
         numeric = None
         study = manifest.get("numeric_study")
-        if "numeric_outcomes" in request and study is None:
+        lottery = self._get("lottery-rune-hash-v2")
+        if "lottery_outcomes" in request and lottery is None:
+            raise ContractError("no lottery plan was registered")
+        if "numeric_outcomes" in request and study is None and lottery is None:
             raise ContractError("no numeric method was registered; symbols are not numeric picks")
+        if study is None and "numeric_outcomes" in request and "lottery_outcomes" in request:
+            raise ContractError("duplicate numeric outcome submission")
         if study is not None:
             data = deepcopy(study)
             data["outcomes"] = request.get("numeric_outcomes", [])
@@ -395,6 +473,22 @@ class Cycle:
                 if not evaluations[0] or timestamp(outcome["occurred_at"]) != timestamp(evaluations[0]["outcome"]["observed_at"]):
                     raise ContractError("numeric outcome requires matching registered resolved event/time")
             numeric = statistics_report(data)
+        if lottery is None:
+            lottery_view = dict(UNAVAILABLE)
+        else:
+            if study is None:
+                supplied = request["lottery_outcomes"] if "lottery_outcomes" in request else request.get("numeric_outcomes", [])
+            else:
+                supplied = request.get("lottery_outcomes", [])
+            lottery_data = statistics_study(lottery, supplied, analysis_at, manifest["provenance"],
+                                            manifest["event"]["event_id"], manifest["event"]["mode"])
+            lottery_view = author_report(statistics_report(lottery_data))
+            lottery_view["saved_pair"] = {"game": lottery["game"], "draw": lottery["draw"],
+                                          "target_at": lottery["target_at"], "seed": lottery["seed"],
+                                          "positions": lottery["positions"],
+                                          "method_fields": lottery["method_fields"],
+                                          "control_fields": lottery["control_fields"],
+                                          "fixed_at": lottery["fixed_at"]}
         report = {"state": "SCIENTIFIC_REPORT", "science_version": "scientific-audit-v0.3.1", "analysis_at": analysis_at,
                   "created_at": created_at, "analysis_clock_at": clock_at,
                   "analysis_clock_kind": "SYNTHETIC_DECLARED" if manifest["provenance"] == "SYNTHETIC" else "LOCAL_WALL_CLOCK",
@@ -417,7 +511,7 @@ class Cycle:
                   "scored_axes": len(scored), "categorical_control": "event axis.baseline fixed before adapters",
                   "categorical_paired": paired, "paired_orientation": "control error minus method error; positive favors method",
                   "numeric_external_method": numeric,
-                  "lottery-rune-hash-v2": {"status": "UNAVAILABLE", "extension": "explicit versioned numeric_study import; no symbol conversion"},
+                  "lottery-rune-hash-v2": lottery_view,
                   "errors_and_leakage": {"input_validation": "PASSED", "independent_time_attestation": "UNAVAILABLE",
                                          "outcome_source_verification": "UNAVAILABLE", "undetected_leakage": "NOT_EXCLUDED"},
                   "limitations": LIMITATIONS}
@@ -426,6 +520,10 @@ class Cycle:
     def status(self):
         reg = self._registration()
         original = self._get("original")
-        return {"run_id": self.run_id, "registration": reg,
-                "cards": self._cards(), "review": self._get("review"), "original": original,
-                "chain": self.journal.verify()}
+        payload = {"run_id": self.run_id, "registration": reg,
+                   "cards": self._cards(), "review": self._get("review"), "original": original,
+                   "chain": self.journal.verify()}
+        lottery = self._get("lottery-rune-hash-v2")
+        if lottery is not None:
+            payload["lottery-rune-hash-v2"] = lottery
+        return payload

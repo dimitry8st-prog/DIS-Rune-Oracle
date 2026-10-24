@@ -20,9 +20,11 @@ DOCUMENT=ROOT/'research/qwen/four_cores_UNVERIFIED/originals/ADAPTERS_SPECIFICAT
 
 
 def build():
-    if hashlib.sha256(DOCUMENT.read_bytes()).hexdigest() != '17a78dbf751fcdbccaf2086a009193b5c7d5a004a4f97b4d1717f62bf436951b':
+    canonical=DOCUMENT.read_bytes().replace(b'\r\n', b'\n')
+    source_sha256=hashlib.sha256(canonical).hexdigest()
+    if source_sha256 != '17a78dbf751fcdbccaf2086a009193b5c7d5a004a4f97b4d1717f62bf436951b':
         raise ValueError("embedded code changed: review the new document before execution")
-    original=DOCUMENT.read_text(encoding='utf-8')
+    original=canonical.decode('utf-8')
     blocks=re.findall(r'```python\n(.*?)```',original,re.S)
     modules={}
     for block in blocks:
@@ -61,7 +63,7 @@ def build():
         try:validate_cards([card],axes);result='ACCEPTED'
         except ContractError as exc:result=str(exc)
         findings.append({'case':'contract-'+card['core_id'],'validator_result':result})
-    return {'schema_version':'qwen-four-audit-v1','source_sha256':hashlib.sha256(DOCUMENT.read_bytes()).hexdigest(),
+    return {'schema_version':'qwen-four-audit-v1','source_sha256':source_sha256,
             'execution_scope':'only four reviewed embedded definitions; no archive .git, JavaScript, npm or installers executed',
             'findings':findings}
 

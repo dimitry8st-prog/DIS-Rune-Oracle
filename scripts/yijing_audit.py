@@ -25,15 +25,16 @@ TRIGRAMS = {
 
 
 def sha256(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    # Windows checkouts may use CRLF; the committed digest is the LF document.
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
 def references():
-    return json.loads((AUDIT / "sources/reference_data.json").read_text())
+    return json.loads((AUDIT / "sources/reference_data.json").read_text(encoding="utf-8"))
 
 
 def reading_evidence():
-    return json.loads((AUDIT / "sources/reading_evidence.json").read_text())
+    return json.loads((AUDIT / "sources/reading_evidence.json").read_text(encoding="utf-8"))
 
 
 def extract_wikipedia_facts(html):
@@ -229,7 +230,7 @@ def compare_expected(expected, actual):
 
 def audit_qwen_table(table):
     rows = []
-    for line in SPEC.read_text().splitlines():
+    for line in SPEC.read_text(encoding="utf-8").splitlines():
         if re.match(r"\| \d+ \|", line):
             columns = [part.strip() for part in line.strip("|").split("|")]
             number = int(columns[0])
@@ -258,7 +259,7 @@ def audit_qwen_table(table):
 
 
 def audit_raw_fragment():
-    fragment = SPEC.read_text().split("Текущий `raw_result` (v0.2):", 1)[1].split("```", 2)[1]
+    fragment = SPEC.read_text(encoding="utf-8").split("Текущий `raw_result` (v0.2):", 1)[1].split("```", 2)[1]
     fragment = fragment.removeprefix("json\n").strip()
     try:
         json.loads(fragment)
@@ -280,7 +281,7 @@ def audit_raw_fragment():
 
 
 def build_outputs():
-    original = json.loads(INPUT.read_text())
+    original = json.loads(INPUT.read_text(encoding="utf-8"))
     refs = references()
     table = reference_table(refs)
     corrections, differences = [], []
@@ -301,7 +302,7 @@ def build_outputs():
         throws = [coins[line][:] for line in lines]
         corrections.append({"id": identifier, "source_case_index": None,
                             "input": {"throws_bottom_up": throws}, "result": calculate(throws, table)})
-    hashes = {str(path.relative_to(ROOT)): sha256(path) for path in (INPUT, SPEC)}
+    hashes = {path.relative_to(ROOT).as_posix(): sha256(path) for path in (INPUT, SPEC)}
     document = {
         "schema_version": "yijing-independent-audit-v1", "line_order": "bottom-up",
         "source_sha256": hashes,
@@ -331,10 +332,10 @@ def main():
         content = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
         path = AUDIT / filename
         if args.check:
-            if not path.is_file() or path.read_text() != content:
+            if not path.is_file() or path.read_text(encoding="utf-8") != content:
                 raise SystemExit(f"FAIL: stale/missing artifact: {path.relative_to(ROOT)}")
         else:
-            path.write_text(content)
+            path.write_text(content, encoding="utf-8", newline="\n")
     cases = outputs["corrected_results.json"]["cases"]
     diffs = outputs["discrepancies.json"]["cases"]
     print(f"Mechanical audit: {len(cases)} cases; moving counts {sorted({c['result']['moving_count'] for c in cases})}")

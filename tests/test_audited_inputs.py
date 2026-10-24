@@ -19,7 +19,7 @@ from tests.test_pipeline import BEFORE, AFTER, outcome, numeric_outcome
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def fixture():return json.loads((ROOT/'examples/four_cores/manifest.json').read_text())
+def fixture():return json.loads((ROOT/'examples/four_cores/manifest.json').read_text(encoding='utf-8'))
 
 
 class AuditedInputTests(unittest.TestCase):
@@ -141,7 +141,7 @@ class AuditedInputTests(unittest.TestCase):
     def test_original_documents_hashes_and_separate_audit_reproduce(self):
         original=ROOT/'research/qwen/four_cores_UNVERIFIED'
         for relative,expected in json.loads((original/'SHA256SUMS.json').read_text()).items():
-            self.assertEqual(hashlib.sha256((original/relative).read_bytes()).hexdigest(),expected)
+            self.assertEqual(hashlib.sha256((original/relative).read_bytes().replace(b'\r\n', b'\n')).hexdigest(),expected)
         result=subprocess.run([sys.executable,str(ROOT/'scripts/audit_four_qwen.py'),'--check'],capture_output=True,text=True)
         self.assertEqual(result.returncode,0,result.stderr)
 
@@ -153,7 +153,7 @@ raise SystemExit(main(['compare','examples/mixed.json']))
 '''
         result=subprocess.run([sys.executable,'-c',script],cwd=ROOT,capture_output=True,text=True)
         self.assertEqual(result.returncode,0,result.stderr)
-        script="import sys; sys.modules['fcntl']=None; from dis_oracle.pipeline import Cycle; Cycle(sys.argv[1],'no-posix')"
+        script="import sys; sys.modules['fcntl']=None; sys.modules['msvcrt']=None; from dis_oracle.pipeline import Cycle; Cycle(sys.argv[1],'no-posix')"
         with tempfile.TemporaryDirectory() as directory:
             result=subprocess.run([sys.executable,'-c',script,directory],cwd=ROOT,capture_output=True,text=True)
         self.assertNotEqual(result.returncode,0);self.assertIn('Windows cycles are not supported',result.stderr)

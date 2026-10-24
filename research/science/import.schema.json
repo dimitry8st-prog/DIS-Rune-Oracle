@@ -73,8 +73,10 @@
             "format": "date-time"
           },
           "target_at": {
-            "type": "string",
-            "format": "date-time"
+            "anyOf": [
+              {"type": "string", "format": "date-time"},
+              {"type": "null"}
+            ]
           }
         }
       }
@@ -256,12 +258,16 @@
             "minLength": 1
           },
           "occurred_at": {
-            "type": "string",
-            "format": "date-time"
+            "anyOf": [
+              {"type": "string", "format": "date-time"},
+              {"type": "null"}
+            ]
           },
           "recorded_at": {
-            "type": "string",
-            "format": "date-time"
+            "anyOf": [
+              {"type": "string", "format": "date-time"},
+              {"type": "null"}
+            ]
           },
           "confirmation": {
             "enum": [

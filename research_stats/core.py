@@ -47,6 +47,13 @@ def timestamp(value):
     return result.astimezone(timezone.utc)
 
 
+def optional_timestamp(value):
+    """None is an unknown time. It is stored unknown and is not invented."""
+    if value is None:
+        return None
+    return timestamp(value)
+
+
 def fields(value):
     if not isinstance(value, list) or len(value) != 2:
         raise ValueError("two ordered fields required")
@@ -143,7 +150,7 @@ def report(data):
         shape(event, ("event_id", "registered_at", "target_at"))
         eid = text(event["event_id"])
         event_registered = timestamp(event["registered_at"])
-        timestamp(event["target_at"])
+        optional_timestamp(event["target_at"])
         if eid in events or not registered <= event_registered <= analysed:
             raise ValueError("duplicate event or invalid event registration time")
         events[eid] = event
@@ -182,9 +189,20 @@ def report(data):
         eid = text(outcome["event_id"])
         if eid not in events or eid in outcomes:
             raise ValueError("unknown or duplicate outcome event")
-        occurred, recorded = timestamp(outcome["occurred_at"]), timestamp(outcome["recorded_at"])
-        if not timestamp(events[eid]["target_at"]) <= occurred <= recorded <= analysed:
-            raise ValueError("outcome time must follow target and precede recording/analysis")
+        occurred, recorded = optional_timestamp(outcome["occurred_at"]), optional_timestamp(outcome["recorded_at"])
+        target = optional_timestamp(events[eid]["target_at"])
+        if occurred is not None and recorded is not None and target is not None:
+            if not target <= occurred <= recorded <= analysed:
+                raise ValueError("outcome time must follow target and precede recording/analysis")
+        else:
+            if target is not None and occurred is not None and occurred < target:
+                raise ValueError("outcome time must follow target and precede recording/analysis")
+            if occurred is not None and recorded is not None and occurred > recorded:
+                raise ValueError("outcome time must follow target and precede recording/analysis")
+            if recorded is not None and recorded > analysed:
+                raise ValueError("outcome time must follow target and precede recording/analysis")
+            if occurred is not None and recorded is None and occurred > analysed:
+                raise ValueError("outcome time must follow target and precede recording/analysis")
         if outcome["confirmation"] not in ("CONFIRMED", "UNCONFIRMED"):
             raise ValueError("invalid outcome confirmation")
         text(outcome["source_ref"])
@@ -195,7 +213,7 @@ def report(data):
     for eid, event in events.items():
         scores, briers = {}, {}
         outcome = outcomes.get(eid)
-        target = timestamp(event["target_at"])
+        target = optional_timestamp(event["target_at"])
         for strategy in strategies:
             pred = predictions.get((eid, strategy))
             reasons = []
@@ -204,6 +222,8 @@ def report(data):
                 fixed = timestamp(pred["fixed_at"])
                 if pred["mode"] == "retrospective":
                     classification = "RETROSPECTIVE"
+                elif target is None:
+                    classification = "UNKNOWN_TIME"
                 elif fixed >= target:
                     classification = "LATE"
                 elif not registered <= timestamp(event["registered_at"]) <= fixed < target:
@@ -214,6 +234,9 @@ def report(data):
                     classification = "PROSPECTIVE"
                 if classification != "PROSPECTIVE":
                     reasons.append(classification)
+                if (outcome is not None and (outcome["occurred_at"] is None or outcome["recorded_at"] is None)
+                        and "UNKNOWN_TIME" not in reasons):
+                    reasons.append("UNKNOWN_TIME")
                 if pred["status"] == "ABSTAIN":
                     reasons.append("ABSTAIN")
             else:

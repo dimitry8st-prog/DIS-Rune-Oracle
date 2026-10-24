@@ -25,7 +25,8 @@ class YijingAuditTests(unittest.TestCase):
             audit.INPUT: "d53966201cfc442e6cd3568ddbc5918a76c86f76ed5b2fea8d8b7294f3f965dc",
         }
         for path, digest in expected.items():
-            self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), digest)
+            canonical = path.read_bytes().replace(b"\r\n", b"\n")
+            self.assertEqual(hashlib.sha256(canonical).hexdigest(), digest)
 
     def test_all_64_external_structures_and_names(self):
         checked = self.outputs["discrepancies.json"]["qwen_table_audit"]
@@ -86,7 +87,7 @@ class YijingAuditTests(unittest.TestCase):
                 audit.calculate(throws, self.table)
 
     def test_eight_inputs_preserved_and_new_ids_cover_missing_cases(self):
-        original = json.loads(audit.INPUT.read_text())["cases"]
+        original = json.loads(audit.INPUT.read_text(encoding="utf-8"))["cases"]
         for source, corrected in zip(original, self.cases[:8]):
             self.assertEqual(corrected["input"], source["input"])
             self.assertEqual(corrected["original_label"], source["label"])
@@ -132,7 +133,7 @@ class YijingAuditTests(unittest.TestCase):
             self.assertEqual(result["reading_rule"]["text_corpus_status"], "EDITION_CONFLICT")
 
     def test_every_qwen_field_is_accounted_for(self):
-        source = json.loads(audit.INPUT.read_text())["cases"]
+        source = json.loads(audit.INPUT.read_text(encoding="utf-8"))["cases"]
         diffs = self.outputs["discrepancies.json"]["cases"]
         for case, differences in zip(source, diffs):
             self.assertEqual({path for path, _ in audit.leaves(case["qwen_expected_unverified"])},
@@ -149,7 +150,7 @@ class YijingAuditTests(unittest.TestCase):
 
     def test_saved_results_are_reproducible_offline(self):
         for filename, output in self.outputs.items():
-            self.assertEqual(json.loads((audit.AUDIT / filename).read_text()), output)
+            self.assertEqual(json.loads((audit.AUDIT / filename).read_text(encoding="utf-8")), output)
         result = subprocess.run([sys.executable, str(audit.ROOT / "scripts/yijing_audit.py"), "--check"],
                                 cwd="/tmp", capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
