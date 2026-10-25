@@ -7,3 +7,4 @@ private-runs/
 .pytest_cache/
 build/
 dist/
+data/calendar/cairo_calendar_prognoses.json

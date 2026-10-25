@@ -6,7 +6,8 @@ from pathlib import Path
 import sys
 import sqlite3
 
-from .contracts import canonical, ContractError
+from .contracts import canonical, ContractError, shape
+from .calendar_context import build_context
 from .engine import freeze, evaluate, markdown_report, summary
 from .journal import Journal, JournalError
 from .router import compare
@@ -57,12 +58,18 @@ def main(argv=None):
     bundle.add_argument("--rune-session", required=True)
     bundle.add_argument("--yijing-db", required=True)
     bundle.add_argument("--yijing-run", required=True)
+    calendar = commands.add_parser("calendar-context", help="Calculate declared cultural calendar labels without drawing runes")
+    calendar.add_argument("input", help="JSON with event, calendar_context and registered_at")
     add_commands(commands)
     args = parser.parse_args(argv)
     journal = None
     sessions = None
     try:
-        if args.command.startswith("cycle-"):
+        if args.command == "calendar-context":
+            data = read_json(args.input)
+            shape(data, ("event", "calendar_context", "registered_at"))
+            result = build_context(data["calendar_context"], data["event"], data["registered_at"])
+        elif args.command.startswith("cycle-"):
             result = execute_cycle(args)
         elif args.command.startswith("rune-"):
             if args.command != "rune-prepare" and not Path(args.db).is_file():

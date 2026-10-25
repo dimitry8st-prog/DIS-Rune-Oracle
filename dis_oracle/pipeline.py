@@ -13,6 +13,7 @@ from .contracts import (ContractError, CORES, digest, now_iso, shape, text,
 from .engine import freeze, evaluate
 from .journal import Journal, JournalError
 from .adapters import audited_inputs
+from .calendar_context import validate_context, build_context
 from .adapters.runes import RuneSessions
 from .adapters.yijing import run as yijing_run, calculate
 from .adapters.mo import MoSessions
@@ -32,7 +33,7 @@ LIMITATIONS = [
 
 
 def validate_manifest(manifest, at):
-    shape(manifest, ("schema_version", "provenance", "event", "adapters", "source_refs"), ("numeric_study",))
+    shape(manifest, ("schema_version", "provenance", "event", "adapters", "source_refs"), ("numeric_study", "calendar_context"))
     if manifest["schema_version"] != VERSION or manifest["provenance"] not in ("SYNTHETIC", "IMPORTED"):
         raise ContractError("unsupported cycle schema/provenance")
     axes = validate_event(manifest["event"])
@@ -44,6 +45,8 @@ def validate_manifest(manifest, at):
         raise ContractError("event cutoff is after registration")
     if manifest["event"]["mode"] == "forecast" and any(timestamp(a["deadline"]) <= timestamp(at) for a in axes.values()):
         raise ContractError("late cycle registration; use retrospective mode")
+    if "calendar_context" in manifest:
+        validate_context(manifest["calendar_context"], manifest["event"], at)
     adapters = manifest["adapters"]
     shape(adapters, (), ("rune", "yijing", "mo", "qiuqian", "maya", "shakuna", "slavic", "name_grids"))
     for core, config in adapters.items():
@@ -169,12 +172,17 @@ class Cycle:
         else:
             fixed_at = self._time(manifest, at)
             validate_manifest(manifest, fixed_at)  # all inputs before any randomness
+            registration = {"state": "REGISTERED", "pipeline_version": VERSION,
+                            "package_version": __version__, "registered_at": fixed_at,
+                            "synthetic_clock": at is not None, "manifest_hash": digest(manifest), "manifest": manifest}
+            if "calendar_context" in manifest:
+                # Capture local source data in the registration itself: a crash before
+                # collection must not substitute a changed calendar corpus on restart.
+                registration["calendar_snapshot"] = build_context(manifest["calendar_context"], manifest["event"], fixed_at)
             # One local run per event prevents drawing several cycles and exporting only a favorite.
             self.journal.append("cycle-event:" + digest(manifest["event"]["event_id"]),
                                 {"run_id": self.run_id, "manifest_hash": digest(manifest)})
-            self._save("registered", {"state": "REGISTERED", "pipeline_version": VERSION,
-                       "package_version": __version__, "registered_at": fixed_at,
-                       "synthetic_clock": at is not None, "manifest_hash": digest(manifest), "manifest": manifest})
+            self._save("registered", registration)
         if not self._get("collected"):
             self._collect()
         return self.status()
@@ -182,6 +190,12 @@ class Cycle:
     def _collect(self):
         reg = self._registration()
         manifest = reg["manifest"]
+        if "calendar_snapshot" in reg:
+            snapshot = self._get("calendar-context-v1")
+            if snapshot is None:
+                self._save("calendar-context-v1", reg["calendar_snapshot"])
+            elif digest(snapshot) != digest(reg["calendar_snapshot"]):
+                raise JournalError("calendar snapshot differs from registration")
         eid = manifest["event"]["event_id"]
         cards = []
         for core in (c for c in CORES if c in manifest["adapters"]):
@@ -217,6 +231,21 @@ class Cycle:
         validate_cards(cards, validate_event(manifest["event"]))
         return self._save("collected", {"state": "COLLECTED", "cards": cards,
                                        "registration_hash": digest(reg)})
+
+    def _calendar_attachment(self, cards):
+        reg = self._registration()
+        if "calendar_context" not in reg["manifest"]:
+            return None
+        snapshot = self._get("calendar-context-v1")
+        if snapshot is None or digest(snapshot) != digest(reg.get("calendar_snapshot")):
+            raise JournalError("registered calendar snapshot is missing or differs")
+        rune = next((card for card in cards if card["core_id"] == "rune"), None)
+        binding = {"status": "ABSTAIN", "core_id": "rune", "reason": "RUNE_UNAVAILABLE"}
+        if rune is not None:
+            binding = {"status": "BOUND", "core_id": "rune", "card_input_hash": rune["input_hash"],
+                       "procedure_commitment": rune["raw_result"]["commitment"]}
+        return {"relation": "CULTURAL_CONTEXT_ONLY", "snapshot": snapshot,
+                "snapshot_hash": digest(snapshot), "rune_binding": binding}
 
     def step(self, command):
         """One explicit idempotent Qiuqian command; never an automatic redraw."""
@@ -309,9 +338,13 @@ class Cycle:
         when = self._time(reg["manifest"], at)
         if timestamp(when) < timestamp(reg["registered_at"]):
             raise ContractError("freeze precedes registration")
+        calendar = self._calendar_attachment(review["cards"])
         result = freeze(self.journal, self.run_id, reg["manifest"]["event"], review["cards"], frozen_at=when)
-        return self._save("original", {"state": "ORIGINAL_REPORT", "pipeline_version": VERSION,
-                          "registration_hash": digest(reg), "review_hash": digest(review), "frozen": result})
+        original = {"state": "ORIGINAL_REPORT", "pipeline_version": VERSION,
+                    "registration_hash": digest(reg), "review_hash": digest(review), "frozen": result}
+        if calendar is not None:
+            original["calendar_context"] = calendar
+        return self._save("original", original)
 
     def evaluate(self, outcome, *, at=None):
         if not self._get("original"):
@@ -421,11 +454,18 @@ class Cycle:
                   "errors_and_leakage": {"input_validation": "PASSED", "independent_time_attestation": "UNAVAILABLE",
                                          "outcome_source_verification": "UNAVAILABLE", "undetected_leakage": "NOT_EXCLUDED"},
                   "limitations": LIMITATIONS}
+        if "calendar_context" in original:
+            report["calendar_context"] = deepcopy(original["calendar_context"])
         return self._save(key, report)
 
     def status(self):
         reg = self._registration()
         original = self._get("original")
-        return {"run_id": self.run_id, "registration": reg,
-                "cards": self._cards(), "review": self._get("review"), "original": original,
-                "chain": self.journal.verify()}
+        cards = self._cards()
+        result = {"run_id": self.run_id, "registration": reg,
+                  "cards": cards, "review": self._get("review"), "original": original,
+                  "chain": self.journal.verify()}
+        calendar = self._calendar_attachment(cards)
+        if calendar is not None:
+            result["calendar_context"] = calendar
+        return result
