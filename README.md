@@ -21,6 +21,12 @@
 Daliuren/Egypt остаются UNAVAILABLE. Веса не перераспределяются; прогнозных
 голосов без явной ручной приёмки нет.
 
+Добавлен [календарный контекст рун](docs/RUNE_CALENDAR_CONTEXT.md): японское
+рокуё и адаптер древнеегипетского Каирского календаря. Он сохраняет традиционные
+метки дня отдельно от голосов десяти ядер. Японская лунная дата и современное
+соответствие египетской даты задаются явно; без входов/локального корпуса — ABSTAIN.
+Это не меняет статус прогнозного ядра Egypt и не доказывает влияние даты на исход.
+
 [Аудит четырёх ядер и исправления science/review v0.3.1](docs/FOUR_CORE_AUDIT.md):
 время создания научного отчёта отделено от cutoff, исправления исхода связаны
 явной цепочкой, несовместимый review отклоняется до записи.
@@ -38,6 +44,7 @@ python -m unittest discover -v
 python -m dis_oracle cycle-demo --directory /tmp/dis-v03-demo
 python -m dis_oracle verify --db /tmp/dis-v03-demo/state/cycle-v03.sqlite3
 python -m dis_oracle compare examples/mixed.json
+python -m dis_oracle calendar-context examples/calendar_context/input.synthetic.json
 python -m dis_oracle freeze examples/aligned.json --run-id demo-1 --db private-runs/demo.sqlite --markdown private-runs/demo-1.md
 python -m dis_oracle evaluate examples/outcome.json --run-id demo-1 --db private-runs/demo.sqlite
 python -m dis_oracle verify --db private-runs/demo.sqlite
