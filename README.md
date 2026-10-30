@@ -27,6 +27,13 @@ Daliuren/Egypt остаются UNAVAILABLE. Веса не перераспре�
 соответствие египетской даты задаются явно; без входов/локального корпуса — ABSTAIN.
 Это не меняет статус прогнозного ядра Egypt и не доказывает влияние даты на исход.
 
+30.10.2026 добавлены [лаборатория сочетаний и стратегический модуль v1](docs/LAB_AND_STRATEGY_V1.md).
+Лаборатория заранее фиксирует сравнения рун, календаря и восточных толкований с
+частотным и случайным контролем; отсутствующие компоненты сохраняют ABSTAIN.
+Стратегический модуль считает матрицы решений и равновесия двух участников в
+чистых стратегиях. Культурные заметки сохраняются отдельно от полезностей и
+вероятностей. Реальная серия нового исследования ещё не запускалась.
+
 [Аудит четырёх ядер и исправления science/review v0.3.1](docs/FOUR_CORE_AUDIT.md):
 время создания научного отчёта отделено от cutoff, исправления исхода связаны
 явной цепочкой, несовместимый review отклоняется до записи.
@@ -45,6 +52,9 @@ python -m dis_oracle cycle-demo --directory /tmp/dis-v03-demo
 python -m dis_oracle verify --db /tmp/dis-v03-demo/state/cycle-v03.sqlite3
 python -m dis_oracle compare examples/mixed.json
 python -m dis_oracle calendar-context examples/calendar_context/input.synthetic.json
+python -m dis_oracle lab-demo --directory private-runs/lab-demo-1
+python -m dis_oracle strategy examples/strategy/decision.synthetic.json
+python -m dis_oracle strategy examples/strategy/game.synthetic.json
 python -m dis_oracle freeze examples/aligned.json --run-id demo-1 --db private-runs/demo.sqlite --markdown private-runs/demo-1.md
 python -m dis_oracle evaluate examples/outcome.json --run-id demo-1 --db private-runs/demo.sqlite
 python -m dis_oracle verify --db private-runs/demo.sqlite

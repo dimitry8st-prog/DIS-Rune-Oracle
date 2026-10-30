@@ -1,0 +1,62 @@
+{
+  "schema_version": "oracle-strategy-v1",
+  "decision_id": "SYNTHETIC-project",
+  "provenance": "SYNTHETIC",
+  "cutoff_at": "2026-01-01T00:00:00Z",
+  "model": {
+    "kind": "game",
+    "players": [
+      {
+        "id": "us",
+        "actions": [
+          "cooperate",
+          "defect"
+        ]
+      },
+      {
+        "id": "partner",
+        "actions": [
+          "cooperate",
+          "defect"
+        ]
+      }
+    ],
+    "payoffs": [
+      [
+        [
+          3,
+          3
+        ],
+        [
+          0,
+          5
+        ]
+      ],
+      [
+        [
+          5,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ]
+    ]
+  },
+  "payoff_basis": {
+    "kind": "ASSUMPTION",
+    "explanation": "Synthetic utility points, not money or forecasts",
+    "source": "SYNTHETIC fixture",
+    "available_at": "2026-01-01T00:00:00Z"
+  },
+  "cultural_notes": [
+    {
+      "core_id": "rune",
+      "status": "OK",
+      "text": "SYNTHETIC metaphor only",
+      "source_ref": "SYNTHETIC",
+      "available_at": "2026-01-01T00:00:00Z"
+    }
+  ]
+}
