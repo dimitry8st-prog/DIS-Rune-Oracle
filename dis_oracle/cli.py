@@ -14,6 +14,7 @@ from .router import compare
 from .adapters.runes import RuneSessions
 from .adapters.yijing import run as yijing_run
 from .cycle_cli import add_commands, execute as execute_cycle
+from . import combination_lab, strategy
 from research_stats.core import load_json
 
 
@@ -60,12 +61,46 @@ def main(argv=None):
     bundle.add_argument("--yijing-run", required=True)
     calendar = commands.add_parser("calendar-context", help="Calculate declared cultural calendar labels without drawing runes")
     calendar.add_argument("input", help="JSON with event, calendar_context and registered_at")
+    for name in ("lab-register", "lab-freeze", "lab-evaluate", "lab-summary"):
+        item = commands.add_parser(name, help="Separate prespecified combination experiment")
+        if name != "lab-summary":
+            item.add_argument("input", help="Protocol, frozen-cycle request or outcome JSON")
+        item.add_argument("--db", required=True)
+        if name != "lab-register":
+            item.add_argument("--study-id", required=True)
+    lab_demo = commands.add_parser("lab-demo", help="Complete SYNTHETIC laboratory lifecycle, not a real forecast")
+    lab_demo.add_argument("--directory", required=True, help="New empty directory")
+    strategic = commands.add_parser("strategy", help="Local decision/game analysis; cultural context has no numeric weight")
+    strategic.add_argument("input")
+    strategic.add_argument("--db", help="Freeze the analysis in a local journal; otherwise preview only")
     add_commands(commands)
     args = parser.parse_args(argv)
     journal = None
     sessions = None
     try:
-        if args.command == "calendar-context":
+        if args.command == "strategy":
+            request = read_json(args.input)
+            if args.db:
+                journal = Journal(args.db)
+                result = strategy.freeze(journal, request)
+            else:
+                result = strategy.analyze(request)
+        elif args.command == "lab-demo":
+            from .lab_demo import demo
+            result = demo(args.directory)
+        elif args.command.startswith("lab-"):
+            if args.command != "lab-register" and not Path(args.db).is_file():
+                raise ContractError("laboratory journal does not exist")
+            journal = Journal(args.db)
+            if args.command == "lab-register":
+                result = combination_lab.register(journal, read_json(args.input))
+            elif args.command == "lab-freeze":
+                result = combination_lab.freeze(journal, args.study_id, read_json(args.input))
+            elif args.command == "lab-evaluate":
+                result = combination_lab.evaluate(journal, args.study_id, read_json(args.input))
+            else:
+                result = combination_lab.summary(journal, args.study_id)
+        elif args.command == "calendar-context":
             data = read_json(args.input)
             shape(data, ("event", "calendar_context", "registered_at"))
             result = build_context(data["calendar_context"], data["event"], data["registered_at"])

@@ -1,0 +1,768 @@
+{
+  "notice": "SYNTHETIC ONLY. Fabricated teaching corpus and dates; not real divination or outcome evidence.",
+  "registration_at": "2026-11-01T10:00:00Z",
+  "freeze_at": "2026-11-01T10:05:00Z",
+  "resolve_at": "2026-11-01T11:05:00Z",
+  "protocol": {
+    "schema_version": "combination-lab-v1",
+    "study_id": "SYNTHETIC-lab",
+    "provenance": "SYNTHETIC",
+    "game": "hunt",
+    "starts_at": "2026-11-01T10:01:00Z",
+    "ends_at": "2026-11-01T12:00:00Z",
+    "sample_size": 2,
+    "east_cores": [
+      "yijing"
+    ],
+    "calendar_profiles": [
+      "japanese_rokuyo"
+    ],
+    "east_sources": {
+      "yijing": {
+        "corpus_version": "SYNTHETIC-only",
+        "corpus_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "source_ref": "https://example.org/SYNTHETIC-not-a-traditional-reading"
+      }
+    },
+    "excluded_draws": [
+      999
+    ]
+  },
+  "trial": {
+    "game": "hunt",
+    "draw": 1000,
+    "target_at": "2026-11-01T11:00:00Z",
+    "original": {
+      "state": "ORIGINAL_REPORT",
+      "pipeline_version": "integrated-cycle-v0.3",
+      "registration_hash": "SYNTHETIC",
+      "review_hash": "SYNTHETIC",
+      "frozen": {
+        "run_id": "SYNTHETIC-source-1000",
+        "state": "FROZEN",
+        "engine_version": "0.3.1",
+        "state_trace": [
+          "RECEIVED",
+          "VALIDATED",
+          "COLLECTED",
+          "COMPARED",
+          "CHECKED",
+          "FROZEN"
+        ],
+        "frozen_at": "2026-11-01T10:04:00Z",
+        "input_hash": "58e4954e039a52ac568cbf9cc421539f00faf78c6324dcca099aafc96b918bf0",
+        "event": {
+          "event_id": "SYNTHETIC-lab-target-1000",
+          "question": "Synthetic author mappings only",
+          "mode": "forecast",
+          "cutoff_at": "2026-11-01T10:02:00Z",
+          "axes": [
+            {
+              "axis_id": "target",
+              "condition_id": "synthetic-binary",
+              "deadline": "2026-11-01T11:00:00Z",
+              "scenarios": [
+                {
+                  "scenario_id": "A",
+                  "criterion": "Synthetic A"
+                },
+                {
+                  "scenario_id": "B",
+                  "criterion": "Synthetic B"
+                }
+              ],
+              "baseline": "B"
+            }
+          ],
+          "facts": []
+        },
+        "raw_cards": [
+          {
+            "core_id": "rune",
+            "status": "OK",
+            "reason": "",
+            "protocol_version": "SYNTHETIC-v1",
+            "inputs": {
+              "event_id": "SYNTHETIC-lab-target-1000"
+            },
+            "input_hash": "04a73f74506df31799bc40bda04f9934dfaf4f7a1827ff05a8b1a68ba02a6b76",
+            "raw_result": {
+              "generated_at": "2026-11-01T10:03:00Z",
+              "commitment": "SYNTHETIC",
+              "positions": [
+                {
+                  "rune_id": "sowilo",
+                  "final_orientation": 0
+                },
+                {
+                  "rune_id": "eihwaz",
+                  "final_orientation": 180
+                },
+                {
+                  "rune_id": "gebo",
+                  "final_orientation": 0
+                }
+              ]
+            },
+            "interpretation": "SYNTHETIC fixture only",
+            "claims": []
+          },
+          {
+            "core_id": "yijing",
+            "status": "OK",
+            "reason": "",
+            "protocol_version": "SYNTHETIC-v1",
+            "inputs": {
+              "event_id": "SYNTHETIC-lab-target-1000"
+            },
+            "input_hash": "04a73f74506df31799bc40bda04f9934dfaf4f7a1827ff05a8b1a68ba02a6b76",
+            "raw_result": {
+              "generated_at": "2026-11-01T10:03:00Z",
+              "text_corpus": {
+                "corpus_version": "SYNTHETIC-only",
+                "corpus_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "source_ref": "https://example.org/SYNTHETIC-not-a-traditional-reading"
+              }
+            },
+            "interpretation": "SYNTHETIC fixture only",
+            "claims": [
+              {
+                "claim_id": "synthetic-east",
+                "type": "FORECAST",
+                "text": "SYNTHETIC",
+                "source_fragment": "SYNTHETIC",
+                "axis_id": "target",
+                "scenario_id": "A",
+                "polarity": "SUPPORT",
+                "review_status": "ACCEPTED",
+                "reviewed_by": "SYNTHETIC-reviewer",
+                "reviewed_at": "2026-11-01T10:04:00Z"
+              }
+            ]
+          }
+        ],
+        "comparison": {
+          "core_weight": "0.10",
+          "procedural_coverage_percent": 20,
+          "cores": {
+            "rune": {
+              "status": "OK",
+              "reason": ""
+            },
+            "yijing": {
+              "status": "OK",
+              "reason": ""
+            },
+            "mo": {
+              "status": "UNAVAILABLE",
+              "reason": "NOT_SUPPLIED"
+            },
+            "qiuqian": {
+              "status": "UNAVAILABLE",
+              "reason": "NOT_SUPPLIED"
+            },
+            "daliuren": {
+              "status": "UNAVAILABLE",
+              "reason": "NOT_SUPPLIED"
+            },
+            "egypt": {
+              "status": "UNAVAILABLE",
+              "reason": "NOT_SUPPLIED"
+            },
+            "maya": {
+              "status": "UNAVAILABLE",
+              "reason": "NOT_SUPPLIED"
+            },
+            "shakuna": {
+              "status": "UNAVAILABLE",
+              "reason": "NOT_SUPPLIED"
+            },
+            "slavic": {
+              "status": "UNAVAILABLE",
+              "reason": "NOT_SUPPLIED"
+            },
+            "name_grids": {
+              "status": "UNAVAILABLE",
+              "reason": "NOT_SUPPLIED"
+            }
+          },
+          "axes": {
+            "target": {
+              "status": "ALIGNED",
+              "tie": false,
+              "internal_conflicts": [],
+              "pending_claims": [],
+              "comparison_coverage_percent": 10,
+              "unfilled_percent": 90,
+              "support_percent": {
+                "A": 10,
+                "B": 0
+              },
+              "oppose_percent": {
+                "A": 0,
+                "B": 0
+              },
+              "support_cores": {
+                "A": [
+                  "yijing"
+                ],
+                "B": []
+              },
+              "oppose_cores": {
+                "A": [],
+                "B": []
+              },
+              "leaders": [
+                "A"
+              ],
+              "prediction": "A"
+            }
+          },
+          "notice": "Support and coverage are not event probabilities or proof of predictive accuracy."
+        },
+        "checks": {
+          "schema": "VERIFIED",
+          "input_hashes": "VERIFIED",
+          "temporal_metadata": "VERIFIED",
+          "source_factuality": "NOT_CHECKABLE",
+          "historical_protocol_authenticity": "NOT_CHECKABLE",
+          "predictive_accuracy": "NOT_CHECKABLE"
+        },
+        "original_synthesis": null,
+        "checked_synthesis": null,
+        "limitations": [
+          "Imported cards only; no automatic traditional procedures or LLM calls.",
+          "Human review metadata is a declaration, not authenticated identity.",
+          "Timestamps are declarations; no independent timestamp service is connected."
+        ]
+      },
+      "calendar_context": {
+        "relation": "CULTURAL_CONTEXT_ONLY",
+        "snapshot": {
+          "state": "CALENDAR_CONTEXT",
+          "schema_version": "rune-calendar-context-v1",
+          "scope": "CULTURAL_CONTEXT_ONLY",
+          "event_id": "SYNTHETIC-lab-target-1000",
+          "event_at": "2026-11-01T11:00:00Z",
+          "timezone": "Europe/Moscow",
+          "day_boundary": "civil_midnight",
+          "local_datetime": "2026-11-01T14:00:00+03:00",
+          "local_date": "2026-11-01",
+          "local_time": "14:00:00",
+          "utc_offset_seconds": 10800,
+          "fold": 0,
+          "config_hash": "d3eed796c54a47c9ef5814a8c2826bd3440d061498f424482a81acd336980844",
+          "source_verification": "USER_DECLARED",
+          "contexts": [
+            {
+              "profile_id": "japanese_rokuyo",
+              "profile_version": "japanese-rokuyo-manual-lunar-v1",
+              "scope": "CULTURAL_CONTEXT_ONLY",
+              "status": "OK",
+              "reason": "DECLARED_LUNAR_DATE_CONDITIONAL_CALCULATION",
+              "source_verification": "USER_DECLARED",
+              "forecast_status": "ABSTAIN",
+              "inputs": {
+                "calendar_date": "2026-11-01",
+                "source_ref": "https://example.org/SYNTHETIC-correlation",
+                "source_locator": "SYNTHETIC date, not a real lunar correlation",
+                "available_at": "2026-11-01T10:02:00Z",
+                "lunar_month": 5,
+                "lunar_day": 1,
+                "is_leap_month": false
+              },
+              "input_hash": "b09141b1009032c7f08dc0d756161aaaea42b73e797a1bea7299240f3161a98f",
+              "day_quality": "favorable",
+              "segments": [],
+              "rules_source_ref": "https://www.ndl.go.jp/koyomi/chapter3/s3.html",
+              "calendar_position": {
+                "lunar_month": 5,
+                "lunar_day": 1,
+                "is_leap_month": false,
+                "index": 4,
+                "label": "Taian"
+              },
+              "correlation_status": "USER_DECLARED_NO_GREGORIAN_TO_LUNAR_CONVERTER",
+              "clock_boundaries_assigned": false
+            }
+          ],
+          "limitations": [
+            "Calendar labels describe declared cultural traditions, not measured probabilities or predictive efficacy.",
+            "Reported dates, correlations and source references are USER_DECLARED, not authenticated.",
+            "Calendar context does not change rune positions, lottery-rune-hash-v2, control samples or core weights.",
+            "No Gregorian-to-lunar conversion or historical modern-to-Egyptian correlation is inferred."
+          ]
+        },
+        "snapshot_hash": "c96d0b504bf9aae5af9d14b196b0cec16448f212c00a16efb9d2bd096b009422",
+        "rune_binding": {
+          "status": "BOUND",
+          "core_id": "rune",
+          "card_input_hash": "04a73f74506df31799bc40bda04f9934dfaf4f7a1827ff05a8b1a68ba02a6b76",
+          "procedure_commitment": "SYNTHETIC"
+        }
+      }
+    },
+    "history": [
+      {
+        "game": "hunt",
+        "draw": 978,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 979,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 980,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 981,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 982,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 983,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 984,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 985,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 986,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 987,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 988,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 989,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 990,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 991,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 992,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 993,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 994,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 995,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 996,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 997,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 998,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      },
+      {
+        "game": "hunt",
+        "draw": 999,
+        "fields": [
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "available_at": "2026-11-01T10:00:00Z",
+        "source": "SYNTHETIC fixture"
+      }
+    ]
+  },
+  "outcome": {
+    "game": "hunt",
+    "draw": 1000,
+    "fields": [
+      [
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        5,
+        6,
+        7,
+        8
+      ]
+    ],
+    "observed_at": "2026-11-01T11:00:00Z",
+    "source": "SYNTHETIC fabricated teaching outcome"
+  }
+}

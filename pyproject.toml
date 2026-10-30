@@ -17,5 +17,5 @@ where = ["."]
 include = ["dis_oracle*", "research_stats*"]
 
 [tool.setuptools.package-data]
-"dis_oracle" = ["demo_manifest.json"]
+"dis_oracle" = ["demo_manifest.json", "lab_demo.json"]
 "dis_oracle.adapters" = ["rune_map.json"]
