@@ -217,6 +217,29 @@ class WorkflowTests(unittest.TestCase):
         with self.assertRaises(ValueError): frequency(rows+[rows[0]],'hunt',108,NOW)
         with self.assertRaises(KeyError): frequency([{'game':'hunt','draw':1,'fields':NUMS}], 'hunt',108,NOW)
 
+    def test_frequency30_is_separate_frozen_method_and_report_group(self):
+        self.seed()
+        p=self.predict(frequency_window=30)
+        self.assertIn('frequency30-v1',p['methods'])
+        self.assertNotIn('frequency100-v1',p['methods'])
+        self.assertEqual(30,p['methods']['frequency30-v1']['window_limit'])
+        self.assertEqual(p,self.predict(frequency_window=30))
+        with self.assertRaisesRegex(ValueError,'different inputs'): self.predict()
+        self.now='2030-01-01T12:00:00Z'
+        self.w.ingest('hunt',100,NUMS,'SYNTHETIC')
+        group=next(g for g in self.w.report()['groups'] if g['game']=='hunt' and g['origin']=='LOCAL_FUTURE_UNATTESTED' and g['method']=='frequency30-v1')
+        self.assertEqual((1,8),(group['n'],group['method_hits']))
+
+    def test_frequency30_has_exact_thirty_record_window(self):
+        rows=[{'game':'hunt','draw':n,'fields':NUMS,'received_at':NOW} for n in range(1,61)]
+        r=frequency(rows,'hunt',61,NOW,limit=30)
+        self.assertEqual(list(range(31,61)),r['draws'])
+        self.assertEqual(NUMS,r['fields'])
+        self.assertEqual([30]*4,[r['counts'][0][str(n)] for n in NUMS[0]])
+        self.seed()
+        with self.assertRaises(ValueError): self.predict(frequency_window=20)
+        self.assertEqual(1,self.w.verify()['records'])
+
     def test_frequency_excludes_known_source_conflict(self):
         r=frequency([{'game':'hunt','draw':47129,'fields':NUMS,'received_at':NOW}], 'hunt',47130,NOW)
         self.assertEqual('ABSTAIN',r['state'])
