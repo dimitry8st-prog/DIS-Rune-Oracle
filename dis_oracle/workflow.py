@@ -41,8 +41,9 @@ def normalized(value):
 def frequency(rows, game, draw, cutoff, limit=100):
     """Only records received by this ledger at cutoff; never backfill timestamps."""
     identity(game, draw)
-    if limit != 100 or type(limit) is not int:
-        raise ValueError("frequency100-v1 requires limit=100")
+    if type(limit) is not int or limit not in (30, 100):
+        raise ValueError("frequency window must be 30 or 100")
+    method_id = f"frequency{limit}-v1"
     candidates = [r for r in rows if r["game"] == game and r["draw"] < draw
                   and not (game == "hunt" and r["draw"] == 47129)
                   and r.get("numeric_eligible", True)
@@ -55,8 +56,8 @@ def frequency(rows, game, draw, cutoff, limit=100):
         return {"state": "ABSTAIN", "reason": "NO_HISTORY", "fields": None, "n": 0}
     counts = [Counter(n for r in window for n in r["fields"][f]) for f in (0, 1)]
     picks = [sorted(sorted(range(1, 21), key=lambda n: (-counts[f-1][n],
-             hashlib.sha256(f"frequency100-v1|{game}|{draw}|field={f}|number={n}".encode()).hexdigest()))[:4]) for f in (1, 2)]
-    return {"state": "PICK", "method_id": "frequency100-v1", "fields": picks,
+             hashlib.sha256(f"{method_id}|{game}|{draw}|field={f}|number={n}".encode()).hexdigest()))[:4]) for f in (1, 2)]
+    return {"state": "PICK", "method_id": method_id, "fields": picks,
             "n": len(window), "window_limit": limit, "draws": [r["draw"] for r in window],
             "history_hash": digest(window), "counts": [{str(n): c[n] for n in range(1, 21)} for c in counts],
             "probability_claim": None, "validated_advantage": False}
@@ -161,7 +162,7 @@ class Workflow:
         """Immutable plan for FUTURE observations; no automatic activation on import."""
         p = deepcopy(protocol)
         nonempty(p["study_id"]); nonempty(p["hypothesis"])
-        if p["game"] not in GAMES or p["method"] not in ("frequency100-v1", "lottery-rune-hash-v2"):
+        if p["game"] not in GAMES or p["method"] not in ("frequency100-v1", "frequency30-v1", "lottery-rune-hash-v2"):
             raise ValueError("invalid protocol game/method")
         if type(p["sample_size"]) is not int or not 1 <= p["sample_size"] <= 100000:
             raise ValueError("invalid sample size")
@@ -222,13 +223,17 @@ class Workflow:
             self._append("cancel", "cancel:" + key, record)
             return record
 
-    def forecast(self, game, draw, target_at, *, template=None, study_id=None, max_history_gap=5):
+    def forecast(self, game, draw, target_at, *, template=None, study_id=None, max_history_gap=5, frequency_window=100):
         key = identity(game, draw); target = timestamp(target_at).isoformat()
+        if type(frequency_window) is not int or frequency_window not in (30, 100):
+            raise ValueError("frequency window must be 30 or 100")
         if type(max_history_gap) is not int or max_history_gap < 0:
             raise ValueError("max_history_gap must be nonnegative")
         request = {"game": game, "draw": draw, "target_at": target, "study_id": study_id,
                    "template_hash": digest(template) if template is not None else None,
                    "max_history_gap": max_history_gap, "version": VERSION}
+        if frequency_window != 100:
+            request["frequency_window"] = frequency_window
         with self.transaction():
             state = self.state(); now = self.clock()
             if key in state["cancellations"]:
@@ -248,18 +253,20 @@ class Workflow:
                 if not protocol or protocol["game"] != game:
                     raise ValueError("register matching protocol first")
                 spec = protocol["spec"]
+                if spec["method"].startswith("frequency") and spec["method"] != f"frequency{frequency_window}-v1":
+                    raise ValueError("frequency window does not match registered method")
                 if not timestamp(spec["starts_at"]) <= timestamp(now) < timestamp(target) <= timestamp(spec["ends_at"]):
                     raise ValueError("outside study interval")
                 if sum(r.get("study_id") == study_id for r in state["forecasts"].values()) >= spec["sample_size"]:
                     raise ValueError("study sample cap reached (cancelled slots also count)")
                 if spec["method"] == "lottery-rune-hash-v2" and template is None:
                     raise ValueError("rune study requires a cycle template")
-            baseline = frequency(list(state["outcomes"].values()), game, draw, now)
+            baseline = frequency(list(state["outcomes"].values()), game, draw, now, limit=frequency_window)
             latest_draw = max(baseline.get("draws", []), default=None)
             gap = draw-latest_draw-1 if latest_draw is not None else None
             if gap is None or gap > max_history_gap:
                 raise ValueError(f"stale or missing history: gap={gap}; import results or explicitly set max_history_gap")
-            methods = {"frequency100-v1": baseline,
+            methods = {baseline["method_id"]: baseline,
                        "lottery-rune-hash-v2": {"state": "ABSTAIN", "fields": None, "reason": "NO_SYMBOLIC_INPUT"}}
             if template is not None:
                 methods["lottery-rune-hash-v2"] = self._symbolic(game, draw, target, template)
@@ -402,7 +409,7 @@ class Workflow:
             groups = []
             for origin in ('LEGACY_UNATTESTED', 'LOCAL_FUTURE_UNATTESTED'):
                 for game in GAMES:
-                    for method in ('lottery-rune-hash-v2','frequency100-v1','frequency20-v1'):
+                    for method in ('lottery-rune-hash-v2','frequency100-v1','frequency30-v1','frequency20-v1'):
                         tt = [t for t in trials if t['origin']==origin and t['game']==game and not t['source_conflict']
                               and t['scores'].get(method) is not None and t['scores'].get('random') is not None]
                         a = [sum(t['scores'][method]) for t in tt]; c = [sum(t['scores']['random']) for t in tt]
@@ -466,6 +473,7 @@ def main(argv=None):
     pred = sub.add_parser('forecast')
     for p in (pred,):
         p.add_argument('game', choices=GAMES); p.add_argument('draw', type=int); p.add_argument('target_at')
+    pred.add_argument('--frequency-window',type=int,choices=(30,100),default=100)
     pred.add_argument('--template'); pred.add_argument('--study-id'); pred.add_argument('--max-history-gap',type=int,default=5)
     out = sub.add_parser('outcome'); out.add_argument('game',choices=GAMES); out.add_argument('draw',type=int)
     out.add_argument('json_file'); out.add_argument('--correction-of'); out.add_argument('--reason')
@@ -480,7 +488,7 @@ def main(argv=None):
             elif args.command=='register': result=w.register(load_json(Path(args.protocol).read_text(encoding='utf-8')))
             elif args.command=='forecast': result=w.forecast(args.game,args.draw,args.target_at,
                 template=load_json(Path(args.template).read_text(encoding='utf-8')) if args.template else None,
-                study_id=args.study_id,max_history_gap=args.max_history_gap)
+                study_id=args.study_id,max_history_gap=args.max_history_gap,frequency_window=args.frequency_window)
             elif args.command=='outcome':
                 doc=load_json(Path(args.json_file).read_text(encoding='utf-8'))
                 result=w.ingest(args.game,args.draw,doc['fields'],doc['source'],occurred_at=doc.get('occurred_at'),
