@@ -1,0 +1,29 @@
+{
+  "schema_version": "integrated-cycle-v0.3",
+  "provenance": "IMPORTED",
+  "event": {
+    "event_id": "workflow-placeholder",
+    "question": "Author experiment; target is bound by the workflow",
+    "mode": "forecast",
+    "cutoff_at": "2026-01-01T00:00:00Z",
+    "axes": [{
+      "axis_id": "field1_contains_1",
+      "condition_id": "field1_contains_1",
+      "deadline": "2099-01-01T00:00:00Z",
+      "scenarios": [
+        {"scenario_id": "YES", "criterion": "First field contains 1"},
+        {"scenario_id": "NO", "criterion": "First field does not contain 1"}
+      ],
+      "baseline": "NO"
+    }],
+    "facts": []
+  },
+  "adapters": {
+    "rune": {"choices": [{"slot": 1, "rotation": 0}, {"slot": 2, "rotation": 0}, {"slot": 3, "rotation": 0}]},
+    "yijing": {"mode": "digital"},
+    "mo": {"mode": "digital"},
+    "qiuqian": {"mode": "digital", "max_attempts": 3},
+    "maya": {"mode": "calendar_model", "profile": "gmt584283-conditional-v1", "year": 2026, "month": 1, "day": 1, "day_boundary": "civil_midnight_proleptic_gregorian"}
+  },
+  "source_refs": ["Author experiment. Rune choices and target date are generated and frozen by the workflow; no validated predictive mapping."]
+}
