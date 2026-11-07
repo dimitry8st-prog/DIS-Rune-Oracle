@@ -1,0 +1,33 @@
+{
+  "game": "hunt",
+  "draw": 9001,
+  "event_at": "2098-08-05T21:00:00+03:00",
+  "timezone": "Europe/Moscow",
+  "symbolic_origin": "SYNTHETIC_FIXTURE",
+  "study_id": "synthetic-feature-ablation-1",
+  "min_train": 10,
+  "shrinkage_alpha": 1.0,
+  "frequency_window": 100,
+  "rune_positions": [
+    {"rune_id": "fehu", "final_orientation": 0},
+    {"rune_id": "uruz", "final_orientation": 180},
+    {"rune_id": "isa", "final_orientation": 0}
+  ],
+  "core_results": {
+    "yijing": {"status": "ABSTAIN", "note": "stored only; not an automatic prediction arm in v1"},
+    "mo": {"status": "ABSTAIN"},
+    "qiuqian": {"status": "ABSTAIN"}
+  },
+  "history": [
+    {
+      "game": "hunt",
+      "draw": 1,
+      "fields": [[1, 2, 3, 4], [5, 6, 7, 8]],
+      "available_at": "2098-01-01T00:00:00Z",
+      "occurred_at": "2098-01-01T00:00:00Z",
+      "source": "SYNTHETIC",
+      "time_model_tokens": ["weekday=0", "hour_bucket=5"],
+      "rune_tokens": ["p0=fehu:0", "p1=uruz:180", "p2=isa:0"]
+    }
+  ]
+}

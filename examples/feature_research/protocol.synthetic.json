@@ -1,0 +1,22 @@
+{
+  "schema_version": "feature-research-v1",
+  "study_id": "synthetic-feature-ablation-1",
+  "hypothesis": "SYNTHETIC only: compare A-F on future draws without claiming a real link",
+  "game": "hunt",
+  "sample_size": 20,
+  "primary_metric": "sum_within_field_hits",
+  "methods": [
+    "A_random",
+    "B_frequency",
+    "C_lottery_rune_hash_v2",
+    "D_time_features_only",
+    "E_rune_features_only",
+    "F_rune_plus_time"
+  ],
+  "min_train": 10,
+  "shrinkage_alpha": 1.0,
+  "stopping_rule": "sample_size_or_ends_at_first",
+  "analysis_status": "EXPLORATORY",
+  "starts_at": "2098-06-01T00:00:00Z",
+  "ends_at": "2099-01-01T00:00:00Z"
+}

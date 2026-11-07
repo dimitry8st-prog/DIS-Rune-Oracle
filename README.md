@@ -48,6 +48,11 @@ Daliuren/Egypt остаются UNAVAILABLE. Веса не перераспре�
 Обычный рабочий вход — `python -m dis_oracle.workflow`; старые лабораторные и
 культурные модули сохранены. Доказанное прогнозное преимущество не заявляется.
 
+07.11.2026 добавлен отдельный [исследовательский режим ablation признаков](docs/FEATURE_RESEARCH.md)
+(`feature-research-v1`): варианты A–F, фиксация до события, walk-forward без
+изменения стандартной выдачи и без пересчёта `lottery-rune-hash-v2` под прежним
+именем. [Краткий отчёт](docs/FEATURE_RESEARCH_REPORT.md).
+
 ## Быстрый запуск
 
 Из корня репозитория:
@@ -61,6 +66,7 @@ python -m dis_oracle calendar-context examples/calendar_context/input.synthetic.
 python -m dis_oracle lab-demo --directory private-runs/lab-demo-1
 python -m dis_oracle strategy examples/strategy/decision.synthetic.json
 python -m dis_oracle strategy examples/strategy/game.synthetic.json
+python -m dis_oracle.feature_research synthetic-demo --directory private-runs/feature-research-demo
 python -m dis_oracle freeze examples/aligned.json --run-id demo-1 --db private-runs/demo.sqlite --markdown private-runs/demo-1.md
 python -m dis_oracle evaluate examples/outcome.json --run-id demo-1 --db private-runs/demo.sqlite
 python -m dis_oracle verify --db private-runs/demo.sqlite
