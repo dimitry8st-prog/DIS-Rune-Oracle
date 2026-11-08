@@ -29,7 +29,9 @@ from .calendar_context import build_context, validate_context
 from .contracts import canonical, digest, now_iso, timestamp
 from .lottery_hash import METHOD_VERSION as RUNE_HASH_V2, method_fields as rune_hash_fields
 
-VERSION = "feature-research-v1"
+VERSION = "feature-research-v1.1"
+LEGACY_VERSION = "feature-research-v1"
+SUPPORTED_SCHEMAS = (VERSION, LEGACY_VERSION)
 GAMES = ("hunt", "four_of_twenty")
 METHODS = (
     "A_random",
@@ -44,10 +46,26 @@ INSUFFICIENT = "недостаточно данных"
 DEFAULT_MIN_TRAIN = 30
 DEFAULT_SHRINK = 1.0
 DEFAULT_FREQ_WINDOW = 100
+FEATURE_SCHEMA_ID = "time_bins_v1+rune_positions_v1"
+FEATURE_TOKEN_FORMAT = "feature-tokens-v1.1"
+PRIMARY_CONTRAST = "each_method_minus_A_random"
 NOTICE = (
     "RESEARCH_MODE_ONLY; does not replace workflow/combination_lab delivery. "
     "Author hypotheses; no claimed foresight or betting advice."
 )
+
+
+def locked_method_versions(frequency_window):
+    if frequency_window not in (30, 100):
+        raise ValueError("frequency_window must be 30 or 100")
+    return {
+        "A_random": "A_random",
+        "B_frequency": f"frequency{frequency_window}-v1",
+        "C_lottery_rune_hash_v2": RUNE_HASH_V2,
+        "D_time_features_only": "AUTHOR_REGULARIZED_ADDITIVE_COOCCURRENCE_V1",
+        "E_rune_features_only": "AUTHOR_REGULARIZED_ADDITIVE_COOCCURRENCE_V1",
+        "F_rune_plus_time": "AUTHOR_REGULARIZED_ADDITIVE_COOCCURRENCE_V1",
+    }
 
 
 def _identity(game, draw):
@@ -160,6 +178,67 @@ def time_feature_tokens(event_at, timezone_name, calendar_snapshot=None):
             "hypothesis": "AUTHOR_TIME_FEATURE_BINS_V1"}
 
 
+def _token_list(value, name):
+    if value is None:
+        return None
+    if not isinstance(value, list) or any(not isinstance(item, str) or not item for item in value):
+        raise ValueError(f"{name} must be a list of nonempty strings")
+    return list(value)
+
+
+def _model_time_subset(tokens):
+    """Model time tokens exclude civil local_date (audit-only)."""
+    return [t for t in tokens if not t.startswith("local_date=")]
+
+
+def normalize_history_features(row):
+    """Versioned feature-token normalization. Silent drops are forbidden.
+
+    Format feature-tokens-v1.1:
+    - time_model_tokens: stable bins used by D/F (weekday, hour_bucket, calendar labels)
+    - time_tokens: audit list; may include local_date; if alone, model subset is used
+    - rune_tokens: ordered rune position tokens for E/F
+    - feature_tokens: optional legacy combined bag; must not contradict explicit fields
+    """
+    time_model = _token_list(row.get("time_model_tokens"), "time_model_tokens")
+    time_audit = _token_list(row.get("time_tokens"), "time_tokens")
+    rune_tokens = _token_list(row.get("rune_tokens"), "rune_tokens") or []
+    legacy = _token_list(row.get("feature_tokens"), "feature_tokens")
+
+    if time_model is not None and any(t.startswith("local_date=") for t in time_model):
+        raise ValueError("time_model_tokens must not include local_date audit fields")
+    if time_model is not None and time_audit is not None:
+        subset = _model_time_subset(time_audit)
+        if sorted(time_model) != sorted(subset):
+            raise ValueError("conflicting time_model_tokens and time_tokens model subset")
+        model = list(time_model)
+        audit = list(time_audit)
+    elif time_model is not None:
+        model = list(time_model)
+        audit = list(time_model)
+    elif time_audit is not None:
+        model = _model_time_subset(time_audit)
+        audit = list(time_audit)
+    else:
+        model, audit = [], []
+
+    if legacy is not None:
+        # Legacy bag may omit local_date; require that explicit model/rune tokens are covered.
+        legacy_set = set(legacy)
+        required = set(model) | set(rune_tokens)
+        if required and not required.issubset(legacy_set):
+            raise ValueError("feature_tokens conflict with explicit rune/time model tokens")
+
+    return {
+        "feature_token_format": FEATURE_TOKEN_FORMAT,
+        "rune_tokens": list(rune_tokens),
+        "time_model_tokens": list(model),
+        "time_tokens": list(audit),
+        # Combined model bag used when a caller asks for generic feature_tokens.
+        "feature_tokens": list(rune_tokens) + list(model),
+    }
+
+
 def _history_rows(rows, game, draw, cutoff):
     """Past outcomes of the same game available at cutoff; never invent draw times."""
     if not isinstance(rows, list):
@@ -187,13 +266,12 @@ def _history_rows(rows, game, draw, cutoff):
             raise ValueError("history available after forecast cutoff")
         if row.get("occurred_at") is not None and timestamp(row["occurred_at"]) > timestamp(cutoff):
             raise ValueError("history occurrence after forecast cutoff")
+        features = normalize_history_features(row)
         valid.append({
             "game": game, "draw": row["draw"], "fields": _normalized(row["fields"]),
             "available_at": row["available_at"], "occurred_at": row.get("occurred_at"),
             "source": row["source"],
-            "feature_tokens": list(row.get("feature_tokens") or []),
-            "rune_tokens": list(row.get("rune_tokens") or []),
-            "time_tokens": list(row.get("time_tokens") or []),
+            **features,
         })
     return sorted(valid, key=lambda item: item["draw"])
 
@@ -360,12 +438,12 @@ class FeatureResearch:
         return result
 
     def register(self, protocol):
-        """Prespecify primary metric, sample size and stopping before confirmations."""
+        """Prespecify metric, parameters, confirmatory boundary and stopping before the series."""
         p = deepcopy(protocol)
         _nonempty(p["study_id"], "study_id")
         _nonempty(p["hypothesis"], "hypothesis")
         if p.get("schema_version") != VERSION:
-            raise ValueError("protocol schema_version must be feature-research-v1")
+            raise ValueError("protocol schema_version must be feature-research-v1.1")
         if p["game"] not in GAMES:
             raise ValueError("invalid game")
         if type(p["sample_size"]) is not int or not 1 <= p["sample_size"] <= 100000:
@@ -374,14 +452,37 @@ class FeatureResearch:
             raise ValueError("primary_metric must be sum_within_field_hits")
         if p.get("methods") != list(METHODS):
             raise ValueError("methods must be the fixed A-F list; do not cherry-pick after results")
-        if type(p.get("min_train", DEFAULT_MIN_TRAIN)) is not int or p.get("min_train", DEFAULT_MIN_TRAIN) < 1:
-            raise ValueError("min_train must be a positive int")
-        if type(p.get("shrinkage_alpha", DEFAULT_SHRINK)) not in (int, float) or not 0 < float(p.get("shrinkage_alpha", DEFAULT_SHRINK)) <= 100:
-            raise ValueError("shrinkage_alpha must be in (0,100]")
+        if "frequency_window" not in p or type(p["frequency_window"]) is not int or p["frequency_window"] not in (30, 100):
+            raise ValueError("protocol must lock frequency_window to 30 or 100")
+        if "min_train" not in p or type(p["min_train"]) is not int or p["min_train"] < 1:
+            raise ValueError("protocol must lock positive min_train")
+        if "shrinkage_alpha" not in p or type(p["shrinkage_alpha"]) not in (int, float) or not 0 < float(p["shrinkage_alpha"]) <= 100:
+            raise ValueError("protocol must lock shrinkage_alpha in (0,100]")
+        p["shrinkage_alpha"] = float(p["shrinkage_alpha"])
+        if p.get("feature_schema") != FEATURE_SCHEMA_ID:
+            raise ValueError(f"feature_schema must be {FEATURE_SCHEMA_ID}")
+        if p.get("method_versions") != locked_method_versions(p["frequency_window"]):
+            raise ValueError("method_versions must match the locked frequency window and author models")
+        if p.get("primary_contrast") != PRIMARY_CONTRAST:
+            raise ValueError(f"primary_contrast must be {PRIMARY_CONTRAST}")
         if p.get("stopping_rule") != "sample_size_or_ends_at_first":
             raise ValueError("stopping_rule must be sample_size_or_ends_at_first")
         if p.get("analysis_status") not in ("EXPLORATORY", "CONFIRMATORY"):
             raise ValueError("analysis_status must be EXPLORATORY or CONFIRMATORY")
+        if "confirmatory_after" not in p:
+            raise ValueError("protocol must lock confirmatory_after (ISO timestamp or null)")
+        if p["confirmatory_after"] is not None:
+            timestamp(p["confirmatory_after"])
+            if not timestamp(p["starts_at"]) <= timestamp(p["confirmatory_after"]) <= timestamp(p["ends_at"]):
+                raise ValueError("confirmatory_after must lie within [starts_at, ends_at]")
+        if p.get("confirmatory_rule") not in ("none", "event_at_declared_ge_boundary"):
+            raise ValueError("confirmatory_rule must be none or event_at_declared_ge_boundary")
+        if p["confirmatory_after"] is None and p["confirmatory_rule"] != "none":
+            raise ValueError("confirmatory_rule must be none when confirmatory_after is null")
+        if p["confirmatory_after"] is not None and p["confirmatory_rule"] != "event_at_declared_ge_boundary":
+            raise ValueError("confirmatory boundary requires event_at_declared_ge_boundary")
+        if p["analysis_status"] == "CONFIRMATORY" and p["confirmatory_after"] is None:
+            raise ValueError("CONFIRMATORY analysis requires a locked confirmatory_after boundary")
         self.db.execute("BEGIN IMMEDIATE")
         try:
             self.verify()
@@ -419,32 +520,55 @@ class FeatureResearch:
         origin = req["symbolic_origin"]
         if origin not in SYMBOLIC_ORIGINS:
             raise ValueError("invalid symbolic_origin")
-        min_train = int(req.get("min_train", DEFAULT_MIN_TRAIN))
-        alpha = float(req.get("shrinkage_alpha", DEFAULT_SHRINK))
-        freq_window = int(req.get("frequency_window", DEFAULT_FREQ_WINDOW))
-        if freq_window not in (30, 100):
-            raise ValueError("frequency_window must be 30 or 100")
         study_id = req.get("study_id")
         positions = req.get("rune_positions")
         core_results = req.get("core_results") or {}
         if not isinstance(core_results, dict):
             raise ValueError("core_results must be an object")
         data_received_at = req.get("data_received_at")
-        computed_request = {
-            "game": game, "draw": draw, "event_at": event_at, "timezone": req["timezone"],
-            "symbolic_origin": origin, "study_id": study_id,
-            "min_train": min_train, "shrinkage_alpha": alpha,
-            "frequency_window": freq_window,
-            "rune_positions_hash": digest(positions) if positions is not None else None,
-            "core_results_hash": digest(core_results),
-            "history_hash": digest(req["history"]),
-            "calendar_config_hash": digest(req["calendar_context"]) if req.get("calendar_context") else None,
-            "version": VERSION,
-        }
         self.db.execute("BEGIN IMMEDIATE")
         try:
             self.verify()
             state = self.state()
+            protocol = None
+            if study_id:
+                protocol = state["protocols"].get(study_id)
+                if not protocol or protocol["game"] != game:
+                    raise ValueError("register matching protocol first")
+                spec = protocol["spec"]
+                if spec.get("schema_version") != VERSION:
+                    raise ValueError("study protocol must be feature-research-v1.1")
+                min_train = spec["min_train"]
+                alpha = float(spec["shrinkage_alpha"])
+                freq_window = spec["frequency_window"]
+                for name, key_name in (("min_train", "min_train"), ("shrinkage_alpha", "shrinkage_alpha"),
+                                       ("frequency_window", "frequency_window")):
+                    if key_name in req and req[key_name] != spec[key_name] and not (
+                            key_name == "shrinkage_alpha" and float(req[key_name]) == float(spec[key_name])):
+                        raise ValueError(f"{name} conflicts with locked protocol; use a new study id")
+            else:
+                min_train = int(req.get("min_train", DEFAULT_MIN_TRAIN))
+                alpha = float(req.get("shrinkage_alpha", DEFAULT_SHRINK))
+                freq_window = int(req.get("frequency_window", DEFAULT_FREQ_WINDOW))
+                if type(min_train) is not int or min_train < 1:
+                    raise ValueError("min_train must be a positive int")
+                if not 0 < alpha <= 100:
+                    raise ValueError("shrinkage_alpha must be in (0,100]")
+                if freq_window not in (30, 100):
+                    raise ValueError("frequency_window must be 30 or 100")
+            computed_request = {
+                "game": game, "draw": draw, "event_at": event_at, "timezone": req["timezone"],
+                "symbolic_origin": origin, "study_id": study_id,
+                "min_train": min_train, "shrinkage_alpha": alpha,
+                "frequency_window": freq_window,
+                "feature_schema": FEATURE_SCHEMA_ID,
+                "feature_token_format": FEATURE_TOKEN_FORMAT,
+                "rune_positions_hash": digest(positions) if positions is not None else None,
+                "core_results_hash": digest(core_results),
+                "history_hash": digest(req["history"]),
+                "calendar_config_hash": digest(req["calendar_context"]) if req.get("calendar_context") else None,
+                "version": VERSION,
+            }
             if key in state["forecasts"]:
                 previous = state["forecasts"][key]
                 if previous.get("request") != computed_request:
@@ -460,19 +584,13 @@ class FeatureResearch:
                 raise ValueError("event time already passed")
             if data_received_at is not None and timestamp(data_received_at) > timestamp(now):
                 raise ValueError("data_received_at is in the future")
-            protocol = None
             if study_id:
-                protocol = state["protocols"].get(study_id)
-                if not protocol or protocol["game"] != game:
-                    raise ValueError("register matching protocol first")
                 spec = protocol["spec"]
                 if not timestamp(spec["starts_at"]) <= timestamp(now) < timestamp(event_at) <= timestamp(spec["ends_at"]):
                     raise ValueError("outside study interval")
                 enrolled = sum(1 for f in state["forecasts"].values() if f.get("study_id") == study_id)
                 if enrolled >= spec["sample_size"]:
                     raise ValueError("study sample cap reached")
-                min_train = spec.get("min_train", min_train)
-                alpha = float(spec.get("shrinkage_alpha", alpha))
             cutoff = data_received_at or now
             history = _history_rows(req["history"], game, draw, cutoff)
             calendar_snapshot = None
@@ -509,7 +627,7 @@ class FeatureResearch:
 
             methods["D_time_features_only"] = regularized_feature_picks(
                 [{"draw": r["draw"], "fields": r["fields"],
-                  "feature_tokens": r.get("time_model_tokens") or r.get("time_tokens") or []}
+                  "feature_tokens": list(r.get("time_model_tokens") or [])}
                  for r in history],
                 time_model, min_train=min_train, alpha=alpha,
                 method_id="D_time_features_only", game=game, draw=draw)
@@ -524,7 +642,7 @@ class FeatureResearch:
             else:
                 methods["E_rune_features_only"] = regularized_feature_picks(
                     [{"draw": r["draw"], "fields": r["fields"],
-                      "feature_tokens": r.get("rune_tokens") or []}
+                      "feature_tokens": list(r.get("rune_tokens") or [])}
                      for r in history],
                     rune_tokens, min_train=min_train, alpha=alpha,
                     method_id="E_rune_features_only", game=game, draw=draw)
@@ -537,8 +655,7 @@ class FeatureResearch:
             else:
                 methods["F_rune_plus_time"] = regularized_feature_picks(
                     [{"draw": r["draw"], "fields": r["fields"],
-                      "feature_tokens": (r.get("rune_tokens") or []) + (
-                          r.get("time_model_tokens") or r.get("time_tokens") or [])}
+                      "feature_tokens": list(r.get("rune_tokens") or []) + list(r.get("time_model_tokens") or [])}
                      for r in history],
                     combined_model, min_train=min_train, alpha=alpha,
                     method_id="F_rune_plus_time", game=game, draw=draw)
@@ -556,6 +673,9 @@ class FeatureResearch:
                 "min_train": min_train,
                 "shrinkage_alpha": alpha,
                 "frequency_window": freq_window,
+                "feature_schema": FEATURE_SCHEMA_ID,
+                "feature_token_format": FEATURE_TOKEN_FORMAT,
+                "b_frequency_method_id": f"frequency{freq_window}-v1",
             }
             fixed_at = self.clock()
             if timestamp(fixed_at) >= timestamp(event_at):
@@ -612,10 +732,19 @@ class FeatureResearch:
             forecast = state["forecasts"].get(key)
             if forecast is None:
                 raise ValueError("freeze forecast before outcome")
+            event_at = forecast["event_at_declared"]
+            # Prospective mode: receipt must wait for the declared event, with or without occurred_at.
+            if timestamp(now) < timestamp(event_at):
+                raise ValueError("outcome before declared event time")
+            if recorded_at is not None:
+                timestamp(recorded_at)
+                # recorded_at is an external declaration only; it never replaces receipt time.
+                if timestamp(recorded_at) > timestamp(now):
+                    raise ValueError("recorded_at cannot be after ledger receipt")
             if occurred_at is not None:
                 if timestamp(occurred_at) > timestamp(now):
                     raise ValueError("outcome occurrence is in the future")
-                if timestamp(occurred_at) < timestamp(forecast["event_at_declared"]):
+                if timestamp(occurred_at) < timestamp(event_at):
                     raise ValueError("occurrence precedes declared event time")
             if key in state["outcomes"]:
                 previous = state["outcomes"][key]
@@ -623,11 +752,17 @@ class FeatureResearch:
                     raise ValueError("outcome already fixed with different fields")
                 self.db.execute("COMMIT")
                 return previous
+            # Final deadline check immediately before the append (no partial writes on failure).
+            if timestamp(self.clock()) < timestamp(event_at):
+                raise ValueError("outcome before declared event time")
+            receipt = self.clock()
+            if timestamp(receipt) < timestamp(event_at):
+                raise ValueError("outcome before declared event time")
             record = {
                 "game": game, "draw": draw, "fields": value, "source": source,
-                "received_at": now,
+                "received_at": receipt,
                 "occurred_at": occurred_at,
-                "recorded_at": recorded_at or now,
+                "recorded_at": recorded_at,  # may be null; never used as receipt substitute
                 "forecast_hash": digest(forecast),
                 "source_verification": "USER_SUPPLIED_UNATTESTED",
             }
@@ -639,7 +774,7 @@ class FeatureResearch:
             raise
 
     def evaluate(self, *, study_id=None, confirmatory_after=None):
-        """Score frozen forecasts. Split by time; no future outcomes in training (already frozen)."""
+        """Score frozen forecasts. Summaries are separated by game and study parameters."""
         self.db.execute("BEGIN IMMEDIATE")
         try:
             state = self.state()
@@ -654,12 +789,21 @@ class FeatureResearch:
             outcome = state["outcomes"].get(key)
             if outcome is None:
                 trials.append({"game": forecast["game"], "draw": forecast["draw"],
-                               "status": "PENDING", "scores": None})
+                               "status": "PENDING", "scores": None,
+                               "study_id": forecast.get("study_id"),
+                               "param_fingerprint": _param_fingerprint(forecast)})
                 continue
+            unsuitable = []
             if timestamp(forecast["forecast_fixed_at"]) >= timestamp(forecast["event_at_declared"]):
                 classification = "LATE"
+                unsuitable.append("LATE_FORECAST")
             else:
                 classification = "PROSPECTIVE"
+            # Legacy/doubtful receipts before the declared event are kept but not confirmatory.
+            if timestamp(outcome["received_at"]) < timestamp(forecast["event_at_declared"]):
+                unsuitable.append("RECEIVED_BEFORE_EVENT")
+            if forecast.get("schema_version") == LEGACY_VERSION:
+                unsuitable.append("LEGACY_SCHEMA_V1")
             scores = {}
             for method in METHODS:
                 arm = forecast["methods"][method]
@@ -677,16 +821,33 @@ class FeatureResearch:
                 "classification": classification,
                 "status": "RESOLVED",
                 "study_id": forecast.get("study_id"),
+                "param_fingerprint": _param_fingerprint(forecast),
+                "unsuitable_for_confirmation": unsuitable,
+                "confirmable": classification == "PROSPECTIVE" and not unsuitable,
+                "method_fields": {m: forecast["methods"][m].get("fields") for m in METHODS},
+                "outcome_fields": outcome["fields"],
                 "scores": scores,
             })
 
-        resolved = [t for t in trials if t["status"] == "RESOLVED" and t["classification"] == "PROSPECTIVE"]
+        protocol = state["protocols"].get(study_id) if study_id else None
+        locked_boundary = None
+        analysis_status = "EXPLORATORY"
+        split_kind = "NONE"
+        if protocol and protocol["spec"].get("schema_version") == VERSION:
+            locked_boundary = protocol["spec"].get("confirmatory_after")
+            if protocol["spec"].get("analysis_status") == "CONFIRMATORY" and locked_boundary is not None:
+                analysis_status = "CONFIRMATORY"
+                split_kind = "PROTOCOL_LOCKED"
+            elif locked_boundary is not None:
+                split_kind = "PROTOCOL_LOCKED_EXPLORATORY_LABEL"
         if confirmatory_after is not None:
-            cutoff = timestamp(confirmatory_after)
-            exploratory = [t for t in resolved if timestamp(t["event_at_declared"]) < cutoff]
-            confirmatory = [t for t in resolved if timestamp(t["event_at_declared"]) >= cutoff]
-        else:
-            exploratory, confirmatory = resolved, []
+            # Post-hoc CLI split is allowed only as exploratory; never as held-out confirmation.
+            if locked_boundary is not None and timestamp(confirmatory_after) != timestamp(locked_boundary):
+                raise ValueError("confirmatory_after conflicts with locked protocol boundary")
+            if locked_boundary is None:
+                split_kind = "RETROSPECTIVE_EXPLORATORY_SPLIT"
+                analysis_status = "EXPLORATORY"
+                locked_boundary = confirmatory_after
 
         def summarize(rows, label):
             by_method = {}
@@ -718,79 +879,236 @@ class FeatureResearch:
                 }
             return {"label": label, "n_trials": len(rows), "methods": by_method}
 
-        protocol = state["protocols"].get(study_id) if study_id else None
-        analysis_status = "EXPLORATORY"
-        if protocol and protocol["spec"].get("analysis_status") == "CONFIRMATORY":
-            analysis_status = "CONFIRMATORY"
-        elif confirmatory_after is not None:
-            analysis_status = "SPLIT_EXPLORATORY_AND_HELD_OUT"
+        def split_rows(rows):
+            eligible = [t for t in rows if t["status"] == "RESOLVED" and t["classification"] == "PROSPECTIVE"
+                        and t.get("confirmable", True)]
+            if locked_boundary is None:
+                return eligible, []
+            boundary = timestamp(locked_boundary)
+            exploratory = [t for t in eligible if timestamp(t["event_at_declared"]) < boundary]
+            confirmatory = [t for t in eligible if timestamp(t["event_at_declared"]) >= boundary]
+            return exploratory, confirmatory
+
+        # Never pool games or distinct parameter fingerprints into one summary.
+        groups = {}
+        for trial in trials:
+            if trial["status"] != "RESOLVED":
+                continue
+            group_key = (trial["game"], trial.get("study_id"), trial.get("param_fingerprint"))
+            groups.setdefault(group_key, []).append(trial)
+
+        by_game = {}
+        by_study = {}
+        for (game, sid, fingerprint), rows in sorted(groups.items()):
+            exploratory, confirmatory = split_rows(rows)
+            block = {
+                "game": game,
+                "study_id": sid,
+                "param_fingerprint": fingerprint,
+                "n_resolved": len(rows),
+                "exploratory": summarize(exploratory, "exploratory"),
+                "confirmatory_holdout": summarize(confirmatory, "confirmatory_holdout"),
+                "games_separated": True,
+                "parameters_separated": True,
+            }
+            by_game.setdefault(game, []).append(block)
+            study_key = sid or "NO_STUDY"
+            by_study.setdefault(study_key, []).append(block)
 
         return {
             "schema_version": VERSION,
             "notice": NOTICE,
             "analysis_status": analysis_status,
+            "split_kind": split_kind,
+            "confirmatory_boundary": locked_boundary,
             "primary_metric": "sum_within_field_hits",
             "games_separated": True,
+            "parameters_separated": True,
             "fields_not_pooled": True,
+            "pooled_summary": None,
+            "pooled_summary_note": "Disabled: games and parameter fingerprints are summarized separately",
             "multiplicity": {"methods": list(METHODS), "n_methods": len(METHODS),
                              "warning": "Compare with multiplicity in mind; do not pick the winner post hoc as confirmation"},
             "protocol": protocol,
             "pending": sum(t["status"] == "PENDING" for t in trials),
             "trials": trials,
-            "exploratory": summarize(exploratory, "exploratory"),
-            "confirmatory_holdout": summarize(confirmatory, "confirmatory_holdout"),
+            "by_game": by_game,
+            "by_study": by_study,
             "claims_not_supported": [
                 "Results do not prove or disprove a real link.",
                 "Absence of significance is not proof of absence.",
                 "Hashing time into SHA-256 is not learning.",
                 "Hits are not monetary profit.",
+                "Permutation diagnostics are not causal proof.",
+                "Retrospective confirmatory_after without a locked protocol boundary is exploratory only.",
             ],
         }
 
 
-def permutation_null(trials, method, *, n_perm=199, seed=1, preserve=("fields",)):
-    """Permute outcomes while preserving two-field structure needed by the hypothesis.
+def _param_fingerprint(forecast):
+    training = forecast.get("training") or {}
+    request = forecast.get("request") or {}
+    return digest({
+        "schema_version": forecast.get("schema_version"),
+        "frequency_window": training.get("frequency_window", request.get("frequency_window")),
+        "min_train": training.get("min_train", request.get("min_train")),
+        "shrinkage_alpha": training.get("shrinkage_alpha", request.get("shrinkage_alpha")),
+        "feature_schema": training.get("feature_schema", request.get("feature_schema")),
+        "b_frequency_method_id": training.get("b_frequency_method_id"),
+    })
 
-    Limitation: this shuffles whole two-field outcomes across draws of the same game.
-    It does not model dependence across draws or calendar autocorrelation.
+
+def permutation_null(trials, method, *, n_perm=199, seed=1, game=None,
+                     preserve=("two_field_outcome",), time_blocks=None):
+    """Outcome-permutation diagnostic for one game.
+
+    Null hypothesis (explicit): within one game and optional prespecified time blocks,
+    whole two-field outcomes are exchangeable across eligible draws. Under that null,
+    the observed sum over draws of (method within-field hit total − A_random total)
+    is not unusually extreme.
+
+    Exchangeability conditions: same game; both fields of an outcome stay together;
+    forecasts stay fixed; no cross-game moves; optional blocks listed in time_blocks
+    as lists of draw numbers. This is not a proof of causation.
     """
-    if preserve != ("fields",):
+    if preserve != ("two_field_outcome",):
         raise ValueError("only whole two-field outcome permutation is implemented")
-    scored = [t for t in trials if t.get("status") == "RESOLVED"
-              and t["scores"].get(method, {}).get("total") is not None
-              and t["scores"].get("A_random", {}).get("total") is not None]
-    if len(scored) < 2:
-        return {"status": INSUFFICIENT, "n": len(scored),
-                "limitation": "Need at least two resolved scored trials"}
-    observed = sum(t["scores"][method]["total"] - t["scores"]["A_random"]["total"] for t in scored)
+    if method not in METHODS or method == "A_random":
+        raise ValueError("permute a non-control method against A_random")
+    eligible = []
+    for trial in trials:
+        if trial.get("status") != "RESOLVED":
+            continue
+        if game is not None and trial.get("game") != game:
+            continue
+        method_fields = (trial.get("method_fields") or {}).get(method)
+        control_fields = (trial.get("method_fields") or {}).get("A_random")
+        outcome_fields = trial.get("outcome_fields")
+        if method_fields is None or control_fields is None or outcome_fields is None:
+            continue
+        if trial.get("scores", {}).get(method, {}).get("total") is None:
+            continue
+        if trial.get("scores", {}).get("A_random", {}).get("total") is None:
+            continue
+        eligible.append({
+            "game": trial["game"], "draw": trial["draw"],
+            "method_fields": method_fields, "control_fields": control_fields,
+            "outcome_fields": _normalized(outcome_fields),
+        })
+    games = {row["game"] for row in eligible}
+    if game is None and len(games) > 1:
+        return {"status": "REJECTED", "reason": "multiple games present; pass game= explicitly",
+                "n": len(eligible)}
+    if len(games) != 1:
+        return {"status": INSUFFICIENT, "n": len(eligible),
+                "reason": "need resolved trials of one game with stored forecasts and outcomes"}
+    chosen_game = next(iter(games))
+    if len(eligible) < 2:
+        return {"status": INSUFFICIENT, "n": len(eligible),
+                "reason": "need at least two eligible trials"}
+    distinct_outcomes = {canonical(row["outcome_fields"]) for row in eligible}
+    distinct_methods = {canonical(row["method_fields"]) for row in eligible}
+    if len(distinct_outcomes) < 2:
+        return {"status": "REJECTED", "reason": "degenerate: fewer than two distinct outcomes",
+                "n": len(eligible)}
+    if len(distinct_methods) < 2 and all(
+            canonical(row["method_fields"]) == canonical(row["control_fields"]) for row in eligible):
+        return {"status": "REJECTED", "reason": "degenerate: method equals control on all trials",
+                "n": len(eligible)}
+
+    blocks = []
+    if time_blocks is None:
+        blocks = [list(range(len(eligible)))]
+    else:
+        if not isinstance(time_blocks, list) or not time_blocks:
+            raise ValueError("time_blocks must be a nonempty list of draw-number lists")
+        index_by_draw = {row["draw"]: index for index, row in enumerate(eligible)}
+        seen = set()
+        for block in time_blocks:
+            if not isinstance(block, list) or not block:
+                raise ValueError("each time block must be a nonempty draw list")
+            indexes = []
+            for draw in block:
+                if draw not in index_by_draw:
+                    raise ValueError(f"time block draw {draw} is not eligible")
+                if draw in seen:
+                    raise ValueError("draw appears in multiple time blocks")
+                seen.add(draw)
+                indexes.append(index_by_draw[draw])
+            if len(indexes) >= 1:
+                blocks.append(indexes)
+        if seen != set(index_by_draw):
+            return {"status": "REJECTED", "reason": "time_blocks must cover every eligible draw exactly once",
+                    "n": len(eligible)}
+
+    def statistic(order_outcomes):
+        total = 0
+        for row, outcome in zip(eligible, order_outcomes):
+            total += sum(hits(row["method_fields"], outcome)) - sum(hits(row["control_fields"], outcome))
+        return total
+
+    base_outcomes = [row["outcome_fields"] for row in eligible]
+    observed = statistic(base_outcomes)
     rng = random.Random(seed)
-    method_totals = [t["scores"][method]["total"] for t in scored]
-    control_totals = [t["scores"]["A_random"]["total"] for t in scored]
-    # Permute pairing of method totals against fixed controls? Better: permute
-    # the outcome-derived hit totals by reshuffling which outcome attaches to which forecast.
-    # Here trials already store hit totals; approximate by permuting method totals vs controls
-    # is wrong. Instead permute the difference by shuffling method scores relative to controls.
+    # Probe whether the scheme can change the statistic at all.
+    probe = base_outcomes[:]
+    mutable = False
+    for block in blocks:
+        if len(block) < 2:
+            continue
+        for _ in range(min(20, n_perm)):
+            trial = probe[:]
+            values = [trial[i] for i in block]
+            rng.shuffle(values)
+            for index, value in zip(block, values):
+                trial[index] = value
+            if statistic(trial) != observed:
+                mutable = True
+                break
+        if mutable:
+            break
+    if not mutable:
+        return {"status": "REJECTED", "reason": "degenerate permutation scheme: statistic invariant",
+                "n": len(eligible), "observed_sum_diff_vs_random": observed}
+
+    rng = random.Random(seed)
     extreme = 0
+    changed = 0
     for _ in range(n_perm):
-        shuffled = method_totals[:]
-        rng.shuffle(shuffled)
-        stat = sum(m - c for m, c in zip(shuffled, control_totals))
+        trial = base_outcomes[:]
+        for block in blocks:
+            if len(block) < 2:
+                continue
+            values = [trial[i] for i in block]
+            rng.shuffle(values)
+            for index, value in zip(block, values):
+                trial[index] = value
+        stat = statistic(trial)
+        if stat != observed:
+            changed += 1
         if abs(stat) >= abs(observed):
             extreme += 1
     p = Fraction(extreme + 1, n_perm + 1)
     return {
         "status": "COMPUTED",
+        "null_hypothesis": (
+            "Within one game and the listed blocks, whole two-field outcomes are exchangeable "
+            "across eligible draws; forecasts remain fixed."
+        ),
         "method": method,
-        "n": len(scored),
+        "game": chosen_game,
+        "n": len(eligible),
         "n_perm": n_perm,
         "observed_sum_diff_vs_random": observed,
+        "n_perms_statistic_changed": changed,
         "p_two_sided_monte_carlo": float(p),
         "p_exact_fraction": str(p),
-        "preserves": "two-field outcome totals already computed per trial; shuffles method-control pairing labels",
+        "preserves": "whole two-field outcomes; games separated; optional draw blocks",
+        "causality_claim": False,
         "limitations": [
-            "Does not regenerate picks under permuted calendars/runes.",
-            "Does not preserve temporal autocorrelation of features.",
-            "Use only as a diagnostic under exchangeability assumptions.",
+            "Does not regenerate forecasts under permuted features.",
+            "Does not model calendar autocorrelation beyond declared blocks.",
+            "Not a proof of causation or of a real-world link.",
         ],
     }
 
@@ -937,10 +1255,16 @@ def run_synthetic_demo(directory):
             "sample_size": 5,
             "primary_metric": "sum_within_field_hits",
             "methods": list(METHODS),
+            "frequency_window": 100,
             "min_train": 10,
             "shrinkage_alpha": 1.0,
+            "feature_schema": FEATURE_SCHEMA_ID,
+            "method_versions": locked_method_versions(100),
+            "primary_contrast": PRIMARY_CONTRAST,
             "stopping_rule": "sample_size_or_ends_at_first",
             "analysis_status": "EXPLORATORY",
+            "confirmatory_after": None,
+            "confirmatory_rule": "none",
             "starts_at": "2098-05-15T00:00:00Z",
             "ends_at": "2099-12-01T00:00:00Z",
         })
@@ -951,7 +1275,7 @@ def run_synthetic_demo(directory):
             "game": "hunt", "draw": 9001, "event_at": event_at,
             "timezone": "Europe/Moscow", "symbolic_origin": "SYNTHETIC_FIXTURE",
             "study_id": "synthetic-feature-demo-1", "history": history,
-            "rune_positions": sample["rune_positions"], "min_train": 10,
+            "rune_positions": sample["rune_positions"],
             "core_results": {"yijing": {"status": "ABSTAIN", "note": "not attached as an arm"}},
         })
         clock["t"] = timestamp(event_at).astimezone(timezone.utc)
@@ -971,7 +1295,7 @@ def run_synthetic_demo(directory):
                    "features_used": arm.get("features_used")}
             for name, arm in frozen["methods"].items()
         },
-        "ledger_example_evaluation": ledger_eval["exploratory"],
+        "ledger_example_evaluation": ledger_eval["by_study"]["synthetic-feature-demo-1"][0]["exploratory"],
         "interpretation": [
             "On planted-time data, D may exceed random out of sample; this checks detector wiring.",
             "On independent random data, discovery is not guaranteed.",

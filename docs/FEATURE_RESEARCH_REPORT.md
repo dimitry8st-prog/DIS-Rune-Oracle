@@ -1,57 +1,36 @@
-# Краткий отчёт: research/feature-ablation-engine
+# Краткий отчёт: fix/feature-research-defects
 
-Дата работы: 07.11.2026. База: `codex/stable-study-workflow-20261104`
-(`c65d3d0`). Ветка: `research/feature-ablation-engine`. В `main` не сливалось.
-Реальные ставки не запускались.
+База: `research/feature-ablation-engine` @ `3847369b6f65e80c8ded8bd40e49b75b77129bf6`.
+Ветка исправлений: `fix/feature-research-defects`. В `main` не сливалось.
 
-## Что было ограничено (аудит)
+## Дефект → исправление → тест
 
-- На GitHub `main` — только ранние docs; рабочий код — в feature-ветках.
-- `AGENTS.md` в этой базе отсутствует.
-- `workflow.py` / `combination_lab.py` / `calendar_context.py` есть; отдельных
-  `lottery.py` / `series.py` в этой ветке нет (формула встроена).
-- Стандартный `lottery-rune-hash-v2` использует только draw + три руны/ориентации.
-  Точное время, TZ, календарь и прочие ядра в его seed **не входят**.
-- `calendar_context` — культурный снимок; в workflow-шаблоне сбрасывается.
-- Lab B/C/D — отдельные авторские хеши, не пересчёт архива под старым именем.
-- Локального реального архива в репозитории нет → синтетика с явной пометкой.
-- Интегрированный `pipeline` на этой ветке требует POSIX `fcntl` (на Windows
-  часть cycle-тестов падает как и раньше; research-режим на SQLite работает).
+| Дефект | Исправление | Тест |
+| --- | --- | --- |
+| `permutation_null` давал p=1 (инвариант суммы) | Перестановка целых двухполевых исходов внутри игры; пересчёт hits метода и контроля; явная H0; отказ при вырождении | `test_permutation_null_statistic_changes_on_nondegenerate_set` |
+| Исход до события без `occurred_at` принимался как PROSPECTIVE | Запрет приёма до `event_at_declared`; `recorded_at` не заменяет receipt; откат без частичных записей; legacy пометка | `test_outcome_before_event_rejected_even_without_occurred_at` |
+| `evaluate` смешивал игры при `games_separated=True` | Сводки только в `by_game` / `by_study`; `pooled_summary=None` | `test_evaluate_separates_games_in_one_db` |
+| В одном study можно было сменить окно 30→100 | Протокол v1.1 закрепляет окно, min_train, alpha, schema, versions, contrast, stopping, confirmatory | `test_protocol_rejects_frequency_window_change` |
+| `confirmatory_after` выбирался после результатов | Граница в протоколе; конфликт CLI отклоняется; без протокола — только exploratory split | `test_confirmatory_boundary_locked_in_protocol` |
+| `_history_rows` отбрасывал `time_model_tokens` | `normalize_history_features` / `feature-tokens-v1.1`; конфликты отклоняются | `test_time_model_tokens_alone_feed_method_d`, `test_conflicting_time_feature_representations_rejected` |
 
-Отсутствие подключения признака **не** объявлялось доказательством отсутствия сигнала.
+## Совместимость
 
-## Что изменено
+Старые записи v1 не изменяются. Новые протоколы/прогнозы пишутся как
+`feature-research-v1.1`. При чтении legacy помечается для confirmatory.
 
-Добавлено, стандартная выдача не переписана:
+## Ограничения
 
-- `dis_oracle/lottery_hash.py` — точная формула v2 для переиспользования;
-- `dis_oracle/feature_research.py` — версия `feature-research-v1`, журнал A–F;
-- `tests/test_feature_research.py` — 14 тестов режима;
-- `docs/FEATURE_RESEARCH.md`, `docs/FEATURE_RESEARCH_REPORT.md`;
-- `examples/feature_research/*` — схема и синтетический запуск.
+- Нет независимой аттестации времени/исходов.
+- Перестановка — диагностика обменности, не причинность.
+- Синтетический сигнал ≠ реальная связь тиражей.
+- Другие ядра по-прежнему не автоматические руки A–F.
+- Cycle/`fcntl` на Windows в полном discover может падать как раньше (вне research).
 
-## Какие гипотезы теперь можно проверять
+## Можно ли запускать будущую серию
 
-1. Превышает ли baseline C (`lottery-rune-hash-v2`) случайный контроль A.
-2. Даёт ли частота B преимущество над A на перспективных тиражах.
-3. Связаны ли **явные** бины времени/календаря (D) с попаданиями сверх контроля.
-4. То же для явных рунических признаков (E) и их суммы с временем (F).
-5. Детектор на синтетике с посаженным сигналом vs отсутствие гарантии на шуме.
-
-## Чего результаты пока не доказывают
-
-- Существование или отсутствие реальной связи символов/времени с исходом.
-- Предсказательную точность, прибыль, ретрокаузальность.
-- Достаточность аддитивной регуляризованной модели.
-- Подлинность времени/источников (нет независимой аттестации).
-
-## Тесты
-
-```text
-python -m unittest tests.test_feature_research -v
-# 14 tests, OK
-```
-
-Полный `unittest discover` на Windows по-прежнему содержит заранее существующие
-ошибки cycle/`fcntl` и несходство хеша research_stats CLI-артефакта; новые тесты
-режима к ним не относятся.
+Да, **исследовательскую** серию на v1.1, если заранее зарегистрирован протокол с
+зафиксированными параметрами и (для подтверждения) границей `confirmatory_after`,
+исходы принимаются только после заявленного события, игры не смешиваются в сводках,
+и анализ до границы помечен exploratory при любом post-hoc split. Подтверждающий
+вывод требует будущих наблюдений после locked boundary, без подбора правил по ним.

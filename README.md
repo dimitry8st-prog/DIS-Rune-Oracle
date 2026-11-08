@@ -49,7 +49,7 @@ Daliuren/Egypt остаются UNAVAILABLE. Веса не перераспре�
 культурные модули сохранены. Доказанное прогнозное преимущество не заявляется.
 
 07.11.2026 добавлен отдельный [исследовательский режим ablation признаков](docs/FEATURE_RESEARCH.md)
-(`feature-research-v1`): варианты A–F, фиксация до события, walk-forward без
+(`feature-research-v1.1`): варианты A–F, фиксация до события, walk-forward без
 изменения стандартной выдачи и без пересчёта `lottery-rune-hash-v2` под прежним
 именем. [Краткий отчёт](docs/FEATURE_RESEARCH_REPORT.md).
 
