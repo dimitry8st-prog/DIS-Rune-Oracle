@@ -21,6 +21,7 @@ PROFILES = ("japanese_rokuyo", "egyptian_cairo")
 ROKUYO = ("Sensho", "Tomobiki", "Senbu", "Butsumetsu", "Taian", "Shakko")
 ROKUYO_SOURCE = "https://www.ndl.go.jp/koyomi/chapter3/s3.html"
 CAIRO_SCHEMA = "cairo-calendar-prognoses-v1"
+CAIRO_PROFILE_VERSION = "egyptian-cairo-declared-correlation-v1"
 CAIRO_CORPUS_PATH = Path(__file__).resolve().parent.parent / "data" / "calendar" / "cairo_calendar_prognoses.json"
 COMMON_FIELDS = ("calendar_date", "source_ref", "source_locator", "available_at")
 PROFILE_FIELDS = {
@@ -110,8 +111,8 @@ def _cairo_corpus():
             "sha256": hashlib.sha256(raw).hexdigest(), "rows": rows}
 
 
-def validate_context(config, event, registered_at):
-    """Validate every requested profile, including a present local corpus, before RNG."""
+def validate_context(config, event, registered_at, *, check_corpus=True):
+    """Validate requested profiles and, by default, a present local corpus."""
     shape(config, ("schema_version", "event_at", "timezone", "day_boundary", "profiles"))
     if config["schema_version"] != SCHEMA_VERSION:
         raise ContractError("unsupported calendar context schema")
@@ -152,7 +153,7 @@ def validate_context(config, event, registered_at):
             _integer(profile["day"], "day", 1, 5 if profile["month"] == 13 else 30)
             if profile["mapping_rule"] != "DECLARED_MODERN_CORRELATION":
                 raise ContractError("Egyptian dates require an explicit DECLARED_MODERN_CORRELATION")
-            if profile["month"] != 13:
+            if check_corpus and profile["month"] != 13:
                 _cairo_corpus()
     return {"local_datetime": local.isoformat(), "local_date": local.date().isoformat(),
             "local_time": local.timetz().isoformat(), "utc_offset_seconds": int(local.utcoffset().total_seconds()),
@@ -161,7 +162,7 @@ def validate_context(config, event, registered_at):
 
 def _profile_base(profile_id, profile):
     return {"profile_id": profile_id,
-            "profile_version": "japanese-rokuyo-manual-lunar-v1" if profile_id == "japanese_rokuyo" else "egyptian-cairo-declared-correlation-v1",
+            "profile_version": "japanese-rokuyo-manual-lunar-v1" if profile_id == "japanese_rokuyo" else CAIRO_PROFILE_VERSION,
             "scope": SCOPE, "status": "ABSTAIN", "reason": "MISSING_INPUTS",
             "source_verification": "USER_DECLARED", "forecast_status": "ABSTAIN",
             "inputs": deepcopy(profile), "input_hash": digest(profile),
@@ -222,7 +223,7 @@ def _egypt(profile):
 
 def build_context(config, event, registered_at):
     """Build a deterministic JSON-compatible snapshot, preserving declared provenance."""
-    local = validate_context(config, event, registered_at)
+    local = validate_context(config, event, registered_at, check_corpus=False)
     contexts = []
     for profile_id in PROFILES:  # Stable order independent of object insertion order.
         if profile_id in config["profiles"]:

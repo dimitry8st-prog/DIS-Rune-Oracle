@@ -2,6 +2,14 @@
 
 from .contracts import CORES, ContractError, validate_event, validate_cards
 
+_UNSUPPLIED_REASONS = {
+    "daliuren": "APPROVED_DALIUREN_PROFILE_UNAVAILABLE",
+    "egypt": "MISSING_MODERN_CORRELATION",
+    "shakuna": "MISSING_MANUAL_OBSERVATION",
+    "slavic": "MISSING_REGIONAL_DRAW_OBSERVATION",
+    "name_grids": "MISSING_NAME_AND_STROKE_INPUTS",
+}
+
 
 def compare(event, cards):
     axes = validate_event(event)
@@ -66,7 +74,7 @@ def compare(event, cards):
     return {
         "core_weight": "0.10", "procedural_coverage_percent": sum(c["status"] == "OK" for c in cards) * 10,
         "cores": {core: {"status": present[core]["status"], "reason": present[core]["reason"]}
-                  if core in present else {"status": "UNAVAILABLE", "reason": "NOT_SUPPLIED"}
+                  if core in present else {"status": "UNAVAILABLE", "reason": _UNSUPPLIED_REASONS.get(core, "NOT_SUPPLIED")}
                   for core in CORES},
         "axes": results,
         "notice": "Support and coverage are not event probabilities or proof of predictive accuracy.",

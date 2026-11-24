@@ -12,7 +12,7 @@ from .contracts import (ContractError, CORES, digest, now_iso, shape, text,
                         timestamp, validate_event, validate_cards)
 from .engine import freeze, evaluate
 from .journal import Journal, JournalError
-from .adapters import audited_inputs
+from .adapters import audited_inputs, egypt
 from .calendar_context import validate_context, build_context
 from .adapters.runes import RuneSessions
 from .adapters.yijing import run as yijing_run, calculate
@@ -48,9 +48,13 @@ def validate_manifest(manifest, at):
     if "calendar_context" in manifest:
         validate_context(manifest["calendar_context"], manifest["event"], at)
     adapters = manifest["adapters"]
-    shape(adapters, (), ("rune", "yijing", "mo", "qiuqian", "maya", "shakuna", "slavic", "name_grids"))
+    shape(adapters, (), CORES)
     for core, config in adapters.items():
-        if core in ("maya", "shakuna", "slavic", "name_grids"):
+        if core == "daliuren":
+            raise ContractError("daliuren requires an approved calendar and chart-construction profile")
+        elif core == "egypt":
+            egypt.validate_config(config, manifest["event"], at)
+        elif core in ("maya", "shakuna", "slavic", "name_grids"):
             audited_inputs.validate_config(core, config)
             # Reported observations must already exist when the cycle is registered.
             observed = ([config["observation"]["observed_at"]] if core == "shakuna" else
@@ -175,10 +179,12 @@ class Cycle:
             registration = {"state": "REGISTERED", "pipeline_version": VERSION,
                             "package_version": __version__, "registered_at": fixed_at,
                             "synthetic_clock": at is not None, "manifest_hash": digest(manifest), "manifest": manifest}
+            # Capture corpus data with registration so a restart before collection
+            # cannot substitute a changed row or fill a previously unavailable row.
             if "calendar_context" in manifest:
-                # Capture local source data in the registration itself: a crash before
-                # collection must not substitute a changed calendar corpus on restart.
                 registration["calendar_snapshot"] = build_context(manifest["calendar_context"], manifest["event"], fixed_at)
+            if "egypt" in manifest["adapters"]:
+                registration["egypt_card"] = egypt.card(manifest["adapters"]["egypt"], manifest["event"], fixed_at)
             # One local run per event prevents drawing several cycles and exporting only a favorite.
             self.journal.append("cycle-event:" + digest(manifest["event"]["event_id"]),
                                 {"run_id": self.run_id, "manifest_hash": digest(manifest)})
@@ -213,6 +219,8 @@ class Cycle:
                     card = state["card"]
                 finally:
                     store.close()
+            elif core == "egypt":
+                card = reg["egypt_card"]
             elif core in ("maya", "shakuna", "slavic", "name_grids"):
                 key = "adapter:audited:" + sid
                 card = self.journal.get(key)
@@ -443,7 +451,7 @@ class Cycle:
                   "method_versions": {c["core_id"]: {"protocol": c["protocol_version"], "input_hash": c["input_hash"],
                                        "procedure_source": c["raw_result"].get("source") if isinstance(c["raw_result"], dict) else None,
                                        "source_verification": c["raw_result"].get("source_verification", "NOT_AUTHENTICATED") if isinstance(c["raw_result"], dict) else "NOT_AUTHENTICATED",
-                                       "sources": {k: c["inputs"][k] for k in ("map_version", "map_hash", "set_id", "profile", "day_boundary", "stroke_standard", "regional_variant", "protocol_ref") if k in c["inputs"]}}
+                                       "sources": {k: c["inputs"][k] for k in ("map_version", "map_hash", "set_id", "profile", "day_boundary", "stroke_standard", "evidence_ref", "regional_variant", "protocol_ref") if k in c["inputs"]}}
                                       for c in frozen["raw_cards"]},
                   "router": {"core_weight": "0.10", "support_is_probability": False, "comparison": frozen["comparison"]},
                   "trials": rows, "registered_axes": len(rows), "resolved_axes": sum(r is not None for r in evaluations),

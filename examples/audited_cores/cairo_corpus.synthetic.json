@@ -1,0 +1,10 @@
+{
+  "schema_version": "cairo-calendar-prognoses-v1",
+  "source_ref": "https://example.invalid/synthetic-cairo-corpus",
+  "rights_notice": "SYNTHETIC rows for testing the reader",
+  "rows": [
+    {"month": 1, "day": 1, "segments": ["G", "S", "G"]},
+    {"month": 1, "day": 2, "segments": [null, null, null]},
+    {"month": 12, "day": 30, "segments": ["S", "S", "S"]}
+  ]
+}
