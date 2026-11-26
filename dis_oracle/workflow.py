@@ -9,16 +9,31 @@ from contextlib import contextmanager
 from copy import deepcopy
 import hashlib
 import json
+import os
 from pathlib import Path
 import secrets
 import sqlite3
+import tempfile
 import zipfile
 
 from research_stats.core import fields, hits, exact_sign, load_json
+from .archive_migration import ARCHIVE_VERSION, forecast_record, join_forecasts, read_archive
 from .contracts import canonical, digest, now_iso, timestamp
 
 VERSION = "oracle-workflow-v1"
 GAMES = ("hunt", "four_of_twenty")
+WORKFLOW_FREQUENCY_TIE_BREAK = "SHA256_ASC_METHOD_GAME_DRAW_FIELD_NUMBER"
+_OUTCOME_TIME_ERRORS = {
+    "INVALID_RECEIVED_AT": "invalid outcome receipt time",
+    "INVALID_OCCURRED_AT": "invalid outcome occurrence time; use ISO time with a timezone",
+    "INVALID_TARGET_AT": "invalid forecast target time",
+    "INVALID_FIXED_AT": "invalid forecast fixation time",
+    "OCCURRED_AFTER_RECEIPT": "outcome occurrence is in the future at receipt",
+    "OCCURRED_BEFORE_TARGET": "outcome occurrence precedes declared target; audit target separately",
+    "RECEIVED_BEFORE_TARGET": "outcome receipt precedes declared target; audit target separately",
+    "OCCURRED_BEFORE_FORECAST_FIX": "outcome occurrence precedes forecast fixation",
+    "RECEIVED_BEFORE_FORECAST_FIX": "outcome receipt precedes forecast fixation",
+}
 
 
 def identity(game, draw):
@@ -36,6 +51,37 @@ def nonempty(value):
 def normalized(value):
     fields(value)
     return [sorted(f) for f in value]
+
+
+def _trial_time_issue(outcome, forecast, *, for_evaluation=False):
+    times = {}
+    for name, value in (
+        ("received_at", outcome.get("received_at")),
+        ("occurred_at", outcome.get("occurred_at")),
+        ("target_at", forecast.get("target_at")),
+        ("fixed_at", forecast.get("fixed_at")),
+    ):
+        try:
+            times[name] = None if value is None and name != "received_at" else timestamp(value)
+        except (ValueError, OverflowError):
+            return "INVALID_" + name.upper()
+
+    receipt, occurrence, target, fix = (times[name] for name in ("received_at", "occurred_at", "target_at", "fixed_at"))
+    if for_evaluation and target is not None and fix is not None and fix >= target:
+        return "FORECAST_FIXED_AT_OR_AFTER_TARGET"
+    if occurrence is not None and occurrence > receipt:
+        return "OCCURRED_AFTER_RECEIPT"
+    if target is not None:
+        if occurrence is not None and occurrence < target:
+            return "OCCURRED_BEFORE_TARGET"
+        if receipt < target:
+            return "RECEIVED_BEFORE_TARGET"
+    if fix is not None:
+        if occurrence is not None and occurrence < fix:
+            return "OCCURRED_BEFORE_FORECAST_FIX"
+        if receipt < fix:
+            return "RECEIVED_BEFORE_FORECAST_FIX"
+    return None
 
 
 def frequency(rows, game, draw, cutoff, limit=100):
@@ -63,10 +109,50 @@ def frequency(rows, game, draw, cutoff, limit=100):
             "probability_claim": None, "validated_advantage": False}
 
 
+def _paired_groups(trials, forecasts):
+    groups = {}
+    for trial in trials:
+        if trial['source_conflict'] or trial['scores'].get('random') is None:
+            continue
+        origin, game, draw = trial['origin'], trial['game'], trial['draw']
+        arms = forecasts[identity(game, draw)]['methods']
+        for method, score in trial['scores'].items():
+            if method == 'random' or score is None:
+                continue
+            arm = arms[method]
+            tie_break = None
+            if method.startswith('frequency'):
+                tie_break = WORKFLOW_FREQUENCY_TIE_BREAK if origin == 'LOCAL_FUTURE_UNATTESTED' else arm.get('tie_break')
+                if tie_break is None:
+                    continue
+            variant = (origin, game, method, arm.get('method_version', method), canonical(tie_break))
+            groups.setdefault(variant, []).append({'draw': draw, 'method': sum(score),
+                                                   'control': sum(trial['scores']['random'])})
+    result = []
+    for (origin, game, method, version, tie_break), rows in sorted(groups.items()):
+        paired = sorted(rows, key=lambda row: row['draw'])
+        n = len(paired)
+        method_hits = sum(row['method'] for row in paired)
+        control_hits = sum(row['control'] for row in paired)
+        result.append({'origin': origin, 'game': game, 'method': method, 'method_version': version,
+                       'tie_break': json.loads(tie_break), 'n': n,
+                       'method_hits': method_hits, 'control_hits': control_hits,
+                       'method_mean': method_hits / n, 'control_mean': control_hits / n,
+                       'uniform_expected_mean': 1.6,
+                       'diagnostic_only_sign_test': exact_sign([row['method'] - row['control'] for row in paired]),
+                       'chronological_totals': paired})
+    return result
+
+
 class Workflow:
     def __init__(self, path, *, _clock=None):
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
+        if not self.path.exists():
+            try:
+                self.path.touch(mode=0o600, exist_ok=False)
+            except FileExistsError:
+                pass
         self.clock = _clock or now_iso  # injection for tests only; not exposed in CLI
         self.db = sqlite3.connect(self.path, timeout=30, isolation_level=None)
         self.db.row_factory = sqlite3.Row
@@ -79,6 +165,12 @@ class Workflow:
         CREATE TRIGGER IF NOT EXISTS workflow_no_update BEFORE UPDATE ON workflow_events
           BEGIN SELECT RAISE(ABORT,'append only'); END;
         CREATE TRIGGER IF NOT EXISTS workflow_no_delete BEFORE DELETE ON workflow_events
+          BEGIN SELECT RAISE(ABORT,'append only'); END;
+        CREATE TABLE IF NOT EXISTS workflow_archives(
+          archive_hash TEXT NOT NULL PRIMARY KEY, contents BLOB NOT NULL);
+        CREATE TRIGGER IF NOT EXISTS workflow_archive_no_update BEFORE UPDATE ON workflow_archives
+          BEGIN SELECT RAISE(ABORT,'append only'); END;
+        CREATE TRIGGER IF NOT EXISTS workflow_archive_no_delete BEFORE DELETE ON workflow_archives
           BEGIN SELECT RAISE(ABORT,'append only'); END;
         """)
 
@@ -103,15 +195,45 @@ class Workflow:
             raise
 
     def verify(self):
+        if self.db.in_transaction:
+            return self.verify_connection(self.db)
+        self.db.execute("BEGIN")
+        try:
+            return self.verify_connection(self.db)
+        finally:
+            self.db.execute("ROLLBACK")
+
+    @staticmethod
+    def verify_connection(db):
+        """Verify an existing workflow connection with sqlite3.Row, read-only."""
         previous = "0" * 64
         count = 0
-        for row in self.db.execute("SELECT * FROM workflow_events ORDER BY seq"):
+        archive_hashes = set()
+        for row in db.execute("SELECT * FROM workflow_events ORDER BY seq"):
             count += 1
             body = {k: row[k] for k in ("seq", "kind", "key", "at", "previous")}
             body["payload"] = json.loads(row["payload"])
             if row["seq"] != count or row["previous"] != previous or digest(body) != row["hash"]:
                 raise ValueError("workflow hash chain corrupted")
             previous = row["hash"]
+            payload = body["payload"]
+            if row["kind"] == "migration" and payload.get("archive_format") == ARCHIVE_VERSION:
+                archive_hash = payload["archive_hash"]
+                if archive_hash in archive_hashes or row["key"] != "migration-v2:" + archive_hash:
+                    raise ValueError("invalid workflow archive anchor")
+                archive_hashes.add(archive_hash)
+        actual = set()
+        if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='workflow_archives'").fetchone():
+            for row in db.execute("SELECT rowid, archive_hash FROM workflow_archives"):
+                actual.add(row["archive_hash"])
+                hasher = hashlib.sha256()
+                with db.blobopen("workflow_archives", "contents", row["rowid"], readonly=True) as blob:
+                    while block := blob.read(1024 * 1024):
+                        hasher.update(block)
+                if hasher.hexdigest() != row["archive_hash"]:
+                    raise ValueError(f"workflow archive bytes do not match SHA256: {row['archive_hash']}")
+        if actual != archive_hashes:
+            raise ValueError("workflow archive anchors and stored originals differ")
         return {"records": count, "head": previous, "independent_time_attestation": False}
 
     def _append(self, kind, key, payload):
@@ -123,24 +245,43 @@ class Workflow:
             raise ValueError("local clock precedes previous ledger entry")
         if kind == "forecast" and timestamp(body["at"]) >= timestamp(payload["target_at"]):
             raise ValueError("deadline passed at journal commit")
+        if kind in ("outcome", "correction", "migration") and timestamp(body["at"]) < timestamp(payload["received_at"]):
+            raise ValueError("local clock precedes outcome receipt at journal commit")
         self.db.execute("INSERT INTO workflow_events VALUES(?,?,?,?,?,?,?)",
                         (body["seq"], kind, key, body["at"], canonical(payload), body["previous"], digest(body)))
 
-    def state(self):
+    def state(self, *, include_outcome_history=False):
         self.verify()
-        result = {"outcomes": {}, "forecasts": {}, "cancellations": {}, "protocols": {}, "legacy_summaries": []}
+        result = {"outcomes": {}, "forecasts": {}, "cancellations": {}, "protocols": {},
+                  "legacy_summaries": [], "archive_imports": [], "archive_outcome_sources": {}}
+        if include_outcome_history:
+            result["outcome_history"] = {}
+
+        def remember_outcome(outcome):
+            key = identity(outcome["game"], outcome["draw"])
+            result["outcomes"][key] = outcome
+            if include_outcome_history:
+                result["outcome_history"].setdefault(key, []).append(outcome)
+
         for row in self.db.execute("SELECT kind,payload FROM workflow_events ORDER BY seq"):
             p = json.loads(row["payload"])
             if row["kind"] == "migration":
                 for r in p["outcomes"]:
-                    result["outcomes"][identity(r["game"], r["draw"])] = r
+                    remember_outcome(r)
                 for r in p["forecasts"]:
+                    result["forecasts"][identity(r["game"], r["draw"])] = r
+                for r in p.get("forecasts_enriched", []):
                     result["forecasts"][identity(r["game"], r["draw"])] = r
                 for r in p["cancellations"]:
                     result["cancellations"][identity(r["game"], r["draw"])] = r
                 result["legacy_summaries"] = p["legacy_summaries"]
+                if p.get("archive_format") == ARCHIVE_VERSION:
+                    result["archive_imports"].append({"archive_hash": p["archive_hash"], "received_at": p["received_at"],
+                                                       "standalone_runs": p["standalone_runs"]})
+                    for key, source in p["outcome_sources"].items():
+                        result["archive_outcome_sources"].setdefault(key, []).append(source)
             elif row["kind"] in ("outcome", "correction"):
-                result["outcomes"][identity(p["game"], p["draw"])] = p
+                remember_outcome(p)
             elif row["kind"] == "forecast":
                 result["forecasts"][identity(p["game"], p["draw"])] = p
             elif row["kind"] == "cancel":
@@ -156,6 +297,7 @@ class Workflow:
             outcome = state['outcomes'].get(key)
             return {'game': game, 'draw': draw, 'forecast': state['forecasts'].get(key),
                     'outcome': outcome, 'outcome_hash': digest(outcome) if outcome else None,
+                    'archive_outcome_sources': state['archive_outcome_sources'].get(key, []),
                     'cancellation': state['cancellations'].get(key)}
 
     def register(self, protocol):
@@ -186,23 +328,24 @@ class Workflow:
         key = identity(game, draw); value = normalized(value); nonempty(source)
         with self.transaction():
             state = self.state(); now = self.clock()
-            if occurred_at and timestamp(occurred_at) > timestamp(now):
-                raise ValueError("outcome occurrence is in the future")
-            forecast = state["forecasts"].get(key)
-            if occurred_at and forecast and timestamp(occurred_at) < timestamp(forecast["target_at"]):
-                raise ValueError("outcome occurrence precedes declared target; audit target separately")
+            forecast = state["forecasts"].get(key, {})
             previous = state["outcomes"].get(key)
-            if previous and previous["fields"] == value:
+            record = {"game": game, "draw": draw, "fields": value, "source": source,
+                      "received_at": now, "occurred_at": occurred_at,
+                      "numeric_eligible": True, "source_verification": "USER_SUPPLIED_UNATTESTED"}
+            issue = _trial_time_issue(record, forecast)
+            if previous and previous["fields"] == value and issue in (
+                None, "RECEIVED_BEFORE_TARGET", "RECEIVED_BEFORE_FORECAST_FIX",
+            ):
                 return previous
+            if issue is not None:
+                raise ValueError(_OUTCOME_TIME_ERRORS[issue])
             if previous:
                 if correction_of != digest(previous):
                     raise ValueError("conflicting outcome; supply expected previous digest and reason")
                 nonempty(reason)
             elif correction_of:
                 raise ValueError("no outcome to correct")
-            record = {"game": game, "draw": draw, "fields": value, "source": source,
-                      "received_at": now, "occurred_at": occurred_at,
-                      "numeric_eligible": True, "source_verification": "USER_SUPPLIED_UNATTESTED"}
             if previous:
                 record.update(correction_of=correction_of, reason=reason)
             self._append("correction" if previous else "outcome", f"outcome:{key}:{digest(record)}", record)
@@ -330,94 +473,151 @@ class Workflow:
                     "cycle_run_id": run, "cycle_chain": cycle.journal.verify(), "validated_advantage": False}
 
     def migrate(self, archive):
-        """Read structured archive data only. Never execute/extract archived scripts."""
-        archive = Path(archive)
-        archive_hash = hashlib.sha256(archive.read_bytes()).hexdigest()
-        with zipfile.ZipFile(archive) as z:
-            if len(z.namelist()) != len(set(z.namelist())) or len(z.namelist()) > 20000:
-                raise ValueError("duplicate or excessive ZIP members")
-            def read(name):
-                if z.getinfo(name).file_size > 20_000_000: raise ValueError("oversize JSON")
-                return load_json(z.read(name))
-            base = "Oracle_2026-10-22/"
-            latest_name = max(n for n in z.namelist() if n.endswith('/latest-archive-state.json'))
-            latest = read(latest_name)
-            outcomes = read(base+'updates/'+latest['observations_ref'])
-            forecasts = [(n, read(n)) for n in z.namelist() if n.endswith('/numeric-selection.json')]
-            summaries = [read(base+'updates/'+r) for r in latest['summary_refs']]
-            cancellations = latest.get('cancelled_forecasts', [])
+        """Import original numeric records and retain the exact source ZIP atomically."""
+        parsed = read_archive(archive)
+        migration_key = 'migration-v2:' + parsed.archive_hash
         with self.transaction():
-            if self.db.execute("SELECT 1 FROM workflow_events WHERE key=?", ('migration:'+archive_hash,)).fetchone():
-                return {"state": "ALREADY_IMPORTED", "archive_hash": archive_hash}
-            state = self.state(); receipt = self.clock(); added = []; predictions = []
-            for r in outcomes:
-                key = identity(r['game'], r['draw']); nums = normalized(r['fields'])
-                if key in state['outcomes']:
-                    if state['outcomes'][key]['fields'] != nums: raise ValueError('archive outcome conflict '+key)
+            if self.db.execute("SELECT 1 FROM workflow_events WHERE key=?", (migration_key,)).fetchone():
+                return {'state': 'ALREADY_IMPORTED', 'archive_hash': parsed.archive_hash}
+
+            state = self.state()
+            receipt = self.clock()
+            added, outcome_sources = [], {}
+            for row, source in parsed.outcomes:
+                key = identity(row['game'], row['draw'])
+                if key in outcome_sources:
+                    raise ValueError('duplicate archive outcome ' + key)
+                outcome_sources[key] = {**source, 'original_hash': digest(row)}
+                nums = normalized(row['fields'])
+                occurred = row.get('occurred_at')
+                recorded = row.get('recorded_at')
+                if occurred is not None:
+                    timestamp(occurred)
+                eligible = row.get('numeric_eligible', True)
+                if type(eligible) is not bool:
+                    raise ValueError('archive outcome numeric_eligible must be boolean: ' + key)
+                old = state['outcomes'].get(key)
+                if old:
+                    previous_occurrence = old.get('occurred_at')
+                    if (old['fields'] != nums or old.get('numeric_eligible', True) != eligible
+                            or occurred is not None and previous_occurrence is not None
+                            and timestamp(occurred) != timestamp(previous_occurrence)):
+                        raise ValueError('archive outcome conflict ' + key)
                     continue
-                if any(identity(x['game'], x['draw']) == key for x in added): raise ValueError('duplicate archive outcome')
-                added.append({'game': r['game'], 'draw': r['draw'], 'fields': nums, 'received_at': receipt,
-                              'occurred_at': r.get('occurred_at'), 'source_recorded_at': r.get('recorded_at'),
-                              'source': r.get('source', latest_name), 'numeric_eligible': r.get('numeric_eligible', True),
-                              'source_verification': 'LEGACY_DECLARATION_UNATTESTED'})
-            seen_forecasts = set()
-            for name, r in forecasts:
-                key = identity(r['game'], r['draw'])
-                if key in seen_forecasts:
-                    raise ValueError('duplicate archive forecast '+key)
-                seen_forecasts.add(key)
-                methods = {'lottery-rune-hash-v2': {'state': 'PICK', 'fields': normalized(r['fields'])},
-                           'random': {'state': 'PICK', 'fields': normalized(r['random_control'])}}
-                for arm, mid in [('frequency100_v1', 'frequency100-v1'), ('frequency20_v1', 'frequency20-v1')]:
-                    if r.get(arm, {}).get('fields') is not None:
-                        methods[mid] = {'state': 'PICK', 'fields': normalized(r[arm]['fields'])}
-                item = {'game': r['game'], 'draw': r['draw'], 'target_at': r.get('target_at_declared', r.get('target_at', r.get('target_at_assumed'))),
-                        'legacy_time_classification': r.get('timing_classification'),
-                        'target_time_assumed': 'target_at_assumed' in r,
-                        'fixed_at': r['fixed_at'], 'origin': 'LEGACY_UNATTESTED', 'methods': methods,
-                        'source_path': name, 'original_hash': digest(r), 'study_id': None}
-                if key in state['forecasts']:
-                    if state['forecasts'][key].get('original_hash') != item['original_hash']:
-                        raise ValueError('archive forecast conflict '+key)
-                else: predictions.append(item)
-            for c in cancellations:
-                key = identity(c['game'], c['draw'])
-                if key in state['forecasts'] and key not in state['cancellations']:
-                    raise ValueError('archive cannot newly cancel an existing ledger forecast '+key)
-                if key in state['cancellations'] and state['cancellations'][key] != c:
-                    raise ValueError('archive cancellation conflict '+key)
-            payload = {'archive_hash': archive_hash, 'received_at': receipt, 'outcomes': added,
-                       'forecasts': predictions, 'cancellations': cancellations, 'legacy_summaries': summaries}
-            self._append('migration', 'migration:'+archive_hash, payload)
+                observation = {'game': row['game'], 'draw': row['draw'], 'fields': nums, 'received_at': receipt,
+                               'occurred_at': occurred, 'source_recorded_at': recorded,
+                               'source': row.get('source', source['path']), 'numeric_eligible': eligible,
+                               'source_verification': 'LEGACY_DECLARATION_UNATTESTED'}
+                current = state['forecasts'].get(key)
+                if current and current['origin'] == 'LOCAL_FUTURE_UNATTESTED':
+                    issue = _trial_time_issue(observation, current)
+                    if issue is not None:
+                        raise ValueError(f"archive outcome {key}: {_OUTCOME_TIME_ERRORS[issue]}")
+                added.append(observation)
+
+            forecasts = {}
+            for raw, source in parsed.forecasts:
+                item = forecast_record(raw, source)
+                key = identity(item['game'], item['draw'])
+                old = forecasts.get(key, state['forecasts'].get(key))
+                forecasts[key] = join_forecasts(old, item, key) if old else item
+            predictions = [item for key, item in forecasts.items() if key not in state['forecasts']]
+            enriched = [item for key, item in forecasts.items()
+                        if key in state['forecasts'] and item != state['forecasts'][key]]
+
+            cancellations = {}
+            for row in parsed.cancellations:
+                key = identity(row['game'], row['draw'])
+                old = cancellations.get(key, state['cancellations'].get(key))
+                if old and old != row:
+                    raise ValueError('archive cancellation conflict ' + key)
+                if key in state['forecasts'] and old is None:
+                    raise ValueError('archive cannot newly cancel an existing ledger forecast ' + key)
+                if key not in state['cancellations']:
+                    cancellations[key] = row
+
+            summaries = {digest(row): row for row in state['legacy_summaries']}
+            for row in parsed.summaries:
+                if not isinstance(row, dict):
+                    raise ValueError('archive published summary must be an object')
+                if not isinstance(row.get('trials', []), list):
+                    raise ValueError('archive published trials must be an array')
+                for trial in row.get('trials', []):
+                    identity(trial['game'], trial['draw'])
+                summaries[digest(row)] = row
+            payload = {'archive_format': ARCHIVE_VERSION, 'archive_hash': parsed.archive_hash,
+                       'received_at': receipt, 'outcomes': added, 'outcome_sources': outcome_sources,
+                       'forecasts': predictions, 'forecasts_enriched': enriched,
+                       'cancellations': list(cancellations.values()), 'legacy_summaries': list(summaries.values()),
+                       'standalone_runs': parsed.standalone_runs}
+            self.db.execute("INSERT INTO workflow_archives (archive_hash, contents) VALUES (?, ?)",
+                            (parsed.archive_hash, parsed.contents))
+            self._append('migration', migration_key, payload)
             return {'state': 'IMPORTED', 'outcomes_added': len(added), 'forecasts_added': len(predictions),
-                    'cancellations': len(cancellations), 'archive_hash': archive_hash}
+                    'forecasts_enriched': len(enriched), 'cancellations': len(cancellations),
+                    'archive_hash': parsed.archive_hash, 'standalone_runs': parsed.standalone_runs}
+
+    def export_archive(self, archive_hash, destination):
+        """Publish a verified, byte-exact archive copy without replacing a file."""
+        destination = Path(destination)
+        with self.transaction():
+            row = self.db.execute("SELECT rowid FROM workflow_archives WHERE archive_hash=?",
+                                  (archive_hash,)).fetchone()
+            if row is None:
+                raise ValueError("archive original is unavailable for this SHA256")
+            with tempfile.TemporaryDirectory(dir=destination.parent) as staging:
+                staged = Path(staging) / "archive.zip"
+                with self.db.blobopen("workflow_archives", "contents", row["rowid"], readonly=True) as blob, staged.open("xb") as file:
+                    while chunk := blob.read(1024 * 1024):
+                        file.write(chunk)
+                    file.flush()
+                    os.fsync(file.fileno())
+                staged.chmod(0o600)
+                os.link(staged, destination)
+        return {'state': 'EXPORTED', 'archive_hash': archive_hash, 'destination': str(destination)}
 
     def report(self):
         with self.transaction():
-            s = self.state(); trials = []; pending = []; cancelled = []
+            s = self.state(include_outcome_history=True)
+            trials, pending, cancelled, excluded_trials = [], [], [], []
             for key, p in sorted(s['forecasts'].items()):
                 if key in s['cancellations']:
                     cancelled.append(key); continue
                 outcome = s['outcomes'].get(key)
                 if outcome is None:
                     pending.append(key); continue
+                for version in s['outcome_history'][key]:
+                    issue = _trial_time_issue(version, p, for_evaluation=True)
+                    if issue is not None:
+                        excluded_trials.append({
+                            'game': p['game'], 'draw': p['draw'], 'origin': p['origin'],
+                            'study_id': p.get('study_id'), 'reason': issue,
+                            'outcome_hash': digest(version), 'received_at': version.get('received_at'),
+                            'occurred_at': version.get('occurred_at'), 'target_at': p.get('target_at'),
+                            'fixed_at': p.get('fixed_at'),
+                        })
+                        break
+                if issue is not None:
+                    continue
                 scores = {m: hits(v['fields'], outcome['fields']) if v['state'] == 'PICK' else None for m,v in p['methods'].items()}
                 trials.append({'game': p['game'], 'draw': p['draw'], 'origin': p['origin'], 'study_id': p.get('study_id'),
                                'scores': scores, 'corrected_outcome': 'correction_of' in outcome,
                                'source_conflict': p['game']=='hunt' and p['draw']==47129,
                                'independent_time_attestation': False})
-            groups = []
-            for origin in ('LEGACY_UNATTESTED', 'LOCAL_FUTURE_UNATTESTED'):
-                for game in GAMES:
-                    for method in ('lottery-rune-hash-v2','frequency100-v1','frequency30-v1','frequency20-v1'):
-                        tt = [t for t in trials if t['origin']==origin and t['game']==game and not t['source_conflict']
-                              and t['scores'].get(method) is not None and t['scores'].get('random') is not None]
-                        a = [sum(t['scores'][method]) for t in tt]; c = [sum(t['scores']['random']) for t in tt]
-                        groups.append({'origin':origin,'game':game,'method':method,'n':len(tt),
-                                       'method_hits':sum(a),'control_hits':sum(c),'method_mean':sum(a)/len(a) if a else None,
-                                       'control_mean':sum(c)/len(c) if c else None,'uniform_expected_mean':1.6,
-                                       'diagnostic_only_sign_test':exact_sign([x-y for x,y in zip(a,c)]),
-                                       'chronological_totals':[{'draw':t['draw'],'method':x,'control':y} for t,x,y in zip(tt,a,c)]})
+            archive_reconciliation = []
+            for archive_import in s['archive_imports']:
+                for run in archive_import['standalone_runs']:
+                    if run['state'] == 'NO_CANONICAL_NUMERIC_PICK':
+                        archive_reconciliation.append({**run, 'archive_hash': archive_import['archive_hash']})
+            for forecast in s['forecasts'].values():
+                if forecast['origin'] != 'LEGACY_UNATTESTED':
+                    continue
+                info = {'game': forecast['game'], 'draw': forecast['draw'], 'original_hash': forecast['original_hash']}
+                if 'random' not in forecast['methods']:
+                    archive_reconciliation.append({**info, 'state': 'NO_ARCHIVED_RANDOM_CONTROL'})
+                for method, arm in forecast['methods'].items():
+                    if method.startswith('frequency') and arm['state'] == 'PICK' and 'tie_break' not in arm:
+                        archive_reconciliation.append({**info, 'method': method, 'state': 'FREQUENCY_TIE_BREAK_UNDECLARED'})
             legacy_reconciliation = []
             seen_legacy_gaps = set()
             for published in s['legacy_summaries']:
@@ -438,6 +638,7 @@ class Workflow:
                     'sample_size': protocol['spec']['sample_size'], 'enrolled': len(enrolled),
                     'cancelled': sum(identity(p['game'],p['draw']) in s['cancellations'] for p in enrolled),
                     'pending': sum(identity(p['game'],p['draw']) in pending for p in enrolled),
+                    'excluded_timing': sum(t['study_id'] == sid for t in excluded_trials),
                     'resolved': len(resolved), 'paired': len(paired),
                     'abstentions': len(resolved)-len(paired),
                     'method_hits': sum(sum(t['scores'][method]) for t in paired),
@@ -447,28 +648,32 @@ class Workflow:
                     'independent_time_attestation': False})
             return {'version':VERSION,'chain':self.verify(),'outcomes':len(s['outcomes']), 'forecasts':len(s['forecasts']),
                     'outcomes_by_game':dict(Counter(r['game'] for r in s['outcomes'].values())),
-                    'pending':pending,'cancelled':cancelled,'trials':trials,'groups':groups,
+                    'pending':pending,'cancelled':cancelled,'trials':trials,'groups':_paired_groups(trials, s['forecasts']),
+                    'excluded_trials':excluded_trials,
                     'registered_studies':list(s['protocols'].values()), 'study_summaries':studies,
                     'legacy_published_summaries':s['legacy_summaries'],
                     'legacy_reconciliation':legacy_reconciliation,
+                    'archive_imports':s['archive_imports'], 'archive_reconciliation':archive_reconciliation,
                     'notice':'DESCRIPTIVE_ONLY. Same numbered draw only; legacy reuse summaries retained separately. No independent time attestation or demonstrated foresight.'}
 
-    def backup(self, destination):
-        destination = Path(destination)
-        if destination.exists(): raise ValueError('backup destination already exists')
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        with self.transaction():
-            pass
-        # SQLite's backup API includes committed WAL contents in a consistent snapshot.
-        with sqlite3.connect(destination) as target: self.db.backup(target)
-        with Workflow(destination) as copied: return copied.verify()
+    def backup(self, destination, *, bundle=False):
+        from .workflow_backup import backup
+        if self.db.in_transaction:
+            raise ValueError('finish the active workflow transaction before backup')
+        return backup(self.path, destination, Workflow.verify_connection, bundle=bundle)
+
+    @staticmethod
+    def restore(source, destination):
+        from .workflow_backup import restore
+        return restore(source, destination, Workflow.verify_connection)
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--db', required=True)
+    parser.add_argument('--db')
     sub = parser.add_subparsers(dest='command', required=True)
     migrate = sub.add_parser('migrate'); migrate.add_argument('archive')
+    export_archive = sub.add_parser('archive-export'); export_archive.add_argument('sha256'); export_archive.add_argument('destination')
     reg = sub.add_parser('register'); reg.add_argument('protocol')
     pred = sub.add_parser('forecast')
     for p in (pred,):
@@ -481,28 +686,45 @@ def main(argv=None):
     show = sub.add_parser('show'); show.add_argument('game', choices=GAMES); show.add_argument('draw', type=int)
     sub.add_parser('report'); sub.add_parser('verify')
     backup = sub.add_parser('backup'); backup.add_argument('destination')
+    backup.add_argument('--bundle', action='store_true', help='force a full directory backup regardless of its name')
+    restore = sub.add_parser('restore'); restore.add_argument('source'); restore.add_argument('destination')
     args = parser.parse_args(argv)
+    if args.command != 'restore' and args.db is None:
+        parser.error('--db is required for this command')
+    if args.command == 'restore' and args.db is not None:
+        parser.error('restore takes a backup source and destination directory without --db')
     try:
-        with Workflow(args.db) as w:
-            if args.command=='migrate': result=w.migrate(args.archive)
-            elif args.command=='register': result=w.register(load_json(Path(args.protocol).read_text(encoding='utf-8')))
-            elif args.command=='forecast': result=w.forecast(args.game,args.draw,args.target_at,
-                template=load_json(Path(args.template).read_text(encoding='utf-8')) if args.template else None,
-                study_id=args.study_id,max_history_gap=args.max_history_gap,frequency_window=args.frequency_window)
-            elif args.command=='outcome':
-                doc=load_json(Path(args.json_file).read_text(encoding='utf-8'))
-                result=w.ingest(args.game,args.draw,doc['fields'],doc['source'],occurred_at=doc.get('occurred_at'),
-                                correction_of=args.correction_of,reason=args.reason)
-            elif args.command=='cancel': result=w.cancel(args.game,args.draw,args.reason)
-            elif args.command=='backup': result=w.backup(args.destination)
-            elif args.command=='report': result=w.report()
-            elif args.command=='show': result=w.lookup(args.game,args.draw)
-            else: result=w.verify()
+        if args.command == 'restore':
+            result = Workflow.restore(args.source, args.destination)
+        elif args.command == 'backup':
+            from .workflow_backup import backup as create_backup
+            result = create_backup(args.db, args.destination, Workflow.verify_connection, bundle=args.bundle)
+        else:
+            result = _run_command(args)
         print(json.dumps(result,ensure_ascii=False,indent=2))
         return 0
-    except (ValueError,KeyError,TypeError,sqlite3.Error,OSError,zipfile.BadZipFile) as exc:
+    except (ValueError,KeyError,TypeError,OverflowError,sqlite3.Error,OSError,zipfile.BadZipFile) as exc:
         print(json.dumps({'state':'REJECTED','reason':str(exc)},ensure_ascii=False))
         return 2
+
+
+def _run_command(args):
+    with Workflow(args.db) as w:
+        if args.command=='migrate': result=w.migrate(args.archive)
+        elif args.command=='archive-export': result=w.export_archive(args.sha256, args.destination)
+        elif args.command=='register': result=w.register(load_json(Path(args.protocol).read_text(encoding='utf-8')))
+        elif args.command=='forecast': result=w.forecast(args.game,args.draw,args.target_at,
+            template=load_json(Path(args.template).read_text(encoding='utf-8')) if args.template else None,
+            study_id=args.study_id,max_history_gap=args.max_history_gap,frequency_window=args.frequency_window)
+        elif args.command=='outcome':
+            doc=load_json(Path(args.json_file).read_text(encoding='utf-8'))
+            result=w.ingest(args.game,args.draw,doc['fields'],doc['source'],occurred_at=doc.get('occurred_at'),
+                            correction_of=args.correction_of,reason=args.reason)
+        elif args.command=='cancel': result=w.cancel(args.game,args.draw,args.reason)
+        elif args.command=='report': result=w.report()
+        elif args.command=='show': result=w.lookup(args.game,args.draw)
+        else: result=w.verify()
+    return result
 
 
 if __name__ == '__main__':
