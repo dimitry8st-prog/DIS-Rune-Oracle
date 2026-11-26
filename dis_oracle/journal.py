@@ -73,8 +73,13 @@ class Journal:
             raise
 
     def verify(self):
+        return self.verify_connection(self.connection)
+
+    @staticmethod
+    def verify_connection(connection):
+        """Verify existing rows without creating or modifying a journal."""
         previous, expected_seq = "0" * 64, 1
-        for row in self.connection.execute("SELECT * FROM entries ORDER BY seq"):
+        for row in connection.execute("SELECT * FROM entries ORDER BY seq"):
             calculated = digest({"key": row["record_key"], "recorded_at": row["recorded_at"],
                                  "payload": json.loads(row["payload"]), "previous_hash": previous})
             if row["seq"] != expected_seq or row["previous_hash"] != previous or row["hash"] != calculated:
